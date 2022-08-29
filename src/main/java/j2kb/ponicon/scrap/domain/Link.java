@@ -22,7 +22,7 @@ public class Link {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @Column(length = 300)
+    @Column(length = 300, nullable = false)
     private String link;
 
     @Column(length = 100)

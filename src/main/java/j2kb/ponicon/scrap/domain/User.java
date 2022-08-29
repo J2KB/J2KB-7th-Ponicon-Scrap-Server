@@ -14,13 +14,13 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(length = 16)
+    @Column(length = 16, nullable = false)
     private String username;
 
-    @Column(length = 300)
+    @Column(length = 300, nullable = false)
     private String password;
 
-    @Column(length = 70)
+    @Column(length = 70, nullable = false)
     private String name;
 
     @CreationTimestamp
