@@ -11,6 +11,6 @@ public class TestController {
 
     @GetMapping("")
     public String test(){
-        return "merge test pull request test 스크랩 테스트 성공";
+        return "merge test pull request test hs pull request test 스크랩 테스트 성공";
     }
 }
