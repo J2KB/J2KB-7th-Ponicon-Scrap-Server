@@ -14,12 +14,15 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(length = 16, nullable = false)
+    // 아이디
+    @Column(length = 16, nullable = false, unique = true)
     private String username;
 
+    // 비밀번호
     @Column(length = 300, nullable = false)
     private String password;
 
+    // 이름
     @Column(length = 70, nullable = false)
     private String name;
 
