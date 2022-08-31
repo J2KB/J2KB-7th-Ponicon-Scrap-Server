@@ -32,6 +32,9 @@ dependencies {
 	runtimeOnly 'mysql:mysql-connector-java'
 	// spring boot
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	// og
+	implementation group: 'net.sourceforge.htmlcleaner', name: 'htmlcleaner', version: '2.26'
+
 }
 
 tasks.named('test') {

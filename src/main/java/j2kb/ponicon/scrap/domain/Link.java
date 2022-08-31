@@ -1,12 +1,15 @@
 package j2kb.ponicon.scrap.domain;
 
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@NoArgsConstructor
 @Getter
 public class Link {
 
@@ -41,4 +44,14 @@ public class Link {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
+
+    //
+    @Builder
+    public Link(String title, String link, String imgUrl, User user, Category category) {
+        this.title = title;
+        this.link = link;
+        this.imgUrl = imgUrl;
+        this.user = user;
+        this.category = category;
+    }
 }
