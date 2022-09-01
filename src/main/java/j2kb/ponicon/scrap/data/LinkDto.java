@@ -14,6 +14,7 @@ public class LinkDto {
     private String imgUrl;
     private User user;
     private Category category;
+
     public Link toEntity() {
         return Link.builder().title(title).link(link).imgUrl(imgUrl).user(user).category(category).build();
     }

@@ -1,36 +1,34 @@
 package j2kb.ponicon.scrap.category;
 
 import j2kb.ponicon.scrap.domain.Category;
-import j2kb.ponicon.scrap.domain.User;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
-import java.util.Collections;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
     @Transactional
-    public void categorySave(CategoryDto categoryDto, User user) {
-        categoryDto.setUser(user);
-        categoryRepository.save(categoryDto.toEntity());
+    public int categorySave(CategoryDto categoryDto, UserDto userDto) {
+        try {
+            categoryDto.setUser(userDto.toEntity());
+            categoryRepository.save(categoryDto.toEntity());
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("categoryService ={} ", e.getMessage());
+        }
+        return -1;
     }
 
-//    @org.springframework.transaction.annotation.Transactional(readOnly = true)
-//    public List<CategoryDto> categories() {
-//        List<Category> list = categoryRepository.findAll();
-//        return list.stream().map(CategoryDto::new).collect(Collectors.toList());
-//    }
-
-    @org.springframework.transaction.annotation.Transactional(readOnly = true)
-    public List<Category> categories(User user) {
-        return  categoryRepository.findAllById(Collections.singleton(user.getId()));
-
+    @Transactional(readOnly = true)
+    public List<Category> categories(UserDto userDto) {
+        return  categoryRepository.findByUser(userDto.toEntity());
     }
 }

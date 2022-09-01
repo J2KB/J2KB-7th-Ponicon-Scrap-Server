@@ -1,5 +1,6 @@
 package j2kb.ponicon.scrap.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,18 +37,21 @@ public class Link {
     private LocalDateTime createdAt;
 
     // 유저
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
     // 카테고리
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
 
     //
     @Builder
-    public Link(String title, String link, String imgUrl, User user, Category category) {
+    public Link(Long id, String title, String link, String imgUrl, User user, Category category) {
+        this.id = id;
         this.title = title;
         this.link = link;
         this.imgUrl = imgUrl;

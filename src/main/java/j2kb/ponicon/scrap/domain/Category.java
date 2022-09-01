@@ -32,6 +32,7 @@ public class Category {
     private LocalDateTime createdAt;
 
     // 유저
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -42,7 +43,8 @@ public class Category {
     private List<Link> links = new ArrayList<>();
 
     @Builder
-    public Category(String name, User user) {
+    public Category(Long id, String name, User user) {
+        this.id = id;
         this.name = name;
         this.user = user;
     }

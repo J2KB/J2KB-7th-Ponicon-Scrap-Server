@@ -18,20 +18,4 @@ public class GlobalExceptionHandler {
         return new ResponseDto<String>(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
         // INTERNAL_SERVER_ERROR = 500 값임
     }
-//    @ExceptionHandler(value = MalformedURLException.class)
-//    private ResponseDto<String> malformedURLException(MalformedURLException e) {
-//        return new ResponseDto<String>(HttpStatus.BAD_REQUEST.value(), e.getMessage());
-//        // INTERNAL_SERVER_ERROR = 500 값임
-//    }
-//
-//    @ExceptionHandler(value = NullPointerException.class)
-//    private ResponseDto<String> nullPointerException(NullPointerException e) {
-//        return new ResponseDto<String>(HttpStatus.NOT_FOUND.value(), e.getMessage());
-//        // INTERNAL_SERVER_ERROR = 500 값임
-//    }
-//    @ExceptionHandler(value = UnknownHostException.class)
-//    private ResponseDto<String> unknownHostException(UnknownHostException e) {
-//        return new ResponseDto<String>(HttpStatus.NOT_FOUND.value(), e.getMessage());
-//        // INTERNAL_SERVER_ERROR = 500 값임
-//    }
 }

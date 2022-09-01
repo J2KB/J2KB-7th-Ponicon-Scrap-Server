@@ -1,6 +1,8 @@
 package j2kb.ponicon.scrap.domain;
 
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -8,6 +10,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class User {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,4 +31,12 @@ public class User {
 
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+    @Builder
+    public User(Long id, String username, String password, String name) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.name = name;
+    }
 }
