@@ -22,10 +22,15 @@ public class BaseResponse<T> {
     // 기본 생성자 막아둠
     private BaseResponse(){}
 
-    public BaseResponse(String msg, T result){
+    public BaseResponse(T result){
+        this.code = 20000;
+        this.message = "요청에 성공했습니다";
+        this.result = result;
+    }
+
+    public BaseResponse(String msg){
         this.code = 20000;
         this.message = msg;
-        this.result = result;
     }
 
     public BaseResponse(BaseExceptionStatus e){
