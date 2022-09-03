@@ -1,13 +1,18 @@
 package j2kb.ponicon.scrap.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,4 +33,15 @@ public class User {
 
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+    // 해당 유저가 만든 카테고리들
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Category> categories = new ArrayList<>();
+
+    // 생성 메소드
+    public User(String username, String pw, String name){
+        this.username = username;
+        this.password = pw;
+        this.name = name;
+    }
 }
