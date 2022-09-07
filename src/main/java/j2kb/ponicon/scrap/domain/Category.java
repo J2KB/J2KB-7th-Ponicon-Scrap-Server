@@ -1,5 +1,6 @@
 package j2kb.ponicon.scrap.domain;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;

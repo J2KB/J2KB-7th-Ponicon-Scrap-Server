@@ -1,5 +1,6 @@
 package j2kb.ponicon.scrap.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -11,7 +12,8 @@ import java.util.List;
 
 @Entity
 @Getter
-@NoArgsConstructor
+
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,9 +35,19 @@ public class User {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Category> categories = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Link> links = new ArrayList<>();
+
+
+    // 생성 메소드
+    public User(String username, String pw, String name){
+        this.username = username;
+        this.password = pw;
+        this.name = name;
+    }
+
 }
