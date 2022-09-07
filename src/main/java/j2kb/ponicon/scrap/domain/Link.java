@@ -1,6 +1,7 @@
 package j2kb.ponicon.scrap.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,8 +11,8 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@NoArgsConstructor
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Link {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,14 +49,23 @@ public class Link {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    //
-    @Builder
-    public Link(Long id, String title, String link, String imgUrl, User user, Category category) {
-        this.id = id;
-        this.title = title;
+    // 생성 메소드
+    public Link(String link, String title, String imgUrl, Category category, User user){
         this.link = link;
+        this.title = title;
         this.imgUrl = imgUrl;
-        this.user = user;
-        this.category = category;
+        this.setCategory(category);
+        this.setUser(user);
     }
+
+    public void setCategory(Category category){
+        this.category = category;
+        category.getLinks().add(this);
+    }
+
+    public void setUser(User user){
+        this.user = user;
+        user.getLinks().add(this);
+    }
+
 }

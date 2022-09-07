@@ -1,7 +1,7 @@
 package j2kb.ponicon.scrap.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Builder;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Category {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,13 +39,19 @@ public class Category {
 
     // 해당 카테고리에 속한 자료들
     @JsonIgnore
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Link> links = new ArrayList<>();
 
-    @Builder
-    public Category(Long id, String name, User user) {
-        this.id = id;
+    // 생성 메소드
+    public Category(String name, int order, User user){
         this.name = name;
+        this.order = order;
+        this.setUser(user);
+    }
+
+    /* 연관 편의 메소드 */
+    public void setUser(User user){
         this.user = user;
+        user.getCategories().add(this);
     }
 }
