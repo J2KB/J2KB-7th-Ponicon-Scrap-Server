@@ -32,6 +32,8 @@ dependencies {
 	runtimeOnly 'mysql:mysql-connector-java'
 	// spring boot
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	// jwt 토큰
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 }
 
 tasks.named('test') {
