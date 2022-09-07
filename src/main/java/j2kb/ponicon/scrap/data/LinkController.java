@@ -16,17 +16,8 @@ public class LinkController {
 
     private final LinkService linkService;
 
-//    @PostMapping("/data")
-//    public ResponseDto<Integer> dataSave(String url, PostDataSaveReq postDataSaveReq) {
-        //String link = url;
-        //userDto.setId(1L);
-        //categoryDto.setId(1L);
-//        linkService.save(getOpenGraph("https://recordsoflife.tistory.com/30"), userDto, categoryDto);
-//        return new ResponseDto<Integer>(HttpStatus.OK.value(), 1); // 자바 오브젝트를 JSON으로 변환하여 전송
-//    }
-
     @PostMapping()
-    public void dataSave(@RequestBody PostUrlReq postUrlReq, @RequestParam Long userId) {
+    public void dataSave(@RequestBody PostUrlReq postUrlReq, @RequestParam("id") Long userId) {
         try {
             linkService.linkSave(postUrlReq, userId);
         }
