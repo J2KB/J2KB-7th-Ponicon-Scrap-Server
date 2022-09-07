@@ -1,6 +1,10 @@
 package j2kb.ponicon.scrap.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -8,6 +12,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Link {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,12 +38,34 @@ public class Link {
     private LocalDateTime createdAt;
 
     // 유저
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
     // 카테고리
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
+
+    // 생성 메소드
+    public Link(String link, String title, String imgUrl, Category category, User user){
+        this.link = link;
+        this.title = title;
+        this.imgUrl = imgUrl;
+        this.setCategory(category);
+        this.setUser(user);
+    }
+
+    public void setCategory(Category category){
+        this.category = category;
+        category.getLinks().add(this);
+    }
+
+    public void setUser(User user){
+        this.user = user;
+        user.getLinks().add(this);
+    }
+
 }

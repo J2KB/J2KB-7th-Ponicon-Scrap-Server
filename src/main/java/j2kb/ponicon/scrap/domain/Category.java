@@ -1,5 +1,7 @@
 package j2kb.ponicon.scrap.domain;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,12 +33,14 @@ public class Category {
     private LocalDateTime createdAt;
 
     // 유저
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
     // 해당 카테고리에 속한 자료들
-    @OneToMany(mappedBy = "category")
+    @JsonIgnore
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Link> links = new ArrayList<>();
 
     // 생성 메소드

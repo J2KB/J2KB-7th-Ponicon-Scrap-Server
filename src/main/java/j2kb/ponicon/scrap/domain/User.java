@@ -12,6 +12,7 @@ import java.util.List;
 
 @Entity
 @Getter
+
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
@@ -34,9 +35,13 @@ public class User {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    // 해당 유저가 만든 카테고리들
+
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Category> categories = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Link> links = new ArrayList<>();
+
 
     // 생성 메소드
     public User(String username, String pw, String name){
@@ -44,4 +49,5 @@ public class User {
         this.password = pw;
         this.name = name;
     }
+
 }
