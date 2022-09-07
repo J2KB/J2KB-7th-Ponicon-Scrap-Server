@@ -26,7 +26,7 @@ public class CategoryService {
         Optional<User> tempUser = userRepository.findById(userId);
         User user = tempUser.get();
         String name = postCategoryReq.getName();
-        int order = 1;
+        int order = user.getCategories().size();
         Category category = new Category(name, order, user);
         categoryRepository.save(category);
     }
