@@ -2,12 +2,13 @@ package j2kb.ponicon.scrap.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import j2kb.ponicon.scrap.category.dto.CategoryListRes;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Category {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +24,8 @@ public class Category {
     private Long id;
 
     // 카테고리 이름
+    @NotBlank(message = "카테고리를 입력해주세요")
+    @Size(min = 2, max = 60, message = "카테고리 이름을 2~60자 사이로 입력해주세요.")
     @Column(length = 60, nullable = false)
     private String name;
 
@@ -54,5 +58,14 @@ public class Category {
     public void setUser(User user){
         this.user = user;
         user.getCategories().add(this);
+    }
+
+    /* Entity를 Dto로 변환하는 메소드 */
+    public CategoryListRes toDto(){
+        return CategoryListRes.builder()
+                .id(id)
+                .name(name)
+                .order(order)
+                .build();
     }
 }

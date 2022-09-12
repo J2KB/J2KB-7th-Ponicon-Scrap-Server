@@ -1,6 +1,8 @@
 package j2kb.ponicon.scrap.data;
 
 import j2kb.ponicon.scrap.category.CategoryRepository;
+import j2kb.ponicon.scrap.data.dto.DataListRes;
+import j2kb.ponicon.scrap.data.dto.GetDataListRes;
 import j2kb.ponicon.scrap.data.dto.PostDataSaveReq;
 import j2kb.ponicon.scrap.data.dto.PostUrlReq;
 import j2kb.ponicon.scrap.data.lib.OpenGraph;
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -47,8 +50,12 @@ public class LinkService {
     }
 
     @Transactional(readOnly = true)
-    public List<Link> links(Long userId, Long categoryId) {
-        return  linkRepository.findByUserIdAndCategoryId(userId, categoryId);
+    public GetDataListRes links(Long userId, Long categoryId) {
+        List<DataListRes> list = linkRepository.findByUserIdAndCategoryId(userId, categoryId).stream()
+                .map(Link::toDto)
+                .collect(Collectors.toList());
+        GetDataListRes getDataListRes = GetDataListRes.builder().links(list).build();
+        return getDataListRes;
     }
 
     private PostDataSaveReq getOpenGraph(String baseURL) throws Exception {
