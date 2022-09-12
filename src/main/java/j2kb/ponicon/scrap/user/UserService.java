@@ -108,6 +108,10 @@ public class UserService {
         response.addCookie(refreshCookie);
     }
 
+    public void kakaoLogin(String code){
+
+    }
+
     /* 테스트 코드 */
     public void testSave(){
         Optional<User> tempUser = userRepository.findById(6L);

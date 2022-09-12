@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 public class UserController {
 
     private final UserService userService;
+    private final KakaoService kakaoService;
 
     @PostMapping("/join")
     public BaseResponse join(@RequestBody PostJoinReq postJoinReq){
@@ -45,14 +46,21 @@ public class UserController {
 
         userService.login(postLoginReq, response);
 
-
         return new BaseResponse("로그인에 성공했습니다");
     }
 
-    @PostMapping("/login/kakao")
-    public String kakaoLogin(){
+    @GetMapping("/login/kakao")
+    public String kakaoLogin(@RequestParam(name = "code") String code){
+        System.out.println("code = " + code);
+
+        kakaoService.login(code);
         return "카카오 로그인에 성공했습니다";
     }
+
+//    @GetMapping("/test")
+//    public String test(){
+//
+//    }
 
     @GetMapping("/logout")
     public String logout(){
