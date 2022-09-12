@@ -49,7 +49,7 @@ public class CategoryService {
         List<CategoryListRes> list = categoryRepository.findByUserId(userId).stream()
                 .map(Category::toDto)
                 .collect(Collectors.toList());
-        GetCategoryListRes getCategoryListRes = GetCategoryListRes.builder().categorys(list).build();
+        GetCategoryListRes getCategoryListRes = GetCategoryListRes.builder().categories(list).build();
         return getCategoryListRes;
     }
 

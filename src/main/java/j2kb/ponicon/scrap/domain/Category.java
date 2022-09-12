@@ -63,7 +63,7 @@ public class Category {
     /* Entity를 Dto로 변환하는 메소드 */
     public CategoryListRes toDto(){
         return CategoryListRes.builder()
-                .id(id)
+                .categoryId(id)
                 .name(name)
                 .order(order)
                 .build();

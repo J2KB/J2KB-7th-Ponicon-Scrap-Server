@@ -7,10 +7,10 @@ import java.util.List;
 
 @Getter
 public class GetCategoryListRes {
-    List<CategoryListRes> categorys;
+    List<CategoryListRes> categories;
 
     @Builder
-    public GetCategoryListRes(List<CategoryListRes> categorys) {
-        this.categorys = categorys;
+    public GetCategoryListRes(List<CategoryListRes> categories) {
+        this.categories = categories;
     }
 }
