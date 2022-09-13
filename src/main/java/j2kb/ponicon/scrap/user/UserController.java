@@ -1,15 +1,13 @@
 package j2kb.ponicon.scrap.user;
 
 import j2kb.ponicon.scrap.domain.User;
-import j2kb.ponicon.scrap.response.BaseException;
-import j2kb.ponicon.scrap.response.BaseExceptionStatus;
+
 import j2kb.ponicon.scrap.response.BaseResponse;
 import j2kb.ponicon.scrap.user.dto.GetUsernameSameRes;
 import j2kb.ponicon.scrap.user.dto.LoginRes;
 import j2kb.ponicon.scrap.user.dto.PostJoinReq;
 import j2kb.ponicon.scrap.user.dto.PostLoginReq;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
@@ -24,6 +22,8 @@ public class UserController {
     private final UserService userService;
     private final KakaoService kakaoService;
 
+    // 회원가입
+    // [POST] /user/join
     @PostMapping("/join")
     public BaseResponse join(@RequestBody PostJoinReq postJoinReq){
 
@@ -34,6 +34,8 @@ public class UserController {
         return new BaseResponse("회원가입에 성공했습니다");
     }
 
+    // 아이디 중복 확인
+    // [GET] user/duplicate?id=
     @GetMapping("/duplicate")
     public BaseResponse<GetUsernameSameRes> checkUsernameDuplicate(@RequestParam(name = "id")String username){
 
@@ -45,6 +47,8 @@ public class UserController {
         return new BaseResponse<GetUsernameSameRes>(res);
     }
 
+    // 일반 로그인
+    // [POST] user/login
     @PostMapping("/login")
     public BaseResponse<LoginRes> login(@RequestBody PostLoginReq postLoginReq, HttpServletResponse response){
 
@@ -53,6 +57,8 @@ public class UserController {
         return new BaseResponse<>(new LoginRes(user.getId()));
     }
 
+    // 카카오 로그인 리다이렉션 url
+    // [GET] user/login/kakao?code=
     @GetMapping("/login/kakao")
     public BaseResponse<LoginRes> kakaoLogin(@RequestParam(name = "code") String code, HttpServletResponse response){
         System.out.println("code = " + code);
@@ -62,6 +68,8 @@ public class UserController {
         return new BaseResponse<>(new LoginRes(user.getId()));
     }
 
+    // 통합 로그아웃
+    // [GET] user/logout
     @GetMapping("/logout")
     public BaseResponse logout(HttpServletResponse response){
 

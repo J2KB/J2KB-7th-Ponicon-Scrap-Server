@@ -6,6 +6,8 @@ import j2kb.ponicon.scrap.domain.User;
 import j2kb.ponicon.scrap.response.BaseException;
 import j2kb.ponicon.scrap.utils.CookieService;
 import j2kb.ponicon.scrap.utils.JwtService;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static j2kb.ponicon.scrap.response.BaseExceptionStatus.KAKAO_GET_TOKEN_FAIL;
+import static j2kb.ponicon.scrap.response.BaseExceptionStatus.KAKAO_GET_USER_INFO_FAIL;
 import static j2kb.ponicon.scrap.utils.JwtData.KAKAO_REST_API_KEY;
 
 @Service
@@ -33,21 +36,61 @@ public class KakaoService {
 
     private final String tokenHost = "https://kauth.kakao.com/oauth/token";
     private final String userInfoHost = "https://kapi.kakao.com/v2/user/me";
+    private final String redirectionUrl = "http://localhost:8081/user/login/kakao";
+
+    private class Token{
+
+        private String accessToken;
+        private String refreshToken;
+
+        protected Token(String access, String refresh){
+            this.accessToken = access;
+            this.refreshToken = refresh;
+        }
+
+        protected String getAccessToken() {
+            return accessToken;
+        }
+
+        protected String getRefreshToken() {
+            return refreshToken;
+        }
+    }
+
+    private class KaKaoUser{
+
+        private String id; // 아이디
+        private String name;
+
+        protected KaKaoUser(String id, String name){
+            this.id = id;
+            this.name = name;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
 
     // 카카오 로그인
     public User login(String code, HttpServletResponse response){
 
-        Map<String, String> tokenMap = getTokens(code);
+        // 인가코드로 카카오의 토큰(access, refresh) 발급받기
+        Token token = getTokens(code);
+        System.out.println("token.getAccessToken() = " + token.getAccessToken());
 
-        for(String key : tokenMap.keySet()){
-            System.out.println("tokenMap.get(key) = " + tokenMap.get(key));
-        }
+        // user 조회
+        User user = getUser(token.getAccessToken());
 
-        User user = getUser(tokenMap.get("accessToken"));
-//        getUserInfo(tokenMap.get("accessToken"));
-
+        // 토큰 발급
         String accessToken = jwtService.createAccessToken(user.getUsername());
         String refreshToken = jwtService.createRefreshToken(user.getUsername());
+
+        // 쿠키 발급
         Cookie accessCookie = cookieService.createAccessCookie(accessToken, true);
         response.addCookie(accessCookie);
 
@@ -55,7 +98,7 @@ public class KakaoService {
     }
 
     // 카카오의 access토큰과 refresh토큰 받기
-    private Map<String, String> getTokens(String code){
+    private Token getTokens(String code){
         try{
             URL url = new URL(tokenHost);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -69,7 +112,7 @@ public class KakaoService {
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
             sb.append("&client_id="+KAKAO_REST_API_KEY);
-            sb.append("&redirect_uri=http://localhost:8081/user/login/kakao"); // TODO 인가코드 받은 redirect_uri 입력
+            sb.append("&redirect_uri="+redirectionUrl);
             sb.append("&code=" + code);
             bw.write(sb.toString());
             bw.flush();
@@ -89,23 +132,21 @@ public class KakaoService {
             while ((line = br.readLine()) != null) {
                 result += line;
             }
-//            System.out.println("response body : " + result);
 
             //Gson 라이브러리에 포함된 클래스로 JSON파싱 객체 생성
             JsonParser parser = new JsonParser();
             JsonElement element = parser.parse(result);
 
+            // 응답 바디에서 토큰값 읽어오기
             String accessToken = element.getAsJsonObject().get("access_token").getAsString();
             String refreshToken = element.getAsJsonObject().get("refresh_token").getAsString();
 
-            Map<String, String> tokenMap = Collections.synchronizedMap(new HashMap());
-            tokenMap.put("accessToken", accessToken);
-            tokenMap.put("refreshToken", refreshToken);
+            Token token = new Token(accessToken, refreshToken);
 
             br.close();
             bw.close();
 
-            return tokenMap;
+            return token;
         }catch (IOException e) {
             e.printStackTrace();
             throw new BaseException(KAKAO_GET_TOKEN_FAIL);
@@ -113,7 +154,7 @@ public class KakaoService {
     }
 
     // 사용자 정보 가져오기
-    private Map<String, String> getUserInfo(String accessToken){
+    private KaKaoUser getUserInfo(String accessToken){
         try{
             URL url = new URL(userInfoHost);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -145,35 +186,32 @@ public class KakaoService {
             JsonParser parser = new JsonParser();
             JsonElement element = parser.parse(result);
 
+            // 응답바디에서 사용자 정보 꺼내오기
             String id = element.getAsJsonObject().get("id").toString();
             String name = element.getAsJsonObject().getAsJsonObject("properties").get("nickname").toString();
-            name = name.replace("\"", "");
+            name = name.replace("\"", ""); // "홍길동" -> 홍길동
 
-            Map<String, String> userInfoMap = Collections.synchronizedMap(new HashMap());
-
-            userInfoMap.put("id", id);
-            userInfoMap.put("name", name);
-
-//            System.out.println("id = " + id);
-//            System.out.println("name = " + name);
+            KaKaoUser kaKaoUser = new KaKaoUser(id, name);
 
             br.close();
 
-            return userInfoMap;
+            return kaKaoUser;
         }catch (IOException e) {
             e.printStackTrace();
-            throw new BaseException(KAKAO_GET_TOKEN_FAIL);
+            throw new BaseException(KAKAO_GET_USER_INFO_FAIL);
         }
     }
 
     // user 조회
     private User getUser(String accessToken){
-        Map<String, String> userInfoMap = getUserInfo(accessToken);
 
-        User user = userRepository.findByUsername(userInfoMap.get("id"));
+        KaKaoUser kakaoUser = getUserInfo(accessToken);
 
+        User user = userRepository.findByUsername(kakaoUser.getId());
+
+        // 해당하는 사용자가 없으면 자동으로 회원가입 진행
         if(user == null){
-            user = join(userInfoMap.get("id"), userInfoMap.get("name"));
+            user = join(kakaoUser.getId(), kakaoUser.getName());
         }
 
         return user;
@@ -181,6 +219,7 @@ public class KakaoService {
 
     // 회원가입
     private User join(String username, String name){
+
         User user = new User(username, username, name);
         userRepository.save(user);
         return user;

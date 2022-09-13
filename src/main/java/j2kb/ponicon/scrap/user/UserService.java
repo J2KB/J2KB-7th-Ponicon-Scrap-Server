@@ -38,9 +38,9 @@ public class UserService {
     @Transactional
     public void join(PostJoinReq postJoinReq){
 
-        String username = postJoinReq.getUsername();
-        String pw = postJoinReq.getPassword();
-        String name = postJoinReq.getName();
+        String username = postJoinReq.getUsername(); // 아이디
+        String pw = postJoinReq.getPassword(); // 비번
+        String name = postJoinReq.getName(); // 이름
 
         // 아이디 중복 체크
         if(checkUsernameDuplicate(username)){
@@ -113,6 +113,8 @@ public class UserService {
 
     // 로그아웃
     public void logout(HttpServletResponse response){
+
+        // accessToken을 삭제
         Cookie accessCookie = new Cookie("accessToken", null);
         accessCookie.setMaxAge(0);
         accessCookie.setPath("/");
