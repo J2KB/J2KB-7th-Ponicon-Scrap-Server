@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
@@ -52,22 +54,22 @@ public class UserController {
     }
 
     @GetMapping("/login/kakao")
-    public String kakaoLogin(@RequestParam(name = "code") String code){
+    public BaseResponse<LoginRes> kakaoLogin(@RequestParam(name = "code") String code, HttpServletResponse response){
         System.out.println("code = " + code);
 
-        kakaoService.login(code);
-        return "카카오 로그인에 성공했습니다";
-    }
+        User user = kakaoService.login(code, response);
 
-//    @GetMapping("/test")
-//    public String test(){
-//
-//    }
+        return new BaseResponse<>(new LoginRes(user.getId()));
+    }
 
     @GetMapping("/logout")
-    public String logout(){
-        return "로그아웃에 성공했습니다";
+    public BaseResponse logout(HttpServletResponse response){
+
+        userService.logout(response);
+
+        return new BaseResponse("로그아웃에 성공했습니다");
     }
+
 
     /* 테스트용 api */
     @GetMapping("/test/error")
@@ -88,6 +90,15 @@ public class UserController {
     public String categorySave(){
         userService.testSave();
         return "카테고리 테스트 세이브";
+    }
+
+    @GetMapping("/test/cookie")
+    public void getCookies(HttpServletRequest request){
+        Cookie[] cookies = request.getCookies();
+
+        for(Cookie c : cookies) {
+            System.out.printf("%s: %s\n", c.getName(), c.getValue()); // 쿠키 이름과 값 가져오기
+        }
     }
     /* 테스트용 api 끝 */
 }

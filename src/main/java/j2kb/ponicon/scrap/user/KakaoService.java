@@ -2,11 +2,16 @@ package j2kb.ponicon.scrap.user;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import j2kb.ponicon.scrap.domain.User;
 import j2kb.ponicon.scrap.response.BaseException;
+import j2kb.ponicon.scrap.utils.CookieService;
+import j2kb.ponicon.scrap.utils.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -22,12 +27,15 @@ import static j2kb.ponicon.scrap.utils.JwtData.KAKAO_REST_API_KEY;
 @RequiredArgsConstructor
 public class KakaoService {
 
+    private final JwtService jwtService;
+    private final CookieService cookieService;
     private final UserRepository userRepository;
 
     private final String tokenHost = "https://kauth.kakao.com/oauth/token";
     private final String userInfoHost = "https://kapi.kakao.com/v2/user/me";
 
-    public void login(String code){
+    // 카카오 로그인
+    public User login(String code, HttpServletResponse response){
 
         Map<String, String> tokenMap = getTokens(code);
 
@@ -35,11 +43,18 @@ public class KakaoService {
             System.out.println("tokenMap.get(key) = " + tokenMap.get(key));
         }
 
-        getUser(tokenMap.get("accessToken"));
-        getUserInfo(tokenMap.get("accessToken"));
+        User user = getUser(tokenMap.get("accessToken"));
+//        getUserInfo(tokenMap.get("accessToken"));
 
+        String accessToken = jwtService.createAccessToken(user.getUsername());
+        String refreshToken = jwtService.createRefreshToken(user.getUsername());
+        Cookie accessCookie = cookieService.createAccessCookie(accessToken, true);
+        response.addCookie(accessCookie);
+
+        return user;
     }
 
+    // 카카오의 access토큰과 refresh토큰 받기
     private Map<String, String> getTokens(String code){
         try{
             URL url = new URL(tokenHost);
@@ -62,6 +77,7 @@ public class KakaoService {
             //결과 코드가 200이라면 성공
             int responseCode = conn.getResponseCode();
             System.out.println("responseCode : " + responseCode);
+            System.out.println(conn.getResponseMessage());
 
             // 200 아닐경우 예외처리 필요
 
@@ -96,6 +112,7 @@ public class KakaoService {
         }
     }
 
+    // 사용자 정보 가져오기
     private Map<String, String> getUserInfo(String accessToken){
         try{
             URL url = new URL(userInfoHost);
@@ -149,13 +166,23 @@ public class KakaoService {
         }
     }
 
-    public void getUser(String accessToken){
+    // user 조회
+    private User getUser(String accessToken){
         Map<String, String> userInfoMap = getUserInfo(accessToken);
 
+        User user = userRepository.findByUsername(userInfoMap.get("id"));
 
+        if(user == null){
+            user = join(userInfoMap.get("id"), userInfoMap.get("name"));
+        }
+
+        return user;
     }
 
-    private void join(){
-
+    // 회원가입
+    private User join(String username, String name){
+        User user = new User(username, username, name);
+        userRepository.save(user);
+        return user;
     }
 }
