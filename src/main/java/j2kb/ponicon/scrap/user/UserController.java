@@ -1,9 +1,11 @@
 package j2kb.ponicon.scrap.user;
 
+import j2kb.ponicon.scrap.domain.User;
 import j2kb.ponicon.scrap.response.BaseException;
 import j2kb.ponicon.scrap.response.BaseExceptionStatus;
 import j2kb.ponicon.scrap.response.BaseResponse;
 import j2kb.ponicon.scrap.user.dto.GetUsernameSameRes;
+import j2kb.ponicon.scrap.user.dto.LoginRes;
 import j2kb.ponicon.scrap.user.dto.PostJoinReq;
 import j2kb.ponicon.scrap.user.dto.PostLoginReq;
 import lombok.RequiredArgsConstructor;
@@ -42,11 +44,11 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public BaseResponse login(@RequestBody PostLoginReq postLoginReq, HttpServletResponse response){
+    public BaseResponse<LoginRes> login(@RequestBody PostLoginReq postLoginReq, HttpServletResponse response){
 
-        userService.login(postLoginReq, response);
+        User user = userService.login(postLoginReq, response);
 
-        return new BaseResponse("로그인에 성공했습니다");
+        return new BaseResponse<>(new LoginRes(user.getId()));
     }
 
     @GetMapping("/login/kakao")

@@ -82,7 +82,7 @@ public class UserService {
     }
 
     // 로그인
-    public void login(PostLoginReq postLoginReq, HttpServletResponse response){
+    public User login(PostLoginReq postLoginReq, HttpServletResponse response){
 
         String username = postLoginReq.getUsername();
         String pw = postLoginReq.getPassword();
@@ -106,11 +106,10 @@ public class UserService {
 
         response.addCookie(accessCookie);
         response.addCookie(refreshCookie);
+
+        return user;
     }
 
-    public void kakaoLogin(String code){
-
-    }
 
     /* 테스트 코드 */
     public void testSave(){

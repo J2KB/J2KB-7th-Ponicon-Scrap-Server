@@ -10,7 +10,8 @@ public enum BaseExceptionStatus {
 
     FAIL_ENCRYPT_PASSWORD(40000, "비밀번호 암호화에 실패했습니다"),
     DUPULICATE_USERNAME(4000, "아이디가 중복됩니다"),
-    LOGIN_USER_NOT_EXIST(33, "해당하는 아이디 또는 비밀번호가 없습니다")
+    LOGIN_USER_NOT_EXIST(33, "해당하는 아이디 또는 비밀번호가 없습니다"),
+    KAKAO_GET_TOKEN_FAIL(33, "예상치 못한 이유로 카카오 토큰 받기에 실패했습니다")
     ;
 
     private final int code;
