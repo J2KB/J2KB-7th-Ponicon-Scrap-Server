@@ -6,6 +6,8 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Entity
@@ -18,6 +20,7 @@ public class Link {
     private Long id;
 
     // 자료의 링크
+    @NotBlank
     @Column(length = 300, nullable = false)
     private String link;
 

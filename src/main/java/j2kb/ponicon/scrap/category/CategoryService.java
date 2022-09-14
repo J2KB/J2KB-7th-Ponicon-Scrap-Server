@@ -8,7 +8,6 @@ import j2kb.ponicon.scrap.domain.User;
 import j2kb.ponicon.scrap.response.BaseException;
 import j2kb.ponicon.scrap.user.UserRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +19,6 @@ import static j2kb.ponicon.scrap.response.BaseExceptionStatus.CATEGORY_NAME_NULL
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
@@ -33,14 +31,9 @@ public class CategoryService {
         User user = tempUser.get();
         
         String name = postCategoryReq.getName();
-        if(name.equals("")) {
-            throw new BaseException(CATEGORY_NAME_NULL);
-        }
 
         int order = user.getCategories().size();
-
         Category category = new Category(name, order, user);
-
         categoryRepository.save(category);
     }
 
@@ -52,5 +45,4 @@ public class CategoryService {
         GetCategoryListRes getCategoryListRes = GetCategoryListRes.builder().categories(list).build();
         return getCategoryListRes;
     }
-
 }

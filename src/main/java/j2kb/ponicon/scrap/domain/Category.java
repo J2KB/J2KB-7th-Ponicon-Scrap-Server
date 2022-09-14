@@ -24,8 +24,8 @@ public class Category {
     private Long id;
 
     // 카테고리 이름
-    @NotBlank(message = "카테고리를 입력해주세요")
-    @Size(min = 2, max = 60, message = "카테고리 이름을 2~60자 사이로 입력해주세요.")
+    @NotBlank
+    @Size(min = 2, max = 60)
     @Column(length = 60, nullable = false)
     private String name;
 

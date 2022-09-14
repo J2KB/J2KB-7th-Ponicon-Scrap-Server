@@ -11,7 +11,10 @@ public enum BaseExceptionStatus {
     FAIL_ENCRYPT_PASSWORD(40000, "비밀번호 암호화에 실패했습니다"),
     DUPULICATE_USERNAME(4000, "아이디가 중복됩니다"),
     LOGIN_USER_NOT_EXIST(33, "해당하는 아이디 또는 비밀번호가 없습니다"),
-    CATEGORY_NAME_NULL(4444, "카테고리 이름을 입력해주세요")
+    CATEGORY_NAME_NULL(4444, "카테고리 이름을 입력해주세요"),
+    CATEGORY_NAME_LENGTH(4444, "카테고리 이름이 2~60 글자 사이"),
+    DATA_NAME_NOT_EXIST(44444, "링크가 없습니다"),
+    DATA_NAME_INCORRECTION(44444, "링크가 잘못되었습니다.")
     ;
 
     private final int code;
