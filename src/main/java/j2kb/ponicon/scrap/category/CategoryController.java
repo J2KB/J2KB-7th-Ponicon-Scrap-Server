@@ -1,14 +1,11 @@
 package j2kb.ponicon.scrap.category;
 
-import j2kb.ponicon.scrap.category.dto.CategoryListRes;
 import j2kb.ponicon.scrap.category.dto.GetCategoryListRes;
 import j2kb.ponicon.scrap.category.dto.PostCategoryReq;
 import j2kb.ponicon.scrap.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,7 +17,7 @@ public class CategoryController {
 
     /**
      * 카테고리 등록 API
-     * [POST] /category
+     * [POST] /category?id=
      * @param postCategoryReq, userId
      */
     @PostMapping()
@@ -28,7 +25,11 @@ public class CategoryController {
         categoryService.categorySave(postCategoryReq, userId);
         return new BaseResponse("카테고리를 생성하였습니다.");
     }
-
+    /**
+     * 카테고리 조회 API
+     * [GET] /category/all?id=
+     * @param userId
+     */
     @GetMapping("/all")
     public BaseResponse<?> categoryListByUser(@RequestParam("id")Long userId) {
         GetCategoryListRes list = categoryService.categories(userId);
