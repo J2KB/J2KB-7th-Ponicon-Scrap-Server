@@ -5,7 +5,6 @@ import j2kb.ponicon.scrap.category.dto.GetCategoryListRes;
 import j2kb.ponicon.scrap.category.dto.PostCategoryReq;
 import j2kb.ponicon.scrap.domain.Category;
 import j2kb.ponicon.scrap.domain.User;
-import j2kb.ponicon.scrap.response.BaseException;
 import j2kb.ponicon.scrap.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -42,6 +41,7 @@ public class CategoryService {
 
     @Transactional(readOnly = true)
     public GetCategoryListRes categories(Long userId) {
+
         List<CategoryListRes> list = categoryRepository.findByUserId(userId).stream() // categoryRepository에서 넘어온 결과를
                 .map(Category::toDto)          // Stream을 통해 map으로 toDto에 매핑 해준다.
                 .collect(Collectors.toList()); // collect를 사용해서 List로 변환한다.
