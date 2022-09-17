@@ -1,6 +1,7 @@
 package j2kb.ponicon.scrap.response;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -63,5 +64,15 @@ public class ExceptionResponseAdvice {
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     public BaseResponse constraintViolationException(Exception e){
         return new BaseResponse(BaseExceptionStatus.CATEGORY_NAME_LENGTH);
+    }
+    /**
+     * MethodArgumentNotValidException 예외처리 핸들러
+     * @param e Exception
+     * @return BaseResponse - 카테고리 이름을 입력해주세요
+     */
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    public BaseResponse methodArgumentNotValidException(Exception e){
+        return new BaseResponse(BaseExceptionStatus.CATEGORY_NAME_NULL);
     }
 }

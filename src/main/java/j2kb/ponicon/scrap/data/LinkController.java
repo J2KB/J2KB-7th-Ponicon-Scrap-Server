@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @Slf4j
 @RequiredArgsConstructor
@@ -21,7 +23,7 @@ public class LinkController {
      * @param postUrlReq, userId, categoryId
      */
     @PostMapping()
-    public BaseResponse dataSave(@RequestBody PostUrlReq postUrlReq, @RequestParam("id") Long userId, @RequestParam("category") Long categoryId) throws Exception {
+    public BaseResponse dataSave(@RequestBody @Valid PostUrlReq postUrlReq, @RequestParam("id") Long userId, @RequestParam("category") Long categoryId) throws Exception {
         linkService.linkSave(postUrlReq, userId, categoryId);
         return new BaseResponse("링크를 생성하였습니다.");
     }

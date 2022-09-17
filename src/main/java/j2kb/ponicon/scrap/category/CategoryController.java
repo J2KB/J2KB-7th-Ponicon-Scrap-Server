@@ -6,6 +6,8 @@ import j2kb.ponicon.scrap.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -21,7 +23,7 @@ public class CategoryController {
      * @param postCategoryReq, userId
      */
     @PostMapping()
-    public BaseResponse categorySave(@RequestBody PostCategoryReq postCategoryReq, @RequestParam("id") Long userId) {
+    public BaseResponse categorySave(@RequestBody @Valid PostCategoryReq postCategoryReq, @RequestParam("id") Long userId) {
         categoryService.categorySave(postCategoryReq, userId);
         return new BaseResponse("카테고리를 생성하였습니다.");
     }
