@@ -39,6 +39,7 @@ public class ExceptionResponseAdvice {
      * MalformedURLException 예외처리 핸들러
      * @param e Exception
      * @return BaseResponse - 링크가 없습니다.
+     * @author 박현성
      */
     @ExceptionHandler(MalformedURLException.class)
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
@@ -49,6 +50,7 @@ public class ExceptionResponseAdvice {
      * UnknownHostException 예외처리 핸들러
      * @param e Exception
      * @return BaseResponse - 링크가 잘못되었습니다.
+     * @author 박현성
      */
     @ExceptionHandler(UnknownHostException.class)
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
@@ -59,6 +61,7 @@ public class ExceptionResponseAdvice {
      * UnknownHostException 예외처리 핸들러
      * @param e Exception
      * @return BaseResponse - 카테고리 이름이 2~60 글자 사이
+     * @author 박현성
      */
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
@@ -69,6 +72,7 @@ public class ExceptionResponseAdvice {
      * MethodArgumentNotValidException 예외처리 핸들러
      * @param e Exception
      * @return BaseResponse - 카테고리 이름을 입력해주세요
+     * @author 박현성
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)

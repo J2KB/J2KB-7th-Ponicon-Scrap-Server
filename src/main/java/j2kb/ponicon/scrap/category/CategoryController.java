@@ -19,8 +19,12 @@ public class CategoryController {
 
     /**
      * 카테고리 등록 API
+     * UserId를 RequestParam으로 받아서 categoryService.categorySave 후 카테고리를 생성하는 역할을 합니다.
+     * @valid 어노테이션으로 PostCategoryReq의 validation check를 진행합니다.
+     * @ exception : ConstraintViolationException, MethodArgumentNotValidException
      * [POST] /category?id=
      * @param postCategoryReq, userId
+     * @author 박현성
      */
     @PostMapping()
     public BaseResponse categorySave(@RequestBody @Valid PostCategoryReq postCategoryReq, @RequestParam("id") Long userId) {
@@ -29,8 +33,10 @@ public class CategoryController {
     }
     /**
      * 카테고리 조회 API
+     * UserId를 RequestParam으로 받아서 categoryService.categories 후 카테고리를 조회하는 역할을 합니다.
      * [GET] /category/all?id=
      * @param userId
+     * @author 박현성
      */
     @GetMapping("/all")
     public BaseResponse<?> categoryListByUser(@RequestParam("id")Long userId) {

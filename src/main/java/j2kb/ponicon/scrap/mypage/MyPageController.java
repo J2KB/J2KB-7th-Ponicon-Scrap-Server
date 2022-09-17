@@ -17,8 +17,10 @@ public class MyPageController {
     private final MyPageService myPageService;
     /**
      * 카테고리 조회 API
+     * UserId를 RequestParam으로 받아서 myPageService.userInfo 후 마이페이지를 조회하는 역할을 합니다.
      * [GET] /user/mypage?id=
      * @param userId
+     * @author 박현성
      */
     @GetMapping("/mypage")
     public BaseResponse<?> myPageByUser(@RequestParam("id") Long userId) {
