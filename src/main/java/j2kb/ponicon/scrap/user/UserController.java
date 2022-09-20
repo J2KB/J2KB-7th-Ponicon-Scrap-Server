@@ -14,6 +14,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static j2kb.ponicon.scrap.response.BaseExceptionStatus.*;
+
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
@@ -22,12 +24,26 @@ public class UserController {
     private final UserService userService;
     private final KakaoService kakaoService;
 
-    // 회원가입
-    // [POST] /user/join
+
+    /**
+     * 회원가입
+     * [POST] /user/join
+     * @param postJoinReq
+     * @return
+     */
     @PostMapping("/join")
     public BaseResponse join(@RequestBody PostJoinReq postJoinReq){
 
         // 요청한 값에 대한 validation 처리 필요
+        if(postJoinReq.getUsername() == null || postJoinReq.getUsername().isEmpty()){
+            return new BaseResponse(JOIN_USERNAME_EMPTY);
+        }
+        if(postJoinReq.getPassword() == null || postJoinReq.getPassword().isEmpty()){
+            return new BaseResponse(JOIN_PASSWORD_EMPTY);
+        }
+        if(postJoinReq.getName() == null || postJoinReq.getName().isEmpty()){
+            return new BaseResponse(JOIN_NAME_EMPTY);
+        }
 
         userService.join(postJoinReq);
 
