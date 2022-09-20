@@ -115,7 +115,7 @@ public class UserController {
     @GetMapping("/login/kakao")
     public BaseResponse<LoginRes> kakaoLogin(@RequestParam(name = "code", required = false) String code, @RequestParam(name = "error", required = false) String error, HttpServletResponse response){
 
-        if(error != null || !error.isEmpty()){
+        if(error != null){
             System.out.println("error = " + error);
 
             return new BaseResponse(KAKAO_LOGIN_FAIL);
