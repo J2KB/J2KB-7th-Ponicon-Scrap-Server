@@ -21,7 +21,7 @@ public class LinkController {
      * 링크 등록 API
      * UserId와 categoryId를 RequestParam으로 받아서 linkService.linkSave 후 링크를 생성하는 역할을 합니다.
      * @valid 어노테이션으로 PostUrlReq의 validation check를 진행합니다.
-     * @ exception : UnknownHostException, MalformedURLException
+     * @ exception : UnknownHostException, MalformedURLException, DataIntegrityViolationException
      * [POST] /data?id=&category=
      * @param postUrlReq, userId, categoryId
      * @author 박현성
@@ -34,13 +34,13 @@ public class LinkController {
     /**
      * 링크 조회 API
      * UserId와 categoryId를 RequestParam으로 받아서 linkService.links 후 링크를 조회하는 역할을 합니다.
-     * [GET] /category?id=&category=
+     * [GET] /category?id=&category=&seq
      * @param userId, categoryId
      * @author 박현성
      */
     @GetMapping()
-    public BaseResponse<?> dataListByUserAndCategory(@RequestParam("id") Long userId, @RequestParam("category") Long categoryId) {
-        GetDataListRes list = linkService.links(userId, categoryId);
+    public BaseResponse<?> dataListByUserAndCategory(@RequestParam("id") Long userId, @RequestParam("category") Long categoryId, @RequestParam("seq") String seq) {
+        GetDataListRes list = linkService.links(userId, categoryId, seq);
         return new BaseResponse<>(list);
     }
 }

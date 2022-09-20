@@ -1,5 +1,6 @@
 package j2kb.ponicon.scrap.response;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -36,23 +37,12 @@ public class ExceptionResponseAdvice {
     }
 
     /**
-     * MalformedURLException 예외처리 핸들러
-     * @param e Exception
-     * @return BaseResponse - 링크가 없습니다.
-     * @author 박현성
-     */
-    @ExceptionHandler(MalformedURLException.class)
-    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    public BaseResponse malformedURLException(Exception e){
-        return new BaseResponse(BaseExceptionStatus.DATA_NAME_NOT_EXIST);
-    }
-    /**
      * UnknownHostException 예외처리 핸들러
      * @param e Exception
      * @return BaseResponse - 링크가 잘못되었습니다.
      * @author 박현성
      */
-    @ExceptionHandler(UnknownHostException.class)
+    @ExceptionHandler({UnknownHostException.class, DataIntegrityViolationException.class, MalformedURLException.class})
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     public BaseResponse unknownHostException(Exception e){
         return new BaseResponse(BaseExceptionStatus.DATA_NAME_INCORRECTION);
