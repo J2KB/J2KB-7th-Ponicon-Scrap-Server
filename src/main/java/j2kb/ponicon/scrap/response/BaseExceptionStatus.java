@@ -20,7 +20,11 @@ public enum BaseExceptionStatus {
     LOGIN_AUTOLOGIN_EMPTY(33,"자동 로그인값이 체크되지 않았습니다"),
     JOIN_USERNAME_INVALID(33, "아이디 형식이 일치하지 않습니다"),
     JOIN_PASSWORD_INVALID(33,"비밀번호 형식이 일치하지 않습니다"),
-    JOIN_NAME_INVALID(33,"이름의 형식이 일치하지 않습니다")
+    JOIN_NAME_INVALID(33,"이름의 형식이 일치하지 않습니다"),
+    CATEGORY_NAME_NULL(4444, "카테고리 이름을 입력해주세요"),
+    CATEGORY_NAME_LENGTH(4444, "카테고리 이름이 2~60 글자 사이"),
+    DATA_NAME_INCORRECTION(44444, "링크가 잘못되었습니다."),
+    MYPAGE_USER_NOT_FOUND(44444, "해당 사용자를 찾을 수 없습니다.")
     ;
 
     private final int code;
