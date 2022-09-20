@@ -1,10 +1,8 @@
 package j2kb.ponicon.scrap.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import j2kb.ponicon.scrap.data.dto.DataListRes;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -67,5 +65,13 @@ public class Link {
         this.user = user;
         user.getLinks().add(this);
     }
-
+    /* Entity를 Dto로 변환하는 메소드 */
+    public DataListRes toDto(){
+        return DataListRes.builder()
+                .linkId(id)
+                .link(link)
+                .title(title)
+                .imgUrl(imgUrl)
+                .build();
+    }
 }
