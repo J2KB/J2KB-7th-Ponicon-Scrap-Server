@@ -33,6 +33,7 @@ public class ExceptionResponseAdvice {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     public BaseResponse handlerException(Exception e){
+        e.printStackTrace();
         return new BaseResponse(BaseExceptionStatus.SERVER_INTENER_ERROR);
     }
 

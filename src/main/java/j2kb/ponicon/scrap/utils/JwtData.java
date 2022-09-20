@@ -4,7 +4,9 @@ import java.time.Duration;
 
 public class JwtData {
 
-    public static String JWT_SECRET_KEY = "tempSecretKeyItMustBeChange";
+    public static String JWT_SECRET_KEY = "tempSecretKeyItMustBeChanged";
+    public static final String KAKAO_REST_API_KEY = "3fa8dfba8527a268e4a41f26278b4d8d";
+
     // 밀리초 = 1/1000, 30분 = 1800초
     // Duration.ofMinutes(30).toMillis() = 1,800,000 = 30분을 밀리초로 환산한 것
     public static long ACCESS_TOKEN_EXPIRE_MILLIS = Duration.ofMinutes(30).toMillis();

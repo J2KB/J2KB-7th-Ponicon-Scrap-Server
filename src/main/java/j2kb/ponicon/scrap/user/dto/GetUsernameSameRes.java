@@ -1,5 +1,7 @@
 package j2kb.ponicon.scrap.user.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,5 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class GetUsernameSameRes {
 
-    private boolean isDuplication; // true = 중복, false = 중복x
+    @JsonProperty("isDuplicate")
+    private boolean duplicate; // true = 중복, false = 중복x
+
 }
