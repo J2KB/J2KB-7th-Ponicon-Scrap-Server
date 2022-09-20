@@ -13,5 +13,5 @@ public class PostLoginReq {
 
     private String username; // 아이디
     private String password; // 비번
-    private boolean autoLogin; // 자동 로그인 여부
+    private Boolean autoLogin; // 자동 로그인 여부
 }

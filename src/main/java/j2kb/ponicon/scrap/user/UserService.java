@@ -1,6 +1,7 @@
 package j2kb.ponicon.scrap.user;
 
 import j2kb.ponicon.scrap.category.CategoryRepository;
+import j2kb.ponicon.scrap.category.CategoryService;
 import j2kb.ponicon.scrap.domain.Category;
 import j2kb.ponicon.scrap.domain.User;
 import j2kb.ponicon.scrap.response.BaseException;
@@ -33,8 +34,12 @@ public class UserService {
     private final CategoryRepository categoryRepository;
     private final JwtService jwtService;
     private final CookieService cookieService;
+    private final CategoryService categoryService;
 
-    // 회원가입
+    /**
+     * 회원가입
+     * @param postJoinReq 유저에 대한 정보
+     */
     @Transactional
     public void join(PostJoinReq postJoinReq){
 
@@ -54,24 +59,17 @@ public class UserService {
         User user = new User(username, pw, name);
 
         // 기본 카테고리 생성
-        saveBasicCategory(user);
+        categoryService.saveBasicCategory(user);
 
         // 유저 저장
         userRepository.save(user);
     }
 
-    // 기본 카테고리 저장
-    @Transactional
-    private void saveBasicCategory(User user){
-        List<String> categoryNames = new ArrayList<>(List.of("분류되지 않은 자료"));
-
-        for(int i=0; i<categoryNames.size(); i++){
-            new Category(categoryNames.get(i), i, user);
-            //따로 카테고리 저장 안하더라도 Cascade 설정 해둬서 자동으로 insert 됨.
-        }
-    }
-
-    // 아이디 중복 체크
+    /**
+     * 아이디 중복 확인
+     * @param username 아이디
+     * @return 중복이면 true를 리턴.
+     */
     public boolean checkUsernameDuplicate(String username){
         User user = userRepository.findByUsername(username);
 
@@ -82,17 +80,23 @@ public class UserService {
         }
     }
 
-    // 로그인
+    /**
+     * 일반 로그인
+     * @param postLoginReq 아이디 비밀번호가 담긴 dto
+     * @param response
+     * @return User
+     */
     public User login(PostLoginReq postLoginReq, HttpServletResponse response){
 
         String username = postLoginReq.getUsername();
         String pw = postLoginReq.getPassword();
-        boolean isAutoLogin = postLoginReq.isAutoLogin();
+        boolean isAutoLogin = postLoginReq.getAutoLogin();
 
         // 유저 확인
         pw = SHA256.encrypt(pw); // 비번 암호화
         User user = userRepository.findByUsernameAndPassword(username, pw);
 
+        // 해당하는 유저가 없음.
         if(user == null){
             throw new BaseException(LOGIN_USER_NOT_EXIST);
         }
@@ -111,7 +115,10 @@ public class UserService {
         return user;
     }
 
-    // 로그아웃
+    /**
+     * 로그아웃
+     * @param response
+     */
     public void logout(HttpServletResponse response){
 
         // accessToken을 삭제

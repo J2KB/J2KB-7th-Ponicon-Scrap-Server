@@ -3,64 +3,62 @@ package j2kb.ponicon.scrap.utils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class ReqularExpressionTest {
+class RegexServiceTest {
 
     @Test
     @DisplayName("정규표현식 이름")
     public void test1(){
-        boolean result = ReqularExpression.checkName("aaaaaaaa");
+        boolean result = RegexService.checkName("aaaaaaaa");
         System.out.println("result = " + result);
 
-        result = ReqularExpression.checkName("aaa");
+        result = RegexService.checkName("aaa");
         System.out.println("result = " + result);
 
-        result = ReqularExpression.checkName("aaa가");
+        result = RegexService.checkName("aaa가");
         System.out.println("result = " + result);
 
-        result = ReqularExpression.checkName("aaa!");
+        result = RegexService.checkName("aaa!");
         System.out.println("result = " + result);
 
-        result = ReqularExpression.checkName("가가가");
+        result = RegexService.checkName("가가가");
         System.out.println("result = " + result);
 
-        result = ReqularExpression.checkName("aaaA가");
+        result = RegexService.checkName("aaaA가");
         System.out.println("result = " + result);
     }
 
     @Test
     @DisplayName("정규표현식 아이디")
     public void test2(){
-        boolean result = ReqularExpression.checkUsername("aaaaaaa");
+        boolean result = RegexService.checkUsername("aaaaaaa");
         System.out.println("result = " + result);
 
-        result = ReqularExpression.checkUsername("1111111");
+        result = RegexService.checkUsername("1111111");
         System.out.println("result = " + result);
 
-        result = ReqularExpression.checkUsername("aaa111");
+        result = RegexService.checkUsername("aaa111");
         System.out.println("result = " + result);
 
-        result = ReqularExpression.checkUsername("111aaa");
+        result = RegexService.checkUsername("111aaa");
         System.out.println("result = " + result);
     }
 
     @Test
     @DisplayName("정규표현식 비번")
     public void test3(){
-        boolean result = ReqularExpression.checkPw("aaaaaa");
+        boolean result = RegexService.checkPw("aaaaaa");
         System.out.println("result = " + result);
 
-        result = ReqularExpression.checkPw("1111111");
+        result = RegexService.checkPw("1111111");
         System.out.println("result = " + result);
 
-        result = ReqularExpression.checkPw("aaa111");
+        result = RegexService.checkPw("aaa111");
         System.out.println("result = " + result);
 
-        result = ReqularExpression.checkPw("111aaa");
+        result = RegexService.checkPw("111aaa");
         System.out.println("result = " + result);
 
-        result = ReqularExpression.checkPw("aa11@@%#");
+        result = RegexService.checkPw("aa11@@%#");
         System.out.println("result = " + result);
     }
 

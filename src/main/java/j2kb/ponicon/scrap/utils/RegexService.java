@@ -2,7 +2,7 @@ package j2kb.ponicon.scrap.utils;
 
 import java.util.regex.Pattern;
 
-public class ReqularExpression {
+public class RegexService {
 
     public static boolean checkName(String name){
 
