@@ -13,9 +13,10 @@ public class CategoryListRes {
     private int order;
 
     @Builder
-    public CategoryListRes(Long categoryId, String name, int order) {
+    public CategoryListRes(Long categoryId, String name, int numOfLink, int order) {
         this.categoryId = categoryId;
         this.name = name;
+        this.numOfLink = numOfLink;
         this.order = order;
     }
 }

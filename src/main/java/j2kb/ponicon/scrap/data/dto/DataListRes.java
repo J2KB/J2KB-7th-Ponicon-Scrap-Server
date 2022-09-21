@@ -9,7 +9,7 @@ public class DataListRes {
     private Long linkId;
     private String link;
     private String title;
-    //private String domain; 보류
+    private String domain;
     private String imgUrl;
 
     @Builder
@@ -17,7 +17,7 @@ public class DataListRes {
         this.linkId = linkId;
         this.link = link;
         this.title = title;
-        //this.domain = domain;
+        this.domain = domain;
         this.imgUrl = imgUrl;
     }
 }

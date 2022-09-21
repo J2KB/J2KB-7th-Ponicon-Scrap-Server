@@ -29,6 +29,9 @@ public class Link {
     @Column(length = 300)
     private String imgUrl;
 
+    // 자료의 도메인
+    @Column(length = 30)
+    private String domain;
     // 즐겨찾기
     private boolean star = false;
 
@@ -48,10 +51,11 @@ public class Link {
     private Category category;
 
     // 생성 메소드
-    public Link(String link, String title, String imgUrl, Category category, User user){
+    public Link(String link, String title, String imgUrl, Category category, User user, String domain){
         this.link = link;
         this.title = title;
         this.imgUrl = imgUrl;
+        this.domain = domain;
         this.setCategory(category);
         this.setUser(user);
     }
@@ -71,6 +75,7 @@ public class Link {
                 .linkId(id)
                 .link(link)
                 .title(title)
+                .domain(domain)
                 .imgUrl(imgUrl)
                 .build();
     }

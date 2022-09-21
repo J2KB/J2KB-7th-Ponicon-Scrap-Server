@@ -9,4 +9,7 @@ import java.util.List;
 public interface LinkRepository extends JpaRepository<Link, Long> {
     // UserId와 CategoryId로 해당 링크 조회
     public List<Link> findByUserIdAndCategoryId(Long userId, Long categoryId, Sort createdAt);
+
+    public int countByCategoryId(Long categoryId);
+
 }
