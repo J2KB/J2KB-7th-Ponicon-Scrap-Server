@@ -1,8 +1,9 @@
 package j2kb.ponicon.scrap.category;
 
 import j2kb.ponicon.scrap.category.dto.CategoryListRes;
+import j2kb.ponicon.scrap.category.dto.PostCategorySaveRes;
 import j2kb.ponicon.scrap.category.dto.GetCategoryListRes;
-import j2kb.ponicon.scrap.category.dto.PostCategoryReq;
+import j2kb.ponicon.scrap.category.dto.PostCategorySaveReq;
 import j2kb.ponicon.scrap.domain.Category;
 import j2kb.ponicon.scrap.domain.User;
 import j2kb.ponicon.scrap.user.UserRepository;
@@ -25,7 +26,7 @@ public class CategoryService {
     private final UserRepository userRepository;
 
     @Transactional
-    public void categorySave(PostCategoryReq postCategoryReq, Long userId) {
+    public PostCategorySaveRes categorySave(PostCategorySaveReq postCategoryReq, Long userId) {
         // userRepository에서 userId로 조회 후 user에 UserName을 가져온다.
         Optional<User> tempUser = userRepository.findById(userId);
         User user = tempUser.get();
@@ -38,11 +39,14 @@ public class CategoryService {
 
         Category category = new Category(name, order, user);
         categoryRepository.save(category);
+
+        PostCategorySaveRes getCategoryCreateRes = PostCategorySaveRes.builder().categoryId(category.getId()).build();
+
+        return getCategoryCreateRes;
     }
 
     @Transactional(readOnly = true)
     public GetCategoryListRes categories(Long userId) {
-
         List<CategoryListRes> list = categoryRepository.findByUserId(userId).stream() // categoryRepository에서 넘어온 결과를
                 .map(Category::toDto)          // Stream을 통해 map으로 toDto에 매핑 해준다.
                 .collect(Collectors.toList()); // collect를 사용해서 List로 변환한다.

@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostCategoryReq {
+public class PostCategorySaveReq {
 
     @NotBlank
     @Size(min = 2, max = 60)

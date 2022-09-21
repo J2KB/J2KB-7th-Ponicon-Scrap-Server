@@ -1,10 +1,7 @@
 package j2kb.ponicon.scrap.data;
 
 import j2kb.ponicon.scrap.category.CategoryRepository;
-import j2kb.ponicon.scrap.data.dto.DataListRes;
-import j2kb.ponicon.scrap.data.dto.GetDataListRes;
-import j2kb.ponicon.scrap.data.dto.PostDataSaveReq;
-import j2kb.ponicon.scrap.data.dto.PostUrlReq;
+import j2kb.ponicon.scrap.data.dto.*;
 import j2kb.ponicon.scrap.data.lib.OpenGraph;
 import j2kb.ponicon.scrap.domain.Category;
 import j2kb.ponicon.scrap.domain.Link;
@@ -32,7 +29,7 @@ public class LinkService {
     private final CategoryRepository categoryRepository;
 
     @Transactional
-    public void linkSave(PostUrlReq postUrlReq, Long userId, Long categoryId) throws Exception {
+    public PostDataSaveRes linkSave(PostUrlReq postUrlReq, Long userId, Long categoryId) throws Exception {
         // URL을 postUrlReq 가져온다.
         String baseURL = postUrlReq.getBaseURL();
 
@@ -49,8 +46,10 @@ public class LinkService {
         String title = postDataSaveReq.getTitle();
         String imgUrl = postDataSaveReq.getImgUrl();
 
-        Link links = new Link(link, title, imgUrl, category, user);
-        linkRepository.save(links);
+        Link linkSave = new Link(link, title, imgUrl, category, user);
+        linkRepository.save(linkSave);
+        PostDataSaveRes postDataSaveRes = PostDataSaveRes.builder().linkId(linkSave.getId()).build();
+        return postDataSaveRes;
     }
 
     @Transactional(readOnly = true)

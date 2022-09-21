@@ -1,7 +1,8 @@
 package j2kb.ponicon.scrap.category;
 
+import j2kb.ponicon.scrap.category.dto.PostCategorySaveRes;
 import j2kb.ponicon.scrap.category.dto.GetCategoryListRes;
-import j2kb.ponicon.scrap.category.dto.PostCategoryReq;
+import j2kb.ponicon.scrap.category.dto.PostCategorySaveReq;
 import j2kb.ponicon.scrap.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -27,9 +28,9 @@ public class CategoryController {
      * @author 박현성
      */
     @PostMapping()
-    public BaseResponse categorySave(@RequestBody @Valid PostCategoryReq postCategoryReq, @RequestParam("id") Long userId) {
-        categoryService.categorySave(postCategoryReq, userId);
-        return new BaseResponse("카테고리를 생성하였습니다.");
+    public BaseResponse<PostCategorySaveRes> categorySave(@RequestBody @Valid PostCategorySaveReq postCategoryReq, @RequestParam("id") Long userId) {
+        PostCategorySaveRes postCategorySaveRes = categoryService.categorySave(postCategoryReq, userId);
+        return new BaseResponse<>(postCategorySaveRes);
     }
     /**
      * 카테고리 조회 API
@@ -39,7 +40,7 @@ public class CategoryController {
      * @author 박현성
      */
     @GetMapping("/all")
-    public BaseResponse<?> categoryListByUser(@RequestParam("id")Long userId) {
+    public BaseResponse<GetCategoryListRes> categoryListByUser(@RequestParam("id")Long userId) {
         GetCategoryListRes list = categoryService.categories(userId);
         return new BaseResponse<>(list);
     }
