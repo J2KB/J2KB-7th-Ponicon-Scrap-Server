@@ -66,7 +66,6 @@ public class CategoryService {
 
         // list를 builder 패턴으로 객체 생성
         GetCategoryListRes getCategoryListRes = GetCategoryListRes.builder().categories(list).build();
-
         return getCategoryListRes;
     }
 
