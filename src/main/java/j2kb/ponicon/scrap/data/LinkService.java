@@ -1,10 +1,7 @@
 package j2kb.ponicon.scrap.data;
 
 import j2kb.ponicon.scrap.category.CategoryRepository;
-import j2kb.ponicon.scrap.data.dto.DataListRes;
-import j2kb.ponicon.scrap.data.dto.GetDataListRes;
-import j2kb.ponicon.scrap.data.dto.PostDataSaveReq;
-import j2kb.ponicon.scrap.data.dto.PostUrlReq;
+import j2kb.ponicon.scrap.data.dto.*;
 import j2kb.ponicon.scrap.data.lib.OpenGraph;
 import j2kb.ponicon.scrap.domain.Category;
 import j2kb.ponicon.scrap.domain.Link;
@@ -16,6 +13,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -32,7 +31,7 @@ public class LinkService {
     private final CategoryRepository categoryRepository;
 
     @Transactional
-    public void linkSave(PostUrlReq postUrlReq, Long userId, Long categoryId) throws Exception {
+    public PostDataSaveRes linkSave(PostUrlReq postUrlReq, Long userId, Long categoryId) throws Exception {
         // URL을 postUrlReq 가져온다.
         String baseURL = postUrlReq.getBaseURL();
 
@@ -48,11 +47,32 @@ public class LinkService {
         String link = postDataSaveReq.getLink();
         String title = postDataSaveReq.getTitle();
         String imgUrl = postDataSaveReq.getImgUrl();
-
-        Link links = new Link(link, title, imgUrl, category, user);
-        linkRepository.save(links);
+        String domain = SearchDomain(link);
+        Link linkSave = new Link(link, title, imgUrl, category, user, domain);
+        linkRepository.save(linkSave);
+        PostDataSaveRes postDataSaveRes = PostDataSaveRes.builder().linkId(linkSave.getId()).build();
+        return postDataSaveRes;
     }
 
+    private String SearchDomain(String url) throws MalformedURLException {
+        if(url.contains("tistory")) {
+            return "tistory.com";
+        }
+        else {
+            if(!url.startsWith("http") && !url.startsWith("https")){
+                url = "http://" + url;
+            }
+            URL netUrl = new URL(url);
+            String host = netUrl.getHost();
+            if(host.startsWith("www")){
+                host = host.substring("www".length()+1);
+                return host;
+            }
+            else {
+                return host;
+            }
+        }
+    }
     @Transactional(readOnly = true)
     public GetDataListRes links(Long userId, Long categoryId, String seq) {
         if(seq.equals("desc")) {
@@ -81,7 +101,12 @@ public class LinkService {
         postDataSaveReq = new PostDataSaveReq();
         postDataSaveReq.setTitle(getContent(page, "title"));
         postDataSaveReq.setImgUrl(getContent(page, "image"));
-        postDataSaveReq.setLink(getContent(page, "url"));
+        if(getContent(page, "url") == null) {
+            postDataSaveReq.setLink(baseURL);
+        }
+        else {
+            postDataSaveReq.setLink(getContent(page, "url"));
+        }
         log.info(String.valueOf(postDataSaveReq));
 
         return postDataSaveReq;
