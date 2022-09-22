@@ -12,6 +12,7 @@ import j2kb.ponicon.scrap.utils.CookieService;
 import j2kb.ponicon.scrap.utils.JwtService;
 import j2kb.ponicon.scrap.utils.SHA256;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +36,7 @@ public class UserService {
     private final JwtService jwtService;
     private final CookieService cookieService;
     private final CategoryService categoryService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     /**
      * 회원가입
@@ -53,7 +55,8 @@ public class UserService {
         }
 
         // 비번 암호화
-        pw = SHA256.encrypt(pw);
+        //pw = SHA256.encrypt(pw);
+        pw = bCryptPasswordEncoder.encode(pw);
 
         // 유저 생성
         User user = new User(username, pw, name);
@@ -93,7 +96,8 @@ public class UserService {
         boolean isAutoLogin = postLoginReq.getAutoLogin();
 
         // 유저 확인
-        pw = SHA256.encrypt(pw); // 비번 암호화
+        //pw = SHA256.encrypt(pw); // 비번 암호화
+        pw = bCryptPasswordEncoder.encode(pw);
         User user = userRepository.findByUsernameAndPassword(username, pw);
 
         // 해당하는 유저가 없음.
