@@ -126,6 +126,12 @@ public class UserService {
         accessCookie.setMaxAge(0);
         accessCookie.setPath("/");
         response.addCookie(accessCookie);
+
+        // refreshToken 삭제
+        Cookie refreshCookie = new Cookie("refreshToken", null);
+        refreshCookie.setMaxAge(0);
+        refreshCookie.setPath("/");
+        response.addCookie(refreshCookie);
     }
 
 
