@@ -41,11 +41,11 @@ public class CategoryService {
         int order = user.getCategories().size();
 
         Category category = new Category(name, order, user);
-        categoryRepository.save(category);
+        Category saveCategory = categoryRepository.save(category);
 
-        PostCategorySaveRes getCategoryCreateRes = PostCategorySaveRes.builder().categoryId(category.getId()).build();
+        PostCategorySaveRes postCategorySaveRes = PostCategorySaveRes.builder().categoryId(saveCategory.getId()).build();
 
-        return getCategoryCreateRes;
+        return postCategorySaveRes;
     }
 
     @Transactional(readOnly = true)

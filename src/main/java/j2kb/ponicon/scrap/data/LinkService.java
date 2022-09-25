@@ -49,8 +49,8 @@ public class LinkService {
         String imgUrl = postDataSaveReq.getImgUrl();
         String domain = SearchDomain(link);
         Link linkSave = new Link(link, title, imgUrl, category, user, domain);
-        linkRepository.save(linkSave);
-        PostDataSaveRes postDataSaveRes = PostDataSaveRes.builder().linkId(linkSave.getId()).build();
+        Link saveLink = linkRepository.save(linkSave);
+        PostDataSaveRes postDataSaveRes = PostDataSaveRes.builder().linkId(saveLink.getId()).build();
         return postDataSaveRes;
     }
 
