@@ -6,11 +6,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/test")
 public class TestController {
 
-    @GetMapping("")
+    @GetMapping("/test")
     public String test(){
         return "merge test pull request test hs pull request test 스크랩 테스트 성공";
+    }
+
+    @GetMapping("/auth")
+    public String authTest(){
+        return "인증 필터 테스트";
     }
 }
