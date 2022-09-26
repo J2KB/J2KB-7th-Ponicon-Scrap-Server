@@ -1,10 +1,6 @@
 package j2kb.ponicon.scrap.data;
 
 import j2kb.ponicon.scrap.category.CategoryRepository;
-import j2kb.ponicon.scrap.category.CategoryService;
-import j2kb.ponicon.scrap.category.dto.PostCategorySaveReq;
-import j2kb.ponicon.scrap.category.dto.PostCategorySaveRes;
-import j2kb.ponicon.scrap.data.dto.PostDataSaveReq;
 import j2kb.ponicon.scrap.data.dto.PostDataSaveRes;
 import j2kb.ponicon.scrap.data.dto.PostUrlReq;
 import j2kb.ponicon.scrap.domain.Category;
@@ -22,7 +18,6 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
