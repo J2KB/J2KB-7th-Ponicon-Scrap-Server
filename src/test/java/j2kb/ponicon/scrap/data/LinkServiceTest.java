@@ -11,6 +11,7 @@ import j2kb.ponicon.scrap.domain.Category;
 import j2kb.ponicon.scrap.domain.Link;
 import j2kb.ponicon.scrap.domain.User;
 import j2kb.ponicon.scrap.user.UserRepository;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -41,6 +42,7 @@ class LinkServiceTest {
     private UserRepository userRepository;
 
     @Test
+    @DisplayName("linkSave기능이 제대로 동작하는지 확인")
     void linkSave() throws Exception {
 
         //given
@@ -58,7 +60,7 @@ class LinkServiceTest {
         ReflectionTestUtils.setField(category, "id", fakeCategoryId);
 
         Link link = new Link(postUrlReq.getBaseURL(), "네이버", "www.naver.com", category, user, "naver.com");
-        Long fakeLinkId = 1L;
+        Long fakeLinkId = 1L;         // Id 생성 전략을 Identity를 사용하므로, 실제 DBd에 저장되야만 Id가 생성된다. 따라서 테스트에서 Id를 검증할 수 없다.
         ReflectionTestUtils.setField(link, "id", fakeLinkId);
 
         //stub(가설)
@@ -75,5 +77,6 @@ class LinkServiceTest {
 
     @Test
     void links() {
+
     }
 }
