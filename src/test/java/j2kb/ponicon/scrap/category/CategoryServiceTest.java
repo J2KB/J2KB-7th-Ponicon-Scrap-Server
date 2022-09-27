@@ -13,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
@@ -77,11 +78,14 @@ class CategoryServiceTest {
         ReflectionTestUtils.setField(user, "id", fakeUserId);
 
         List<Category> categories = new ArrayList<>();
-        categories.add(new Category("Junit 강의", 1, user));
-        categories.add(new Category("lusida", 2, user));
+//        int order = user.getCategories().size();
+//        System.out.println("order = " + order);
+        categories.add(new Category("Junit 강의", 2, user));
+        categories.add(new Category("lusida", 1, user));
+        Sort sort = Sort.by("order").ascending();
 
         //stub
-        when(categoryRepository.findByUserId(fakeUserId)).thenReturn(categories);
+        when(categoryRepository.findByUserId(fakeUserId, sort.ascending())).thenReturn(categories);
 
         //when
         GetCategoryListRes getCategoryListRes = categoryService.categories(fakeUserId);
@@ -89,5 +93,6 @@ class CategoryServiceTest {
         //then
         assertThat(getCategoryListRes.getCategories().get(0).getName()).isEqualTo("Junit 강의");
         assertThat(getCategoryListRes.getCategories().get(1).getName()).isEqualTo("lusida");
+        // sort를 진행하여도 test가 통과하는 이유는 sort를 진행해도 index 값이 바뀌지 않아서 통과하는 것 같다...?
     }
 }

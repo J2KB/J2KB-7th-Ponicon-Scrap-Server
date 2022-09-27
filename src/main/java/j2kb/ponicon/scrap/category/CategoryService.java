@@ -9,6 +9,7 @@ import j2kb.ponicon.scrap.domain.Category;
 import j2kb.ponicon.scrap.domain.User;
 import j2kb.ponicon.scrap.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,7 +52,7 @@ public class CategoryService {
     @Transactional(readOnly = true)
     public GetCategoryListRes categories(Long userId) {
         //System.out.println("no = " + no);
-        List<CategoryListRes> list = categoryRepository.findByUserId(userId).stream() // categoryRepository에서 넘어온 결과를
+        List<CategoryListRes> list = categoryRepository.findByUserId(userId, Sort.by(Sort.Direction.ASC, "order")).stream() // categoryRepository에서 넘어온 결과를
                 .map(Category::toDto)          // Stream을 통해 map으로 toDto에 매핑 해준다.
                 .collect(Collectors.toList()); // collect를 사용해서 List로 변환한다.
 
