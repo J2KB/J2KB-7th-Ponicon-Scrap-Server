@@ -9,6 +9,7 @@ import j2kb.ponicon.scrap.user.dto.PostJoinReq;
 import j2kb.ponicon.scrap.user.dto.PostLoginReq;
 import j2kb.ponicon.scrap.utils.RegexService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
@@ -87,17 +88,17 @@ public class UserController {
      * @return
      */
     @PostMapping("/login")
-    public BaseResponse<LoginRes> login(@RequestBody PostLoginReq postLoginReq, HttpServletResponse response){
+    public BaseResponse<LoginRes> login(@Validated @RequestBody PostLoginReq postLoginReq, HttpServletResponse response){
 
-        if(postLoginReq.getUsername() == null || postLoginReq.getUsername().isEmpty()){
-            return new BaseResponse(JOIN_USERNAME_EMPTY);
-        }
-        if(postLoginReq.getPassword() == null || postLoginReq.getPassword().isEmpty()){
-            return new BaseResponse(JOIN_PASSWORD_EMPTY);
-        }
-        if(postLoginReq.getAutoLogin() == null){
-            return new BaseResponse(LOGIN_AUTOLOGIN_EMPTY);
-        }
+//        if(postLoginReq.getUsername() == null || postLoginReq.getUsername().isEmpty()){
+//            return new BaseResponse(JOIN_USERNAME_EMPTY);
+//        }
+//        if(postLoginReq.getPassword() == null || postLoginReq.getPassword().isEmpty()){
+//            return new BaseResponse(JOIN_PASSWORD_EMPTY);
+//        }
+//        if(postLoginReq.getAutoLogin() == null){
+//            return new BaseResponse(LOGIN_AUTOLOGIN_EMPTY);
+//        }
         // isAutoLogin null값 확인 필요
 
         User user = userService.login(postLoginReq, response);
