@@ -24,7 +24,11 @@ public enum BaseExceptionStatus {
     CATEGORY_NAME_NULL(4444, "카테고리 이름을 입력해주세요"),
     CATEGORY_NAME_LENGTH(4444, "카테고리 이름이 2~60 글자 사이"),
     DATA_NAME_INCORRECTION(44444, "링크가 잘못되었습니다."),
-    MYPAGE_USER_NOT_FOUND(44444, "해당 사용자를 찾을 수 없습니다.")
+    MYPAGE_USER_NOT_FOUND(44444, "해당 사용자를 찾을 수 없습니다."),
+    ACCESS_COOKIE_EMPTY(33, "어세스 쿠키가 없습니다"),
+    JWT_TOKEN_EXPIRE(33, "JWT 토큰 만료"),
+    JWT_TOKEN_INVALID(33,"잘못된 JWT 토큰"),
+    UNAUTHORIZED_USER_ACCESS(33, "인증되지 않은 유저의 접근입니다")
     ;
 
     private final int code;
