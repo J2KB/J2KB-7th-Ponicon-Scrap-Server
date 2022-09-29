@@ -44,4 +44,16 @@ public class LinkController {
         GetDataListRes list = linkService.links(userId, categoryId, seq);
         return new BaseResponse<>(list);
     }
+    /**
+     * 링크 전체 조회 API
+     * UserId와 categoryId를 RequestParam으로 받아서 linkService.links 후 링크를 조회하는 역할을 합니다.
+     * [GET] /category?id=&category=&seq
+     * @param userId, categoryId
+     * @author 박현성
+     */
+    @GetMapping("/all")
+    public BaseResponse<?> dataListAllByUser(@RequestParam("id") Long userId) {
+        GetDataListRes list = linkService.allLinks(userId);
+        return new BaseResponse<>(list);
+    }
 }
