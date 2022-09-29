@@ -34,29 +34,29 @@ public class UserController {
      * @return
      */
     @PostMapping("/join")
-    public BaseResponse join(@RequestBody PostJoinReq postJoinReq){
+    public BaseResponse join(@Validated @RequestBody PostJoinReq postJoinReq){
 
         // 요청한 값에 대한 validation 처리 필요
-        if(postJoinReq.getUsername() == null || postJoinReq.getUsername().isEmpty()){
-            return new BaseResponse(JOIN_USERNAME_EMPTY);
-        }
-        if(postJoinReq.getPassword() == null || postJoinReq.getPassword().isEmpty()){
-            return new BaseResponse(JOIN_PASSWORD_EMPTY);
-        }
-        if(postJoinReq.getName() == null || postJoinReq.getName().isEmpty()){
-            return new BaseResponse(JOIN_NAME_EMPTY);
-        }
+//        if(postJoinReq.getUsername() == null || postJoinReq.getUsername().isEmpty()){
+//            return new BaseResponse(JOIN_USERNAME_EMPTY);
+//        }
+//        if(postJoinReq.getPassword() == null || postJoinReq.getPassword().isEmpty()){
+//            return new BaseResponse(JOIN_PASSWORD_EMPTY);
+//        }
+//        if(postJoinReq.getName() == null || postJoinReq.getName().isEmpty()){
+//            return new BaseResponse(JOIN_NAME_EMPTY);
+//        }
 
         // 형식 확인
-        if(!RegexService.checkUsername(postJoinReq.getUsername())){
-            return new BaseResponse(JOIN_USERNAME_INVALID);
-        }
-        if(!RegexService.checkPw(postJoinReq.getPassword())){
-            return new BaseResponse(JOIN_PASSWORD_INVALID);
-        }
-        if(!RegexService.checkName(postJoinReq.getName())){
-            return new BaseResponse(JOIN_NAME_INVALID);
-        }
+//        if(!RegexService.checkUsername(postJoinReq.getUsername())){
+//            return new BaseResponse(JOIN_USERNAME_INVALID);
+//        }
+//        if(!RegexService.checkPw(postJoinReq.getPassword())){
+//            return new BaseResponse(JOIN_PASSWORD_INVALID);
+//        }
+//        if(!RegexService.checkName(postJoinReq.getName())){
+//            return new BaseResponse(JOIN_NAME_INVALID);
+//        }
 
         userService.join(postJoinReq);
 
@@ -99,7 +99,6 @@ public class UserController {
 //        if(postLoginReq.getAutoLogin() == null){
 //            return new BaseResponse(LOGIN_AUTOLOGIN_EMPTY);
 //        }
-        // isAutoLogin null값 확인 필요
 
         User user = userService.login(postLoginReq, response);
 
