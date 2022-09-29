@@ -36,6 +36,7 @@ public class ExceptionCatchFilter implements Filter {
         Filter.super.destroy();
     }
 
+    // 응답 설정
     private void setBaseResponse(HttpServletResponse response, BaseExceptionStatus e) throws IOException{
 //        response.setContentType("charset=UTF-8");
         response.setContentType("application/json");

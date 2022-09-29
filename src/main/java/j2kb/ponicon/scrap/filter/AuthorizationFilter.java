@@ -55,7 +55,7 @@ public class AuthorizationFilter implements Filter {
 
             return Jwts.builder()
                     .setHeaderParam(Header.TYPE, Header.JWT_TYPE) //헤더 타입 지정. Header.TYPE="type", Header.JWT_TYPE="jwt"
-                    .setIssuer("hana-umc.shop") //토큰 발급자 설정 (iss)
+                    .setIssuer("scrap.hana-umc.shop") //토큰 발급자 설정 (iss)
                     .setIssuedAt(now) //발급 시간 설정 (iat) Date 타입만 추가 가능.
                     .setExpiration(new Date(now.getTime() + ACCESS_TOKEN_EXPIRE_MILLIS)) //만료시간 설정 (exp). Date 타입만 추가 가능.
                     .setSubject(username) //비공개 클래임을 설정할 수 있음. key-value
@@ -105,6 +105,7 @@ public class AuthorizationFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         System.out.println("Authorization 필터 시작 전");
         HttpServletRequest httpReq = (HttpServletRequest) request;
+        // 전체 쿠키 목록 가져오기
         Cookie[] cookies = httpReq.getCookies();
 
         Cookie accessCookie = authorizationService.findCookie("accessToken", cookies);
@@ -112,11 +113,13 @@ public class AuthorizationFilter implements Filter {
 
         String accessToken, refreshToken;
 
+        // access쿠키는 있으나, refresh쿠키는 없는경우
         if(accessCookie != null && refreshCookie == null){
             accessToken = accessCookie.getValue();
 
             authorizationService.validationJwt(accessToken);
         }
+        // access쿠키, refresh쿠키 둘다 있는경우
         else if(accessCookie != null && refreshCookie != null){
             accessToken = accessCookie.getValue();
 
@@ -133,11 +136,13 @@ public class AuthorizationFilter implements Filter {
                 throw e;
             }
         }
+        // access쿠키는 없으나 refresh쿠키는 있는경우
         else if(accessCookie == null && refreshCookie != null){
             refreshToken = refreshCookie.getValue();
             authorizationService.reissueAccessTokenAndSetCookie(refreshToken, (HttpServletResponse) response);
         }
-        else if(accessCookie == null && refreshCookie == null){
+        // 아무것도 없는 경우
+        else {
             throw new AuthorizationException(UNAUTHORIZED_USER_ACCESS);
         }
 
