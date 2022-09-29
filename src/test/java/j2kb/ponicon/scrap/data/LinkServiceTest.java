@@ -1,6 +1,7 @@
 package j2kb.ponicon.scrap.data;
 
 import j2kb.ponicon.scrap.category.CategoryRepository;
+import j2kb.ponicon.scrap.data.dto.GetDataListRes;
 import j2kb.ponicon.scrap.data.dto.PostDataSaveRes;
 import j2kb.ponicon.scrap.data.dto.PostUrlReq;
 import j2kb.ponicon.scrap.domain.Category;
@@ -13,8 +14,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import javax.xml.crypto.Data;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -72,6 +77,31 @@ class LinkServiceTest {
 
     @Test
     void links() {
+        //given
+        Optional<User> tempUser = Optional.of(new User("phs", "1234", "phs"));
+        User user = tempUser.get();
+        Long fakeUserId = 1L;
+        ReflectionTestUtils.setField(user, "id", fakeUserId);
 
+        int order = 5;
+        Optional<Category> tempCategory = Optional.of(new Category("카테고리 생상", order, user));
+        Category category = tempCategory.get();
+        Long fakeCategoryId = 1L;
+        ReflectionTestUtils.setField(category, "id", fakeCategoryId);
+
+        List<Link> dataList = new ArrayList<>();
+        dataList.add(new Link("www.naver.com", "네이버", "www.naver.com", category, user,"naver.com"));
+        dataList.add(new Link("www.tistory.com", "티스토리", "www.tistory.com", category, user,"tistory.com"));
+        Sort sort = Sort.by("createdAt").ascending();
+
+        //stub
+        when(linkRepository.findByUserIdAndCategoryId(fakeUserId, fakeCategoryId, sort)).thenReturn(dataList);
+
+        //when
+        GetDataListRes getDataListRes = linkService.links(fakeUserId, fakeCategoryId, "asc");
+
+        //then
+        assertThat(getDataListRes.getLinks().get(0).getLink()).isEqualTo("www.naver.com");
+        assertThat(getDataListRes.getLinks().get(1).getLink()).isEqualTo("www.tistory.com");
     }
 }
