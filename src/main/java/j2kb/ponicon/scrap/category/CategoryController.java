@@ -1,5 +1,6 @@
 package j2kb.ponicon.scrap.category;
 
+import io.swagger.annotations.Api;
 import j2kb.ponicon.scrap.category.dto.PostCategorySaveRes;
 import j2kb.ponicon.scrap.category.dto.GetCategoryListRes;
 import j2kb.ponicon.scrap.category.dto.PostCategorySaveReq;
