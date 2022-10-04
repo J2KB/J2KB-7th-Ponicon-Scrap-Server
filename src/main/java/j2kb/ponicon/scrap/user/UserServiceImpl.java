@@ -32,7 +32,7 @@ public class UserServiceImpl implements IUserService {
     private final CategoryRepository categoryRepository;
     private final IJwtService jwtService;
     private final ICookieService cookieService;
-    private final CategoryService categoryService;
+    private final CategoryServiceImpl categoryService;
 
     /**
      * 회원가입
