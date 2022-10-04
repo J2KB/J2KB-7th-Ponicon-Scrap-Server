@@ -9,6 +9,7 @@ import j2kb.ponicon.scrap.utils.JwtService;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,13 +31,16 @@ import static j2kb.ponicon.scrap.utils.JwtData.KAKAO_REST_API_KEY;
 @RequiredArgsConstructor
 public class KakaoService {
 
+    @Value("${server.host.api}")
+    private String frontHost;
+
     private final JwtService jwtService;
     private final CookieService cookieService;
     private final UserRepository userRepository;
 
     private final String tokenHost = "https://kauth.kakao.com/oauth/token";
     private final String userInfoHost = "https://kapi.kakao.com/v2/user/me";
-    private final String redirectionUrl = "http://localhost:8081/user/login/kakao";
+    private final String redirectionUrl = frontHost + "/user/login/kakao";
 
     private class Token{
 
@@ -82,6 +86,8 @@ public class KakaoService {
         // 인가코드로 카카오의 토큰(access, refresh) 발급받기
         Token token = getTokens(code);
         System.out.println("token.getAccessToken() = " + token.getAccessToken());
+
+        System.out.println("redirectionUrl = " + redirectionUrl);
 
         // user 조회
         User user = getUser(token.getAccessToken());

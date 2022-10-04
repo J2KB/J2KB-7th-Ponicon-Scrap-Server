@@ -39,6 +39,7 @@ class CategoryServiceTest {
     @Mock
     private UserRepository userRepository;
 
+
     @Test
     @DisplayName("categorySave기능이 제대로 동작하는지 확인")
     void categorySave() {
@@ -78,8 +79,6 @@ class CategoryServiceTest {
         ReflectionTestUtils.setField(user, "id", fakeUserId);
 
         List<Category> categories = new ArrayList<>();
-//        int order = user.getCategories().size();
-//        System.out.println("order = " + order);
         categories.add(new Category("Junit 강의", 2, user));
         categories.add(new Category("lusida", 1, user));
         Sort sort = Sort.by("order").ascending();
