@@ -4,10 +4,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import j2kb.ponicon.scrap.domain.User;
 import j2kb.ponicon.scrap.response.BaseException;
-import j2kb.ponicon.scrap.utils.CookieService;
-import j2kb.ponicon.scrap.utils.JwtService;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import j2kb.ponicon.scrap.utils.CookieServiceImpl;
+import j2kb.ponicon.scrap.utils.ICookieService;
+import j2kb.ponicon.scrap.utils.IJwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,9 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 import static j2kb.ponicon.scrap.response.BaseExceptionStatus.KAKAO_GET_TOKEN_FAIL;
 import static j2kb.ponicon.scrap.response.BaseExceptionStatus.KAKAO_GET_USER_INFO_FAIL;
@@ -28,10 +24,10 @@ import static j2kb.ponicon.scrap.utils.JwtData.KAKAO_REST_API_KEY;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class KakaoService {
+public class KakaoServiceImpl implements IKakaoService{
 
-    private final JwtService jwtService;
-    private final CookieService cookieService;
+    private final IJwtService jwtService;
+    private final ICookieService cookieService;
     private final UserRepository userRepository;
 
     private final String tokenHost = "https://kauth.kakao.com/oauth/token";
@@ -132,6 +128,8 @@ public class KakaoService {
             while ((line = br.readLine()) != null) {
                 result += line;
             }
+
+            System.out.println("result = " + result);
 
             //Gson 라이브러리에 포함된 클래스로 JSON파싱 객체 생성
             JsonParser parser = new JsonParser();

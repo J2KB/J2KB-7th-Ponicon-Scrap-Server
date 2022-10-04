@@ -1,9 +1,7 @@
 package j2kb.ponicon.scrap.mypage;
 
-import j2kb.ponicon.scrap.category.dto.GetCategoryListRes;
 import j2kb.ponicon.scrap.mypage.dto.GetUserRes;
 import j2kb.ponicon.scrap.response.BaseResponse;
-import j2kb.ponicon.scrap.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

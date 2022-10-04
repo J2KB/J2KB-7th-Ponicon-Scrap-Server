@@ -3,7 +3,6 @@ package j2kb.ponicon.scrap.config;
 
 import j2kb.ponicon.scrap.filter.AuthorizationFilter;
 import j2kb.ponicon.scrap.filter.ExceptionCatchFilter;
-import j2kb.ponicon.scrap.utils.CookieService;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

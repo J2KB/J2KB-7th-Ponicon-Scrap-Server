@@ -7,7 +7,6 @@ import j2kb.ponicon.scrap.user.dto.GetUsernameSameRes;
 import j2kb.ponicon.scrap.user.dto.LoginRes;
 import j2kb.ponicon.scrap.user.dto.PostJoinReq;
 import j2kb.ponicon.scrap.user.dto.PostLoginReq;
-import j2kb.ponicon.scrap.utils.RegexService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -23,8 +22,8 @@ import static j2kb.ponicon.scrap.response.BaseExceptionStatus.*;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserService userService;
-    private final KakaoService kakaoService;
+    private final IUserService userService;
+    private final IKakaoService kakaoService;
 
 
     /**
@@ -139,26 +138,26 @@ public class UserController {
     }
 
 
-    /* 테스트용 api */
-    @GetMapping("/test/error")
-    public BaseResponse error(){
-        userService.error();
-
-        return null;
-    }
-
-    @GetMapping("/test/error2")
-    public BaseResponse error2(){
-        userService.error2();
-
-        return null;
-    }
-
-    @GetMapping("/test/category")
-    public String categorySave(){
-        userService.testSave();
-        return "카테고리 테스트 세이브";
-    }
+//    /* 테스트용 api */
+//    @GetMapping("/test/error")
+//    public BaseResponse error(){
+//        userService.error();
+//
+//        return null;
+//    }
+//
+//    @GetMapping("/test/error2")
+//    public BaseResponse error2(){
+//        userService.error2();
+//
+//        return null;
+//    }
+//
+//    @GetMapping("/test/category")
+//    public String categorySave(){
+//        userService.testSave();
+//        return "카테고리 테스트 세이브";
+//    }
 
     @GetMapping("/test/cookie")
     public void getCookies(HttpServletRequest request){
