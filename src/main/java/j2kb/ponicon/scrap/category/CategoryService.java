@@ -64,6 +64,7 @@ public class CategoryService {
          * 문제점 해당하는 카테고리의 아이디만큼 카운트 쿼리문이 실행된다.
          */
         //int count = list.size();
+
         // for each
         for(CategoryListRes i : list) {
             i.setNumOfLink(linkRepository.countByCategoryId(i.getCategoryId()));
