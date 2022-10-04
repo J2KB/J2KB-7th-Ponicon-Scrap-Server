@@ -1,7 +1,7 @@
 package j2kb.ponicon.scrap.user;
 
 import j2kb.ponicon.scrap.category.CategoryRepository;
-import j2kb.ponicon.scrap.category.CategoryService;
+import j2kb.ponicon.scrap.category.CategoryServiceImpl;
 import j2kb.ponicon.scrap.domain.Category;
 import j2kb.ponicon.scrap.domain.User;
 import j2kb.ponicon.scrap.response.BaseException;

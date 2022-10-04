@@ -66,3 +66,5 @@ application.yml
 
 # JwtData
 src/main/java/j2kb/ponicon/scrap/utils/JwtData.java
+application-dev.yml
+application-prod.yml

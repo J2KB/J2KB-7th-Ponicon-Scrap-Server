@@ -1,5 +1,8 @@
 package j2kb.ponicon.scrap.user;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import j2kb.ponicon.scrap.domain.User;
 
 import j2kb.ponicon.scrap.response.BaseResponse;
@@ -16,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import static j2kb.ponicon.scrap.response.BaseExceptionStatus.*;
-
+@Api(tags = "회원과 관련된 API")
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
@@ -32,6 +35,7 @@ public class UserController {
      * @param postJoinReq
      * @return
      */
+    @ApiOperation(value = "회원가입", notes = "/user/join")
     @PostMapping("/join")
     public BaseResponse join(@Validated @RequestBody PostJoinReq postJoinReq){
 
@@ -68,8 +72,9 @@ public class UserController {
      * @param username
      * @return
      */
+    @ApiOperation(value = "아이디 중복 확인", notes = "[GET] user/duplicate?id=")
     @GetMapping("/duplicate")
-    public BaseResponse<GetUsernameSameRes> checkUsernameDuplicate(@RequestParam(name = "id")String username){
+    public BaseResponse<GetUsernameSameRes> checkUsernameDuplicate(@ApiParam(value = "User의 username 값", example = "test0303") @RequestParam(name = "id")String username){
 
         // id 널값 처리해야함.
 
@@ -86,6 +91,7 @@ public class UserController {
      * @param response
      * @return
      */
+    @ApiOperation(value = "일반 로그인", notes = "user/login")
     @PostMapping("/login")
     public BaseResponse<LoginRes> login(@Validated @RequestBody PostLoginReq postLoginReq, HttpServletResponse response){
 
@@ -111,6 +117,7 @@ public class UserController {
      * @param response
      * @return
      */
+    @ApiOperation(value = "카카오 로그인 리다이렉션 url", notes = "user/login/kakao?code=")
     @GetMapping("/login/kakao")
     public BaseResponse<LoginRes> kakaoLogin(@RequestParam(name = "code", required = false) String code, @RequestParam(name = "error", required = false) String error, HttpServletResponse response){
 
@@ -129,6 +136,7 @@ public class UserController {
 
     // 통합 로그아웃
     // [GET] user/logout
+    @ApiOperation(value = "통합 로그아웃", notes = "user/logout")
     @GetMapping("/logout")
     public BaseResponse logout(HttpServletResponse response){
 
