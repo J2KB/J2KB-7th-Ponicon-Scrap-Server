@@ -8,8 +8,9 @@ import j2kb.ponicon.scrap.response.BaseException;
 import j2kb.ponicon.scrap.response.BaseExceptionStatus;
 import j2kb.ponicon.scrap.user.dto.PostJoinReq;
 import j2kb.ponicon.scrap.user.dto.PostLoginReq;
-import j2kb.ponicon.scrap.utils.CookieService;
-import j2kb.ponicon.scrap.utils.JwtService;
+import j2kb.ponicon.scrap.utils.CookieServiceImpl;
+import j2kb.ponicon.scrap.utils.ICookieService;
+import j2kb.ponicon.scrap.utils.IJwtService;
 import j2kb.ponicon.scrap.utils.SHA256;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,13 +26,13 @@ import static j2kb.ponicon.scrap.response.BaseExceptionStatus.LOGIN_USER_NOT_EXI
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class UserService {
+public class UserServiceImpl implements IUserService {
 
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
-    private final JwtService jwtService;
-    private final CookieService cookieService;
-    private final CategoryServiceImpl categoryService;
+    private final IJwtService jwtService;
+    private final ICookieService cookieService;
+    private final CategoryService categoryService;
 
     /**
      * 회원가입

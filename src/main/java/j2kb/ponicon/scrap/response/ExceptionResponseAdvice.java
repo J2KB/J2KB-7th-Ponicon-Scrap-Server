@@ -1,6 +1,8 @@
 package j2kb.ponicon.scrap.response;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
+import java.util.List;
 
 @RestControllerAdvice
 public class ExceptionResponseAdvice {
@@ -50,9 +53,22 @@ public class ExceptionResponseAdvice {
      * @return BaseResponse - 카테고리 이름이 2~60 글자 사이
      * @author 박현성
      */
+//    @ExceptionHandler(MethodArgumentNotValidException.class)
+//    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+//    public BaseResponse methodArgumentNotValidException(Exception e){
+//        return new BaseResponse(BaseExceptionStatus.CATEGORY_NAME_NULL);
+//    }
+
+
+    /**
+     * @author 최가나
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    public BaseResponse methodArgumentNotValidException(Exception e){
-        return new BaseResponse(BaseExceptionStatus.CATEGORY_NAME_LENGTH);
+    public BaseResponse ValidAnotaionHandler(BindingResult bindingResult){
+
+        List<ObjectError> errors = bindingResult.getAllErrors();
+        String errorReason = errors.get(0).getDefaultMessage();
+        return new BaseResponse(33, errorReason);
     }
 }

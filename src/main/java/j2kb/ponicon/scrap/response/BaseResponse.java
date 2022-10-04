@@ -33,6 +33,11 @@ public class BaseResponse<T> {
         this.message = msg;
     }
 
+    public BaseResponse(int code, String msg){
+        this.code = code;
+        this.message = msg;
+    }
+
     public BaseResponse(BaseExceptionStatus e){
         this.code = e.getCode();
         this.message = e.getMessage();

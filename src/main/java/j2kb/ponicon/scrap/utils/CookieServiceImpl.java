@@ -11,7 +11,7 @@ import static j2kb.ponicon.scrap.utils.JwtData.REFRESH_COOKIE_EXPIRE_SECOND;
  * 쿠키 관련 서비스 코드
  */
 @Service
-public class CookieService {
+public class CookieServiceImpl implements ICookieService{
 
     /**
      * 리프레시토큰 쿠키 만들기
@@ -50,4 +50,6 @@ public class CookieService {
 
         return cookie;
     }
+
+
 }
