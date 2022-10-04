@@ -1,0 +1,33 @@
+server:
+  port: 8081
+  host:
+    api: https://scrap.hana-umc.shop
+
+spring:
+  application:
+    name: scrap
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+  datasource:
+    url:  jdbc:mysql://umcdb.c8xezlmvz99n.ap-northeast-2.rds.amazonaws.com :3306/scrap
+    username: umc
+    password: chamsaenunjack55
+    driver-class-name: com.mysql.cj.jdbc.Driver # mysql 8버전
+  # driver-class-name: com.mysql.jdbc.Driver # mysql 5버전
+
+  jpa:
+    hibernate:
+      ddl-auto: update #create
+
+    properties:
+      hibernate:
+        #     show_sql: true
+        format_sql: true
+        default_batch_fetch_size: 100
+  sql:
+    init:
+      platform: mysql
+logging.level:
+  org.hibernate.SQL: debug

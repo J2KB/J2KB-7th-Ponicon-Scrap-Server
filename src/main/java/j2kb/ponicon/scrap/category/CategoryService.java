@@ -9,6 +9,7 @@ import j2kb.ponicon.scrap.domain.Category;
 import j2kb.ponicon.scrap.domain.User;
 import j2kb.ponicon.scrap.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
@@ -61,9 +63,14 @@ public class CategoryService {
          * 다시 list.get(i).getCategoryId로 카테고리 id를 가져온다.
          * 문제점 해당하는 카테고리의 아이디만큼 카운트 쿼리문이 실행된다.
          */
-        for(int i=0; i<list.size(); i++) {
-            list.get(i).setNumOfLink(linkRepository.countByCategoryId(list.get(i).getCategoryId()));
+        //int count = list.size();
+        // for each
+        for(CategoryListRes i : list) {
+            i.setNumOfLink(linkRepository.countByCategoryId(i.getCategoryId()));
         }
+//        for(int i=0; i< count; i++) {
+//            list.get(i).setNumOfLink(linkRepository.countByCategoryId(list.get(i).getCategoryId()));
+//        }
 
         // list를 builder 패턴으로 객체 생성
         GetCategoryListRes getCategoryListRes = GetCategoryListRes.builder().categories(list).build();
