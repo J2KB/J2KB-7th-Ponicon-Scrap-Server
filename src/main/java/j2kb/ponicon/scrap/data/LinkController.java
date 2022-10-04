@@ -20,7 +20,7 @@ import javax.validation.Valid;
 @RequestMapping("/data")
 public class LinkController {
 
-    private final LinkService linkService;
+    private final LinkServiceImpl linkService;
 
     /**
      * 링크 등록 API

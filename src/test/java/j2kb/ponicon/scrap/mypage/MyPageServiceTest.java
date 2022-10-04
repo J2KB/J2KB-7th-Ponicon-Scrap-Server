@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 class MyPageServiceTest {
 
     @InjectMocks
-    private MyPageService myPageService;
+    private MyPageServiceImpl myPageService;
 
     @Mock
     private MyPageRepository myPageRepository;

@@ -1,7 +1,7 @@
 package j2kb.ponicon.scrap.user;
 
 import j2kb.ponicon.scrap.category.CategoryRepository;
-import j2kb.ponicon.scrap.category.CategoryService;
+import j2kb.ponicon.scrap.category.CategoryServiceImpl;
 import j2kb.ponicon.scrap.domain.Category;
 import j2kb.ponicon.scrap.domain.User;
 import j2kb.ponicon.scrap.response.BaseException;
@@ -16,10 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import static j2kb.ponicon.scrap.response.BaseExceptionStatus.DUPULICATE_USERNAME;
@@ -34,7 +31,7 @@ public class UserService {
     private final CategoryRepository categoryRepository;
     private final JwtService jwtService;
     private final CookieService cookieService;
-    private final CategoryService categoryService;
+    private final CategoryServiceImpl categoryService;
 
     /**
      * 회원가입

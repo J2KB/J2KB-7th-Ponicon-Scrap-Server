@@ -17,7 +17,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +29,7 @@ import static org.mockito.Mockito.when;
 class LinkServiceTest {
 
     @InjectMocks
-    private LinkService linkService;
+    private LinkServiceImpl linkService;
 
     @Mock
     private LinkRepository linkRepository;

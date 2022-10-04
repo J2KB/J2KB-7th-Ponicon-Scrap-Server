@@ -28,7 +28,7 @@ import static org.mockito.Mockito.when;
 class CategoryServiceTest {
 
     @InjectMocks
-    private CategoryService categoryService;
+    private CategoryServiceImpl categoryService;
 
     @Mock
     private CategoryRepository categoryRepository;

@@ -19,7 +19,7 @@ import javax.validation.Valid;
 public class CategoryController {
 
     // @Autowired 보다는 생성자 주입 방식으로 DI를 진행했습니다.
-    private final CategoryService categoryService;
+    private final CategoryServiceImpl categoryService;
 
     /**
      * 카테고리 등록 API
