@@ -1,22 +1,27 @@
 package j2kb.ponicon.scrap.config;
 
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Server;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import java.util.Collections;
 
 @Configuration
-@EnableSwagger2
 public class SwaggerConfig {
 
     @Bean
     public Docket restAPI() {
-        return new Docket(DocumentationType.SWAGGER_2)
+        Server serverLocal = new Server("local", "http://localhost:8081", "for local usages", Collections.emptyList(), Collections.emptyList());
+        Server testServer = new Server("test", "https://서버주소", "for testing", Collections.emptyList(), Collections.emptyList());
+        return new Docket(DocumentationType.OAS_30)
+                .servers(serverLocal, testServer)
                 .apiInfo(apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("j2kb.ponicon.scrap")) // 특정 패키지경로를 API문서화 한다. 1차 필터
