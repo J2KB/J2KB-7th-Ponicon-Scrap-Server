@@ -27,16 +27,15 @@ import static j2kb.ponicon.scrap.utils.JwtData.KAKAO_REST_API_KEY;
 @RequiredArgsConstructor
 public class KakaoServiceImpl implements IKakaoService{
 
-    @Value("${server.host.api}")
-    private String frontHost;
-
     private final IJwtService jwtService;
     private final ICookieService cookieService;
     private final UserRepository userRepository;
 
+    @Value("${server.host.api}")
+    private String frontHost;
     private final String tokenHost = "https://kauth.kakao.com/oauth/token";
     private final String userInfoHost = "https://kapi.kakao.com/v2/user/me";
-    private final String redirectionUrl = frontHost + "/user/login/kakao";
+    private String redirectionUrl;
 
     private class Token{
 
@@ -78,6 +77,11 @@ public class KakaoServiceImpl implements IKakaoService{
 
     // 카카오 로그인
     public User login(String code, HttpServletResponse response){
+
+        this.redirectionUrl  = frontHost + "/user/login/kakao";
+
+        System.out.println("frontHost = " + frontHost);
+        System.out.println("redirectionUrl = " + redirectionUrl);
 
         // 인가코드로 카카오의 토큰(access, refresh) 발급받기
         Token token = getTokens(code);
