@@ -25,7 +25,7 @@ class MyPageServiceTest {
     private MyPageRepository myPageRepository;
 
     @Test
-    @DisplayName("userInfo기능이 제대로 동작하는지 확인")
+//    @DisplayName("userInfo기능이 제대로 동작하는지 확인")
     void userInfo() {
         //given
         User user = new User("phs", "1234", "phs");

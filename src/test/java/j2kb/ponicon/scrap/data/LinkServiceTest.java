@@ -41,7 +41,7 @@ class LinkServiceTest {
     private UserRepository userRepository;
 
     @Test
-    @DisplayName("linkSave기능이 제대로 동작하는지 확인")
+//    @DisplayName("linkSave기능이 제대로 동작하는지 확인")
     void linkSave() throws Exception {
 
         //given

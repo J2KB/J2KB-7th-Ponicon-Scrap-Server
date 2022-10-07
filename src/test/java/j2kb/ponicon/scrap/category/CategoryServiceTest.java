@@ -41,7 +41,7 @@ class CategoryServiceTest {
 
 
     @Test
-    @DisplayName("categorySave기능이 제대로 동작하는지 확인")
+//    @DisplayName("categorySave기능이 제대로 동작하는지 확인")
     void categorySave() {
         //given
         PostCategorySaveReq dto = new PostCategorySaveReq("카테고리 생성 테스트");
@@ -70,7 +70,7 @@ class CategoryServiceTest {
     }
 
     @Test
-    @DisplayName("categories 기능 테스트")
+//    @DisplayName("categories 기능 테스트")
     void categories() {
         //given
         Optional<User> tempUser = Optional.of(new User("phs", "1234", "phs"));
