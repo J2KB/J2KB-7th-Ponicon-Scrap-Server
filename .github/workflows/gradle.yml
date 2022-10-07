@@ -36,9 +36,9 @@ jobs:
     - name: Docker build
       run: |
        docker login -u ${{ secrets.USERNAME }} -p ${{ secrets.PASSWORD }}
-       docker build -t spring-cicd .
-       docker tag spring-cicd lusida0131/spring-cicd:latest
-       docker push lusida0131/spring-cicd:latest
+       docker build -t spring-cicd2 .
+       docker tag spring-cicd2 lusida0131/spring-cicd2:latest
+       docker push lusida0131/spring-cicd2:latest
   deploy:
     needs: build  # build 후에 실행되도록 정의
     name: Deploy
@@ -48,5 +48,5 @@ jobs:
       - name: Docker run
         run: |
           docker login -u ${{ secrets.USERNAME }} -p ${{ secrets.PASSWORD }}
-          docker stop spring-cicd && docker rm spring-cicd && docker rmi lusida0131/spring-cicd:latest
-          docker run -d -p 8080:8080 --name spring-cicd --restart always lusida0131/spring-cicd:latest
+          docker stop spring-cicd2 && docker rm spring-cicd2 && docker rmi lusida0131/spring-cicd2:latest
+          docker run -d -p 8080:8080 --name spring-cicd2 --restart always lusida0131/spring-cicd2:latest
