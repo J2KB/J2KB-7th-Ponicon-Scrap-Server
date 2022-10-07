@@ -43,4 +43,4 @@ jobs:
         run: |
           docker login -u ${{ secrets.USERNAME }} -p ${{ secrets.PASSWORD }}
           docker stop spring-cicd2 && docker rm spring-cicd2 && docker rmi lusida0131/spring-cicd2:latest
-          docker run -d -p 8081:8081 --name spring-cicd2 --restart always lusida0131/spring-cicd2:latest
+          docker run -d -p 8081:80 --name spring-cicd2 --restart always lusida0131/spring-cicd2:latest
