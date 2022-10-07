@@ -3,6 +3,7 @@ package j2kb.ponicon.scrap.data;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Parameter;
 import j2kb.ponicon.scrap.data.dto.GetDataListRes;
 import j2kb.ponicon.scrap.data.dto.PostDataSaveRes;
 import j2kb.ponicon.scrap.data.dto.PostUrlReq;
@@ -59,7 +60,7 @@ public class LinkController {
      */
     @ApiOperation(value = "링크 전체 조회 API", notes = "UserId를 RequestParam으로 받아서 linkService.allLinks 후 링크를 조회하는 역할을 합니다. /category/all?id=")
     @GetMapping("/all")
-    public BaseResponse<?> dataListAllByUser(@ApiParam(value = "User의 id 값", example = "2") @RequestParam("id") Long userId) {
+    public BaseResponse<?> dataListAllByUser(@Parameter(description = "User의 id 값", example = "2") @RequestParam("id") Long userId) {
         GetDataListRes list = linkService.allLinks(userId);
         return new BaseResponse<>(list);
     }
