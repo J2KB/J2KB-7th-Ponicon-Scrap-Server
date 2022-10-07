@@ -17,4 +17,9 @@ public class TestController {
     public String authTest(){
         return "인증 필터 테스트";
     }
+
+    @GetMapping("/cicd")
+    public String authTest2(){
+        return "ci/cd 테스트";
+    }
 }
