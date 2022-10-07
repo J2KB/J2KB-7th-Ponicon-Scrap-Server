@@ -1,4 +1,4 @@
-package j2kb.ponicon.scrap.filter;
+package j2kb.ponicon.scrap.config.filter;
 
 import com.google.gson.Gson;
 import j2kb.ponicon.scrap.response.AuthorizationException;

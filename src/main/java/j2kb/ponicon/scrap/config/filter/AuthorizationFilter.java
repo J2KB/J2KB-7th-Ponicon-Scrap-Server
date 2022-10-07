@@ -1,7 +1,10 @@
-package j2kb.ponicon.scrap.filter;
+package j2kb.ponicon.scrap.config.filter;
 
 import io.jsonwebtoken.*;
 import j2kb.ponicon.scrap.response.AuthorizationException;
+import j2kb.ponicon.scrap.utils.ICookieService;
+import j2kb.ponicon.scrap.utils.IJwtService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.*;
 import javax.servlet.http.Cookie;
@@ -16,7 +19,7 @@ import static j2kb.ponicon.scrap.utils.JwtData.*;
 
 public class AuthorizationFilter implements Filter {
 
-    public class AuthorizationService{
+    private class AuthorizationService{
         // 쿠키 찾기
         public Cookie findCookie(String key, Cookie[] cookies){
             if(cookies == null){
@@ -49,42 +52,15 @@ public class AuthorizationFilter implements Filter {
             }
         }
 
-        // 엑세스토큰 생성
-        public String createAccessToken(String username){
-            Date now = new Date();
 
-            return Jwts.builder()
-                    .setHeaderParam(Header.TYPE, Header.JWT_TYPE) //헤더 타입 지정. Header.TYPE="type", Header.JWT_TYPE="jwt"
-                    .setIssuer("scrap.hana-umc.shop") //토큰 발급자 설정 (iss)
-                    .setIssuedAt(now) //발급 시간 설정 (iat) Date 타입만 추가 가능.
-                    .setExpiration(new Date(now.getTime() + ACCESS_TOKEN_EXPIRE_MILLIS)) //만료시간 설정 (exp). Date 타입만 추가 가능.
-                    .setSubject(username) //비공개 클래임을 설정할 수 있음. key-value
-                    .signWith(SignatureAlgorithm.HS256, JWT_SECRET_KEY) //해싱 알고리즘과 시크릿 key 설정
-                    .compact(); //jwt 토큰 생성
-        }
-
-        /**
-         * 엑세스토큰 쿠키 만들기
-         * @param accessToken 엑스스토큰
-         * @return Cookie
-         */
-        public Cookie createAccessCookie(String accessToken){
-
-            Cookie cookie = new Cookie("accessToken", accessToken);
-            cookie.setPath("/"); // 모든 경로에서 접근 가능하도록
-//        cookie.setSecure(true);
-//        cookie.setHttpOnly(true);
-
-            return cookie;
-        }
-
-        // username으로 access토큰 재발급받고 쿠키에 set하기
-        public void reissueAccessTokenAndSetCookie(String refreshToken, HttpServletResponse response){
+        // refresh토큰으로 access토큰 재발급받고 쿠키에 set하기
+        public void reissueAccessTokenAndSetCookie(String refreshToken, boolean autoLogin, HttpServletResponse response){
             Jws<Claims> claims = authorizationService.validationJwt(refreshToken);
             String username = claims.getBody().getSubject();
 
-            String reAccessToken = authorizationService.createAccessToken(username);
-            Cookie reAccessCookie = authorizationService.createAccessCookie(reAccessToken);
+//            String reAccessToken = authorizationService.createAccessToken(username);
+            String reAccessToken = jwtService.createAccessToken(username);
+            Cookie reAccessCookie = cookieService.createAccessCookie(reAccessToken, autoLogin);
 
             response.addCookie(reAccessCookie);
         }
@@ -92,7 +68,14 @@ public class AuthorizationFilter implements Filter {
     }
 
     // 싱글톤 패턴 적용 필요
-    AuthorizationService authorizationService;
+    private AuthorizationService authorizationService;
+    private final IJwtService jwtService;
+    private final ICookieService cookieService;
+
+    public AuthorizationFilter(IJwtService jwtService, ICookieService cookieService) {
+        this.jwtService = jwtService;
+        this.cookieService = cookieService;
+    }
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -130,7 +113,8 @@ public class AuthorizationFilter implements Filter {
                 // 그러면 refresh토큰으로 access토큰 재발급
                 if(e.getStatus() == JWT_TOKEN_EXPIRE){
                     refreshToken = refreshCookie.getValue();
-                    authorizationService.reissueAccessTokenAndSetCookie(refreshToken, (HttpServletResponse) response);
+                    boolean autoLogin = (refreshCookie.getMaxAge() == -1) ? false : true; // maxage == -1 이면, 자동로그인 x임.
+                    authorizationService.reissueAccessTokenAndSetCookie(refreshToken, autoLogin, (HttpServletResponse) response);
                 }
 
                 throw e;
@@ -139,7 +123,9 @@ public class AuthorizationFilter implements Filter {
         // access쿠키는 없으나 refresh쿠키는 있는경우
         else if(accessCookie == null && refreshCookie != null){
             refreshToken = refreshCookie.getValue();
-            authorizationService.reissueAccessTokenAndSetCookie(refreshToken, (HttpServletResponse) response);
+            boolean autoLogin = (refreshCookie.getMaxAge() == -1) ? false : true;
+
+            authorizationService.reissueAccessTokenAndSetCookie(refreshToken, autoLogin, (HttpServletResponse) response);
         }
         // 아무것도 없는 경우
         else {
