@@ -20,6 +20,6 @@ public class TestController {
 
     @GetMapping("/cicd")
     public String authTest2(){
-        return "ci/cd 테스트";
+        return "ci/cd 테스트2";
     }
 }
