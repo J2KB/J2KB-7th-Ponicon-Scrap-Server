@@ -29,8 +29,7 @@ jobs:
       uses: samin/mysql-action@v1
       with:
         character set server: 'utf8' 
-        mysql database: scrap
-        mysql user: umc
+        mysql user: 'umc'
         mysql password: ${{ secrets.MYSQL_PASSWORD }} # github Secret 탭에서 설정하세요!
     - name: Build with Gradle
       run: ./gradlew build
