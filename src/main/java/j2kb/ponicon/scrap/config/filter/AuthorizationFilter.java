@@ -106,9 +106,9 @@ public class AuthorizationFilter implements Filter {
     private void reissueAccessTokenAndSetCookie(String refreshToken, boolean autoLogin, HttpServletResponse response){
         Jws<Claims> claims = jwtService.validationAndGetJwt(refreshToken);
 
+        // refresh토큰에서 username 가져오기
         String username = jwtService.getUsernameByJwt(claims);
 
-//            String reAccessToken = authorizationService.createAccessToken(username);
         String reAccessToken = jwtService.createAccessToken(username);
         Cookie reAccessCookie = cookieService.createAccessCookie(reAccessToken, autoLogin);
 
