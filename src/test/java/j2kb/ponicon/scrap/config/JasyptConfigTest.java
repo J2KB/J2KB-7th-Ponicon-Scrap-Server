@@ -23,7 +23,7 @@ class JasyptConfigTest {
     }
 
     private String jasyptEncrypt(String input) {
-        String key = "5678";
+        String key = "****";
         StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
         encryptor.setAlgorithm("PBEWithMD5AndDES");
         encryptor.setPassword(key);
@@ -31,7 +31,7 @@ class JasyptConfigTest {
     }
 
     private String jasyptDecryt(String input){
-        String key = "5678";
+        String key = "****";
         StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
         encryptor.setAlgorithm("PBEWithMD5AndDES");
         encryptor.setPassword(key);

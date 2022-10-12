@@ -28,10 +28,7 @@ spring:
   sql:
     init:
       platform: mysql
-jasypt:
-  encryptor:
-    bean: jasyptStringEncryptor
-    password : 5678
+
 
 logging.level:
   org.hibernate.SQL: debug
