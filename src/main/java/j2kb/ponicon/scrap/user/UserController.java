@@ -6,10 +6,7 @@ import io.swagger.annotations.ApiParam;
 import j2kb.ponicon.scrap.domain.User;
 
 import j2kb.ponicon.scrap.response.BaseResponse;
-import j2kb.ponicon.scrap.user.dto.GetUsernameSameRes;
-import j2kb.ponicon.scrap.user.dto.LoginRes;
-import j2kb.ponicon.scrap.user.dto.PostJoinReq;
-import j2kb.ponicon.scrap.user.dto.PostLoginReq;
+import j2kb.ponicon.scrap.user.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +24,7 @@ public class UserController {
 
     private final IUserService userService;
     private final IKakaoService kakaoService;
-
+    private final IKakaoService2 kakaoService2;
 
     /**
      * 회원가입
@@ -38,28 +35,6 @@ public class UserController {
     @ApiOperation(value = "회원가입", notes = "/user/join")
     @PostMapping("/join")
     public BaseResponse join(@Validated @RequestBody PostJoinReq postJoinReq){
-
-        // 요청한 값에 대한 validation 처리 필요
-//        if(postJoinReq.getUsername() == null || postJoinReq.getUsername().isEmpty()){
-//            return new BaseResponse(JOIN_USERNAME_EMPTY);
-//        }
-//        if(postJoinReq.getPassword() == null || postJoinReq.getPassword().isEmpty()){
-//            return new BaseResponse(JOIN_PASSWORD_EMPTY);
-//        }
-//        if(postJoinReq.getName() == null || postJoinReq.getName().isEmpty()){
-//            return new BaseResponse(JOIN_NAME_EMPTY);
-//        }
-
-        // 형식 확인
-//        if(!RegexService.checkUsername(postJoinReq.getUsername())){
-//            return new BaseResponse(JOIN_USERNAME_INVALID);
-//        }
-//        if(!RegexService.checkPw(postJoinReq.getPassword())){
-//            return new BaseResponse(JOIN_PASSWORD_INVALID);
-//        }
-//        if(!RegexService.checkName(postJoinReq.getName())){
-//            return new BaseResponse(JOIN_NAME_INVALID);
-//        }
 
         userService.join(postJoinReq);
 
@@ -94,16 +69,6 @@ public class UserController {
     @ApiOperation(value = "일반 로그인", notes = "user/login")
     @PostMapping("/login")
     public BaseResponse<LoginRes> login(@Validated @RequestBody PostLoginReq postLoginReq, HttpServletResponse response){
-
-//        if(postLoginReq.getUsername() == null || postLoginReq.getUsername().isEmpty()){
-//            return new BaseResponse(JOIN_USERNAME_EMPTY);
-//        }
-//        if(postLoginReq.getPassword() == null || postLoginReq.getPassword().isEmpty()){
-//            return new BaseResponse(JOIN_PASSWORD_EMPTY);
-//        }
-//        if(postLoginReq.getAutoLogin() == null){
-//            return new BaseResponse(LOGIN_AUTOLOGIN_EMPTY);
-//        }
 
         User user = userService.login(postLoginReq, response);
 
@@ -143,6 +108,17 @@ public class UserController {
         userService.logout(response);
 
         return new BaseResponse("로그아웃에 성공했습니다");
+    }
+
+    // 카카오 로그인 버전 2
+    @PostMapping("/user/kakao/v2")
+    public BaseResponse<LoginRes> kakaoLogin2(@Validated @RequestBody PostKakaoLoign2Req postKakaoLoign2Req, HttpServletResponse response){
+
+        User user = kakaoService2.login(postKakaoLoign2Req.getAccessToken(), response);
+
+        LoginRes loginRes = new LoginRes(user.getId());
+
+        return new BaseResponse<>(loginRes);
     }
 
 
