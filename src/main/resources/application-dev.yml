@@ -28,7 +28,9 @@ spring:
   sql:
     init:
       platform: mysql
-
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
 
 logging.level:
   org.hibernate.SQL: debug
