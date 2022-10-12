@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiParam;
 import j2kb.ponicon.scrap.domain.User;
 
 import j2kb.ponicon.scrap.response.BaseResponse;
+import j2kb.ponicon.scrap.response.validationSequence.ValidationSequence;
 import j2kb.ponicon.scrap.user.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -34,7 +35,7 @@ public class UserController {
      */
     @ApiOperation(value = "회원가입", notes = "/user/join")
     @PostMapping("/join")
-    public BaseResponse join(@Validated @RequestBody PostJoinReq postJoinReq){
+    public BaseResponse join(@Validated(ValidationSequence.class) @RequestBody PostJoinReq postJoinReq){
 
         userService.join(postJoinReq);
 
@@ -68,7 +69,7 @@ public class UserController {
      */
     @ApiOperation(value = "일반 로그인", notes = "user/login")
     @PostMapping("/login")
-    public BaseResponse<LoginRes> login(@Validated @RequestBody PostLoginReq postLoginReq, HttpServletResponse response){
+    public BaseResponse<LoginRes> login(@Validated(ValidationSequence.class) @RequestBody PostLoginReq postLoginReq, HttpServletResponse response){
 
         User user = userService.login(postLoginReq, response);
 
@@ -112,7 +113,7 @@ public class UserController {
 
     // 카카오 로그인 버전 2
     @PostMapping("/user/kakao/v2")
-    public BaseResponse<LoginRes> kakaoLogin2(@Validated @RequestBody PostKakaoLoign2Req postKakaoLoign2Req, HttpServletResponse response){
+    public BaseResponse<LoginRes> kakaoLogin2(@Validated(ValidationSequence.class) @RequestBody PostKakaoLoign2Req postKakaoLoign2Req, HttpServletResponse response){
 
         User user = kakaoService2.login(postKakaoLoign2Req.getAccessToken(), response);
 
