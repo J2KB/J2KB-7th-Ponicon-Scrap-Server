@@ -81,7 +81,7 @@ public class CategoryServiceImpl implements CategoryService{
     // 기본 카테고리 저장
     @Transactional
     public void saveBasicCategory(User user){
-        List<String> categoryNames = new ArrayList<>(List.of("분류되지 않은 자료"));
+        List<String> categoryNames = new ArrayList<>(List.of("전체 자료", "분류되지 않은 자료"));
 
         for(int i=0; i<categoryNames.size(); i++){
             new Category(categoryNames.get(i), i, user);
