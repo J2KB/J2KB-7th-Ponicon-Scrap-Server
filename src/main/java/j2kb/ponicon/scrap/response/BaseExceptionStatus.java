@@ -9,9 +9,9 @@ public enum BaseExceptionStatus {
     SERVER_INTENER_ERROR(2002, "서버 내부적인 에러"),
 
     // 유저 관련은 3000번 에러
-    FAIL_ENCRYPT_PASSWORD(3002, "비밀번호 암호화에 실패했습니다"),
     DUPULICATE_USERNAME(3001, "아이디가 중복됩니다"),
-    LOGIN_USER_NOT_EXIST(33, "해당하는 아이디 또는 비밀번호가 없습니다"),
+    FAIL_ENCRYPT_PASSWORD(3002, "비밀번호 암호화에 실패했습니다"),
+    LOGIN_USER_NOT_EXIST(3003, "해당하는 아이디 또는 비밀번호가 없습니다"),
     KAKAO_GET_TOKEN_FAIL(33, "예상치 못한 이유로 카카오 토큰 받기에 실패했습니다"),
     KAKAO_GET_USER_INFO_FAIL(33, "예상치 못한 이유로 카카오 사용자 정보 가져오기에 실패했습니다"),
     KAKAO_LOGIN_FAIL(33,"예상치 못한 이유로 카카오 로그인에 실패했습니다"),

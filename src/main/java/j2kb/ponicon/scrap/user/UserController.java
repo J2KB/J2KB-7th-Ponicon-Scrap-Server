@@ -112,7 +112,7 @@ public class UserController {
     }
 
     // 카카오 로그인 버전 2
-    @PostMapping("/user/kakao/v2")
+    @PostMapping("login/kakao/v2")
     public BaseResponse<LoginRes> kakaoLogin2(@Validated(ValidationSequence.class) @RequestBody PostKakaoLoign2Req postKakaoLoign2Req, HttpServletResponse response){
 
         User user = kakaoService2.login(postKakaoLoign2Req.getAccessToken(), response);
