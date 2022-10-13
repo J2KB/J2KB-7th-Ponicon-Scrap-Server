@@ -1,9 +1,15 @@
 package j2kb.ponicon.scrap;
 
 import lombok.Getter;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.time.Duration;
 
 @RestController
 public class TestController {
@@ -17,6 +23,7 @@ public class TestController {
     public String authTest(){
         return "인증 필터 테스트";
     }
+
 
     @GetMapping("/cicd")
     public String authTest2(){
