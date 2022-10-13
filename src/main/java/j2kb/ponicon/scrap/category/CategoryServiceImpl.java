@@ -67,7 +67,7 @@ public class CategoryServiceImpl implements CategoryService{
 
         // for each
         for(CategoryListRes i : list) {
-            i.setNumOfLink(linkRepository.countByCategoryId(i.getCategoryId()));
+            i.setNumOfLink(linkRepository.countByCategoryIdAndUserId(i.getCategoryId(), userId));
         }
 //        for(int i=0; i< count; i++) {
 //            list.get(i).setNumOfLink(linkRepository.countByCategoryId(list.get(i).getCategoryId()));
