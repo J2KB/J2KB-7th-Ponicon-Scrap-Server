@@ -23,42 +23,10 @@ public class TestController {
     public String authTest(){
         return "인증 필터 테스트";
     }
-    
-    @GetMapping("/cookie")
-    public String cookieTest(@CookieValue("refreshToken")Cookie cookie, HttpServletRequest request){
-        System.out.println("cookie.getValue() = " + cookie.getValue());
-        System.out.println("엥? cookie.getMaxAge() = " + cookie.getMaxAge());
-        System.out.println("cookie.isHttpOnly() = " + cookie.isHttpOnly());
-        System.out.println("cookie.getName() = " + cookie.getName());
-        System.out.println("cookie.getPath() = " + cookie.getPath());
-        System.out.println("cookie.getSecure() = " + cookie.getSecure());
 
-        return "쿠키 테스트";
+
+    @GetMapping("/cicd")
+    public String authTest2(){
+        return "ci/cd 테스트1000";
     }
-
-    @GetMapping("/cookie2")
-    public String cookieTest2(HttpServletRequest request){
-
-        Cookie[] cookies = request.getCookies();
-        for(Cookie c : cookies){
-            System.out.println("c.getName() = " + c.getName());
-            System.out.println("c.getMaxAge() = " + c.getMaxAge());
-        }
-
-        return "쿠키 테스트";
-    }
-
-    @GetMapping("/cookie3")
-    public String cookieTest3(HttpServletResponse response){
-
-        org.springframework.boot.web.server.Cookie cookie = new org.springframework.boot.web.server.Cookie();
-        cookie.setName("springCookie");
-        cookie.setMaxAge(Duration.ofMinutes(30));
-
-        return "쿠키 테스트";
-    }
-
-//    @GetMapping("/cookie4")
-//    public String cookieTest4(HttpServletResponse response, HttpServletRequest request){
-//    }
 }
