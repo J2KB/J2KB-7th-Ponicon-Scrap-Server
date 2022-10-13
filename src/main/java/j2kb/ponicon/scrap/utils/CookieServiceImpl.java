@@ -57,5 +57,18 @@ public class CookieServiceImpl implements ICookieService{
         return cookie;
     }
 
+    // 쿠키 찾기
+    public Cookie findCookie(String key, Cookie[] cookies){
+        if(cookies == null){
+            return null;
+        }
 
+        for(Cookie cookie : cookies){
+            if(cookie.getName().equals(key)){
+                return cookie;
+            }
+        }
+
+        return null;
+    }
 }

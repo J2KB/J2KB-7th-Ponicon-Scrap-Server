@@ -37,8 +37,8 @@ public class AuthorizationFilter implements Filter {
         // 전체 쿠키 목록 가져오기
         Cookie[] cookies = httpReq.getCookies();
 
-        Cookie accessCookie = findCookie("accessToken", cookies);
-        Cookie refreshCookie = findCookie("refreshToken", cookies);
+        Cookie accessCookie = cookieService.findCookie("accessToken", cookies);
+        Cookie refreshCookie = cookieService.findCookie("refreshToken", cookies);
 
         String accessToken, refreshToken;
 
@@ -85,21 +85,6 @@ public class AuthorizationFilter implements Filter {
     public void destroy() {
         Filter.super.destroy();
         System.out.println("Authorization 필터 삭제");
-    }
-
-    // 쿠키 찾기
-    private Cookie findCookie(String key, Cookie[] cookies){
-        if(cookies == null){
-            return null;
-        }
-
-        for(Cookie cookie : cookies){
-            if(cookie.getName().equals(key)){
-                return cookie;
-            }
-        }
-
-        return null;
     }
 
     // refresh토큰으로 access토큰 재발급받고 쿠키에 set하기

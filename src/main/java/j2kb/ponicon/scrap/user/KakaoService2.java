@@ -8,6 +8,7 @@ import j2kb.ponicon.scrap.utils.ICookieService;
 import j2kb.ponicon.scrap.utils.IJwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -95,6 +96,9 @@ public class KakaoService2 implements IKakaoService2{
             System.out.println("responseCode : " + responseCode);
 
             // 200 아닐경우 예외처리 필요
+            if(responseCode != HttpStatus.OK.value()){
+                throw new BaseException(KAKAO_GET_USER_INFO_FAIL);
+            }
 
             //요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
@@ -120,7 +124,9 @@ public class KakaoService2 implements IKakaoService2{
             br.close();
 
             return kaKaoUser;
-        }catch (IOException e) {
+        } catch (BaseException e){
+            throw e;
+        } catch (IOException e) {
             e.printStackTrace();
             throw new BaseException(KAKAO_GET_USER_INFO_FAIL);
         }
