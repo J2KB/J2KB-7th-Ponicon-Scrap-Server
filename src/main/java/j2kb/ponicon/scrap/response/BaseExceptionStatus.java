@@ -24,10 +24,11 @@ public enum BaseExceptionStatus {
     DATA_NAME_INCORRECTION(44444, "링크가 잘못되었습니다."),
     MYPAGE_USER_NOT_FOUND(44444, "해당 사용자를 찾을 수 없습니다."),
 
-    ACCESS_COOKIE_EMPTY(33, "어세스 쿠키가 없습니다"),
-    JWT_TOKEN_EXPIRE(33, "JWT 토큰 만료"),
-    JWT_TOKEN_INVALID(33,"잘못된 JWT 토큰"),
-    UNAUTHORIZED_USER_ACCESS(33, "인증되지 않은 유저의 접근입니다")
+    // 쿠키, 토큰, 인증 관련은 5000번 에러
+    ACCESS_COOKIE_EMPTY(5001, "어세스 쿠키가 없습니다"),
+    JWT_TOKEN_EXPIRE(5002, "JWT 토큰 만료되었습니다"),
+    JWT_TOKEN_INVALID(5003,"잘못된 JWT 토큰입니다"),
+    UNAUTHORIZED_USER_ACCESS(5004, "인증되지 않은 유저의 접근입니다")
     ;
 
     private final int code;

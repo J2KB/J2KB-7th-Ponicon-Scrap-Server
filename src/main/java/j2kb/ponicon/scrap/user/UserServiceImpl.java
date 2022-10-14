@@ -4,6 +4,7 @@ import j2kb.ponicon.scrap.category.CategoryRepository;
 import j2kb.ponicon.scrap.category.CategoryServiceImpl;
 import j2kb.ponicon.scrap.domain.Category;
 import j2kb.ponicon.scrap.domain.User;
+import j2kb.ponicon.scrap.response.AuthorizationException;
 import j2kb.ponicon.scrap.response.BaseException;
 import j2kb.ponicon.scrap.response.BaseExceptionStatus;
 import j2kb.ponicon.scrap.user.dto.PostJoinReq;
@@ -132,7 +133,7 @@ public class UserServiceImpl implements IUserService {
         Cookie refreshCookie = cookieService.findCookie("refreshToken", cookies);
 
         if(accessCookie == null && refreshCookie == null){
-            throw new BaseException(NOT_LOGIN_USER);
+            throw new AuthorizationException(NOT_LOGIN_USER);
         }
 
         String username = null;
@@ -148,7 +149,7 @@ public class UserServiceImpl implements IUserService {
 
         User user = userRepository.findByUsername(username);
         if(user == null){
-            throw new BaseException(USER_NOT_EXIST);
+            throw new AuthorizationException(USER_NOT_EXIST);
         }
         return user;
     }

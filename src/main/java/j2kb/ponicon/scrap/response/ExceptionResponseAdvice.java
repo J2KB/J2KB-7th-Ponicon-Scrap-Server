@@ -37,6 +37,13 @@ public class ExceptionResponseAdvice {
         return new BaseResponse(BaseExceptionStatus.SERVER_INTENER_ERROR);
     }
 
+    // 인증 관련 예외처리 핸들러
+    @ExceptionHandler(AuthorizationException.class)
+    @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
+    public BaseResponse handlerAuthorizationException(AuthorizationException e){
+        return new BaseResponse(e.getStatus());
+    }
+
     /**
      * UnknownHostException 예외처리 핸들러
      * @param e Exception

@@ -108,7 +108,7 @@ public class UserController {
 
         User user = userService.checkUserHasLogin(cookies);
 
-        return new BaseResponse<>(new LoginRes(user.getId()));
+        return new BaseResponse<>("로그인 된 유저입니다", new LoginRes(user.getId()));
     }
 
     /**

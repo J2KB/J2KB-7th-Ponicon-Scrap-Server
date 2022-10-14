@@ -28,6 +28,12 @@ public class BaseResponse<T> {
         this.result = result;
     }
 
+    public BaseResponse(String msg, T result){
+        this.code = 1000;
+        this.message = msg;
+        this.result = result;
+    }
+
     public BaseResponse(String msg){
         this.code = 1000;
         this.message = msg;
