@@ -12,9 +12,12 @@ public enum BaseExceptionStatus {
     DUPULICATE_USERNAME(3001, "아이디가 중복됩니다"),
     FAIL_ENCRYPT_PASSWORD(3002, "비밀번호 암호화에 실패했습니다"),
     LOGIN_USER_NOT_EXIST(3003, "해당하는 아이디 또는 비밀번호가 없습니다"),
-    KAKAO_GET_TOKEN_FAIL(33, "예상치 못한 이유로 카카오 토큰 받기에 실패했습니다"),
-    KAKAO_GET_USER_INFO_FAIL(33, "예상치 못한 이유로 카카오 사용자 정보 가져오기에 실패했습니다"),
-    KAKAO_LOGIN_FAIL(33,"예상치 못한 이유로 카카오 로그인에 실패했습니다"),
+    NOT_LOGIN_USER(3004,"로그인 하지 않은 유저입니다"),
+    USER_NOT_EXIST(3005,"해당하는 유저가 존재하지 않습니다"),
+
+    KAKAO_GET_TOKEN_FAIL(3101, "예상치 못한 이유로 카카오 토큰 받기에 실패했습니다"),
+    KAKAO_GET_USER_INFO_FAIL(3102, "예상치 못한 이유로 카카오 사용자 정보 가져오기에 실패했습니다"),
+    KAKAO_LOGIN_FAIL(3103,"예상치 못한 이유로 카카오 로그인에 실패했습니다"),
 
     CATEGORY_NAME_NULL(4444, "카테고리 이름을 입력해주세요"),
     CATEGORY_NAME_LENGTH(4444, "카테고리 이름이 2~60 글자 사이"),

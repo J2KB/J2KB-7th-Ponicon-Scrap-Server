@@ -36,6 +36,7 @@ public class ExceptionResponseAdvice {
         e.printStackTrace();
         return new BaseResponse(BaseExceptionStatus.SERVER_INTENER_ERROR);
     }
+
     /**
      * UnknownHostException 예외처리 핸들러
      * @param e Exception
@@ -75,4 +76,6 @@ public class ExceptionResponseAdvice {
         String errorReason = errors.get(0).getDefaultMessage();
         return new BaseResponse(2001, errorReason);
     }
+
+
 }

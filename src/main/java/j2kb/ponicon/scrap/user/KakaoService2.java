@@ -18,9 +18,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import static j2kb.ponicon.scrap.response.BaseExceptionStatus.KAKAO_GET_TOKEN_FAIL;
 import static j2kb.ponicon.scrap.response.BaseExceptionStatus.KAKAO_GET_USER_INFO_FAIL;
-import static j2kb.ponicon.scrap.utils.JwtData.KAKAO_REST_API_KEY;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +28,7 @@ public class KakaoService2 implements IKakaoService2{
     private final IJwtService jwtService;
     private final ICookieService cookieService;
     private final UserRepository userRepository;
+    private final IUserService userService;
 
     @Value("${server.host.api}")
     private String frontHost;
@@ -132,7 +131,7 @@ public class KakaoService2 implements IKakaoService2{
         }
     }
 
-    // user 조회
+    // 카카오로부터 user 조회
     private User getUser(String accessToken){
 
         KaKaoUser kakaoUser = getUserInfo(accessToken);
@@ -141,17 +140,9 @@ public class KakaoService2 implements IKakaoService2{
 
         // 해당하는 사용자가 없으면 자동으로 회원가입 진행
         if(user == null){
-            user = join(kakaoUser.getId(), kakaoUser.getName());
+            user = userService.joinBySocial(kakaoUser.getId(), kakaoUser.getName());
         }
 
-        return user;
-    }
-
-    // 회원가입
-    private User join(String username, String name){
-
-        User user = new User(username, username, name);
-        userRepository.save(user);
         return user;
     }
 }
