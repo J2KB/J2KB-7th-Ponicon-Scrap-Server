@@ -45,7 +45,7 @@ class LinkServiceTest {
     void linkSave() throws Exception {
 
         //given
-        PostUrlReq postUrlReq = new PostUrlReq("https://galid1.tistory.com/772");
+        PostUrlReq postUrlReq = new PostUrlReq("https://okky.kr/");
 
         Optional<User> tempUser = Optional.of(new User("phs", "1234", "phs"));
         User user = tempUser.get();
