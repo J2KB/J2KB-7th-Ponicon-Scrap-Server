@@ -1,12 +1,13 @@
 package j2kb.ponicon.scrap.utils;
 
-import io.jsonwebtoken.Header;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
+import j2kb.ponicon.scrap.response.AuthorizationException;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
+import static j2kb.ponicon.scrap.response.BaseExceptionStatus.JWT_TOKEN_EXPIRE;
+import static j2kb.ponicon.scrap.response.BaseExceptionStatus.JWT_TOKEN_INVALID;
 import static j2kb.ponicon.scrap.utils.JwtData.*;
 
 /**
@@ -41,5 +42,44 @@ public class JwtServiceImpl implements IJwtService{
                 .setSubject(username) //비공개 클래임을 설정할 수 있음. key-value
                 .signWith(SignatureAlgorithm.HS256, JWT_SECRET_KEY) //해싱 알고리즘과 시크릿 key 설정
                 .compact(); //jwt 토큰 생성
+    }
+
+    // jwt 유효 확인
+    public Jws<Claims> validationAndGetJwt(String jwtToken){
+        Jws<Claims> claims;
+
+        try{
+            claims = Jwts.parser()
+                    .setSigningKey(JWT_SECRET_KEY)
+                    .parseClaimsJws(jwtToken);
+
+            return claims;
+        } catch (ExpiredJwtException e){ //시간 만료
+            throw new AuthorizationException(JWT_TOKEN_EXPIRE);
+        } catch (Exception ignored) {
+            throw new AuthorizationException(JWT_TOKEN_INVALID);
+        }
+    }
+
+    // jwt에서 subject(username) 얻기
+    public String getUsernameByJwt(String jwtToken){
+        Jws<Claims> claims;
+        try{
+            claims = Jwts.parser()
+                    .setSigningKey(JWT_SECRET_KEY)
+                    .parseClaimsJws(jwtToken);
+
+            return claims.getBody().getSubject();
+
+        } catch (ExpiredJwtException e){ //시간 만료
+            throw new AuthorizationException(JWT_TOKEN_EXPIRE);
+        } catch (Exception ignored) {
+            throw new AuthorizationException(JWT_TOKEN_INVALID);
+        }
+    }
+
+    // jwt에서 subject(username) 얻기
+    public String getUsernameByJwt(Jws<Claims> claims){
+        return claims.getBody().getSubject();
     }
 }
