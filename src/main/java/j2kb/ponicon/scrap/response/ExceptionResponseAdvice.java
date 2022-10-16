@@ -68,7 +68,11 @@ public class ExceptionResponseAdvice {
     public BaseResponse ValidAnotaionHandler(BindingResult bindingResult){
 
         List<ObjectError> errors = bindingResult.getAllErrors();
+        for(ObjectError error: errors){
+            System.out.println("error.getDefaultMessage() = " + error.getDefaultMessage());
+        }
+        
         String errorReason = errors.get(0).getDefaultMessage();
-        return new BaseResponse(33, errorReason);
+        return new BaseResponse(2001, errorReason);
     }
 }

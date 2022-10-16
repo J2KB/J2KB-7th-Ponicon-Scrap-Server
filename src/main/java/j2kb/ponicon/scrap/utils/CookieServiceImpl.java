@@ -28,6 +28,12 @@ public class CookieServiceImpl implements ICookieService{
             cookie.setMaxAge(REFRESH_COOKIE_EXPIRE_SECOND);
             // 이렇게 maxAge 설정 안하면, 앱 끌시 쿠키 삭제됨.
         }
+        else {
+            cookie.setMaxAge(0);
+            // 자동로그인이 아니면 refreshh쿠키 안만듦.
+        }
+
+        System.out.println("cookie.getMaxAge() = " + cookie.getMaxAge());
 
         return cookie;
     }
@@ -51,5 +57,18 @@ public class CookieServiceImpl implements ICookieService{
         return cookie;
     }
 
+    // 쿠키 찾기
+    public Cookie findCookie(String key, Cookie[] cookies){
+        if(cookies == null){
+            return null;
+        }
 
+        for(Cookie cookie : cookies){
+            if(cookie.getName().equals(key)){
+                return cookie;
+            }
+        }
+
+        return null;
+    }
 }
