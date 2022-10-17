@@ -6,6 +6,8 @@ import j2kb.ponicon.scrap.data.lib.OpenGraph;
 import j2kb.ponicon.scrap.domain.Category;
 import j2kb.ponicon.scrap.domain.Link;
 import j2kb.ponicon.scrap.domain.User;
+import j2kb.ponicon.scrap.response.BaseException;
+import j2kb.ponicon.scrap.response.BaseExceptionStatus;
 import j2kb.ponicon.scrap.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +20,9 @@ import java.net.URL;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static j2kb.ponicon.scrap.response.BaseExceptionStatus.LINCK_AND_USER_NOT_CORRECK;
+import static j2kb.ponicon.scrap.response.BaseExceptionStatus.LINK_NOT_EXIST;
 
 @Service
 @RequiredArgsConstructor
@@ -131,5 +136,29 @@ public class LinkServiceImpl implements LinkService {
         log.info("page={}", String.valueOf(page));
         log.info("propertyName={}", propertyName);
         return page.getContent(propertyName);
+    }
+
+    // 자료 삭제
+    @Transactional
+    public void deleteLink(Long userId, Long linkId){
+        Link link = findLinkOne(linkId);
+
+//        // 해당하는 자료가 없으면
+//        if(link == null){
+//            throw new BaseException(LINK_NOT_EXIST);
+//        }
+
+        // 해당 유저가 만든 자료가 아니라면
+        if(!link.checkLinkAndUserCorrect(userId)){
+            throw new BaseException(LINCK_AND_USER_NOT_CORRECK);
+        }
+
+        linkRepository.delete(link);
+    }
+
+    @Transactional(readOnly = true)
+    public Link findLinkOne(Long linkId){
+        Optional<Link> optLink = linkRepository.findById(linkId);
+        return optLink.orElseThrow(() -> new BaseException(LINK_NOT_EXIST));
     }
 }

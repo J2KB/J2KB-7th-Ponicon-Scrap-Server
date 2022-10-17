@@ -10,4 +10,6 @@ public interface LinkService {
     public GetDataListRes links(Long userId, Long categoryId, String seq);
 
     public GetDataListRes allLinks(Long userId);
+
+    public void deleteLink(Long userId, Long linkId);
 }

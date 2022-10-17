@@ -64,4 +64,13 @@ public class LinkController {
         GetDataListRes list = linkService.allLinks(userId);
         return new BaseResponse<>(list);
     }
+
+    // 링크 삭제
+    @DeleteMapping("/{user_id}")
+    public BaseResponse deleteData(@PathVariable(name = "user_id") Long userId, @RequestParam(name = "link_id") Long linkId){
+
+        linkService.deleteLink(userId, linkId);
+
+        return new BaseResponse("자료 삭제에 성공했습니다");
+    }
 }

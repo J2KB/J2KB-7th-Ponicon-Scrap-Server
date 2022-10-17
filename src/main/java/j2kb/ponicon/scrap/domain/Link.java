@@ -79,4 +79,16 @@ public class Link {
                 .imgUrl(imgUrl)
                 .build();
     }
+
+    // 링크id와 유저id가 일치하는지
+    public boolean checkLinkAndUserCorrect(Long userId){
+        User user = this.user;
+
+        if(user.getId().equals(userId)){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }
