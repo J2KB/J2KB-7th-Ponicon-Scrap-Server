@@ -1,9 +1,6 @@
 package j2kb.ponicon.scrap.category;
 
-import j2kb.ponicon.scrap.category.dto.CategoryListRes;
-import j2kb.ponicon.scrap.category.dto.PostCategorySaveRes;
-import j2kb.ponicon.scrap.category.dto.GetCategoryListRes;
-import j2kb.ponicon.scrap.category.dto.PostCategorySaveReq;
+import j2kb.ponicon.scrap.category.dto.*;
 import j2kb.ponicon.scrap.data.LinkRepository;
 import j2kb.ponicon.scrap.domain.Category;
 import j2kb.ponicon.scrap.domain.User;
@@ -87,5 +84,27 @@ public class CategoryServiceImpl implements CategoryService{
             new Category(categoryNames.get(i), i, user);
             //따로 카테고리 저장 안하더라도 Cascade 설정 해둬서 자동으로 insert 됨.
         }
+    }
+    public DeleteCategoryRes categoryDelete(Long categoryId) {
+        Long deleteCategory = categoryRepository.deleteAllById(categoryId);
+        DeleteCategoryRes deleteCategoryRes = DeleteCategoryRes.builder().categoryId(categoryId).build();
+        return deleteCategoryRes;
+    }
+
+    @Transactional
+    @Override
+    public UpdateCategoryRes updateCategory(UpdateCategoryReq updateCategoryReq, Long categoryId) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> {
+                return new IllegalArgumentException("수정에 실패하였습니다.");
+        });
+
+        String name = updateCategoryReq.getName();
+
+        category.updateCategory(name);
+
+        UpdateCategoryRes updateCategoryRes = UpdateCategoryRes.builder().categoryId(categoryId).build();
+
+        return updateCategoryRes;
     }
 }

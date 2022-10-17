@@ -1,8 +1,6 @@
 package j2kb.ponicon.scrap.category;
 
-import j2kb.ponicon.scrap.category.dto.GetCategoryListRes;
-import j2kb.ponicon.scrap.category.dto.PostCategorySaveReq;
-import j2kb.ponicon.scrap.category.dto.PostCategorySaveRes;
+import j2kb.ponicon.scrap.category.dto.*;
 import j2kb.ponicon.scrap.domain.User;
 
 public interface CategoryService {
@@ -11,4 +9,8 @@ public interface CategoryService {
     public GetCategoryListRes categories(Long userId);
 
     public void saveBasicCategory(User user);
+
+    public DeleteCategoryRes categoryDelete(Long categoryId);
+
+    public UpdateCategoryRes updateCategory(UpdateCategoryReq updateCategoryReq, Long categoryId);
 }

@@ -3,9 +3,7 @@ package j2kb.ponicon.scrap.category;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import j2kb.ponicon.scrap.category.dto.PostCategorySaveRes;
-import j2kb.ponicon.scrap.category.dto.GetCategoryListRes;
-import j2kb.ponicon.scrap.category.dto.PostCategorySaveReq;
+import j2kb.ponicon.scrap.category.dto.*;
 import j2kb.ponicon.scrap.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -48,5 +46,31 @@ public class CategoryController {
     public BaseResponse<GetCategoryListRes> categoryListByUser(@ApiParam(value = "User의 id 값", example = "2") @RequestParam("id")Long userId) {
         GetCategoryListRes list = categoryService.categories(userId);
         return new BaseResponse<>(list);
+    }
+    /**
+     * 카테고리 삭제 API
+     * UserId를 RequestParam으로 받아서 categoryService.DeleteCategory 후 카테고리를 삭제하는 역할을 합니다.
+     * [GET] /category?category=
+     * @param categoryId
+     * @author 박현성
+     */
+    @ApiOperation(value = "카테고리 삭제 API", notes = "CategoryId를 RequestParam으로 받아서 DeleteCategory 후 카테고리를 삭제하는 역할을 합니다. /category/category=")
+    @DeleteMapping()
+    public BaseResponse<DeleteCategoryRes> deleteCategory(@ApiParam(value = "Category의 id 값", example = "2") @RequestParam("category")Long categoryId) {
+        DeleteCategoryRes deleteCategoryRes = categoryService.categoryDelete(categoryId);
+        return new BaseResponse<>(deleteCategoryRes);
+    }
+    /**
+     * 카테고리 수정 API
+     * UserId를 RequestParam으로 받아서 categoryService.DeleteCategory 후 카테고리를 수정하는 역할을 합니다.
+     * [PUT] /category?category=
+     * @param categoryId
+     * @author 박현성
+     */
+    @ApiOperation(value = "카테고리 수정 API", notes = "CategoryId를 RequestParam으로 받아서 UpdateCategory 후 카테고리를 삭제하는 역할을 합니다. /category/category=")
+    @PutMapping()
+    public BaseResponse<UpdateCategoryRes> updateCategory(@ApiParam(value = "Category의 id 값", example = "2") @RequestBody @Valid UpdateCategoryReq updateCategoryReq, @RequestParam("category")Long categoryId) {
+        UpdateCategoryRes updateCategoryRes = categoryService.updateCategory(updateCategoryReq,categoryId);
+        return new BaseResponse<>(updateCategoryRes);
     }
 }
