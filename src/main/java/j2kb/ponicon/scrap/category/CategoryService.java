@@ -10,7 +10,7 @@ public interface CategoryService {
 
     public void saveBasicCategory(User user);
 
-    public DeleteCategoryRes categoryDelete(Long categoryId);
+    public void categoryDelete(Long categoryId);
 
     public UpdateCategoryRes updateCategory(UpdateCategoryReq updateCategoryReq, Long categoryId);
 }

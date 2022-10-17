@@ -85,12 +85,14 @@ public class CategoryServiceImpl implements CategoryService{
             //따로 카테고리 저장 안하더라도 Cascade 설정 해둬서 자동으로 insert 됨.
         }
     }
-    public DeleteCategoryRes categoryDelete(Long categoryId) {
+    // 카테고리 삭제
+    @Transactional
+    public void categoryDelete(Long categoryId) {
         Long deleteCategory = categoryRepository.deleteAllById(categoryId);
-        DeleteCategoryRes deleteCategoryRes = DeleteCategoryRes.builder().categoryId(categoryId).build();
-        return deleteCategoryRes;
+//        DeleteCategoryRes deleteCategoryRes = DeleteCategoryRes.builder().categoryId(categoryId).build();
+//        return deleteCategoryRes;
     }
-
+    // 카테고리 수정
     @Transactional
     @Override
     public UpdateCategoryRes updateCategory(UpdateCategoryReq updateCategoryReq, Long categoryId) {
