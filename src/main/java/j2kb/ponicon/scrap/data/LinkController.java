@@ -4,12 +4,13 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Parameter;
-import j2kb.ponicon.scrap.data.dto.GetDataListRes;
-import j2kb.ponicon.scrap.data.dto.PostDataSaveRes;
-import j2kb.ponicon.scrap.data.dto.PostUrlReq;
+import j2kb.ponicon.scrap.data.dto.*;
+import j2kb.ponicon.scrap.domain.Link;
 import j2kb.ponicon.scrap.response.BaseResponse;
+import j2kb.ponicon.scrap.response.validationSequence.ValidationSequence;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -21,7 +22,7 @@ import javax.validation.Valid;
 @RequestMapping("/data")
 public class LinkController {
 
-    private final LinkServiceImpl linkService;
+    private final LinkService linkService;
 
     /**
      * 링크 등록 API
@@ -67,10 +68,32 @@ public class LinkController {
 
     // 링크 삭제
     @DeleteMapping("/{user_id}")
-    public BaseResponse deleteData(@PathVariable(name = "user_id") Long userId, @RequestParam(name = "link_id") Long linkId){
+    public BaseResponse deleteLink(@PathVariable(name = "user_id") Long userId, @RequestParam(name = "link_id") Long linkId){
 
         linkService.deleteLink(userId, linkId);
 
         return new BaseResponse("자료 삭제에 성공했습니다");
+    }
+
+    // 링크 수정 (카테고리 수정)
+    @PatchMapping("/{user_id}")
+    public BaseResponse<PatchLinkRes> updateLink(@PathVariable(name = "user_id") Long userId, @RequestParam(name = "link_id") Long linkId, @Validated(ValidationSequence.class) @RequestBody PatchLinkReq patchLinkReq){
+
+//        System.out.println("userId = " + userId);
+//        System.out.println("linkId = " + linkId);
+//        System.out.println("patchLinkReq = " + patchLinkReq.getCategoryId());
+
+        Link updateLink = linkService.updateLink(userId, linkId, patchLinkReq);
+
+        PatchLinkRes patchLinkRes = PatchLinkRes.builder()
+                .linkId(updateLink.getId())
+                .categoryId(updateLink.getCategory().getId())
+                .url(updateLink.getLink())
+                .title(updateLink.getTitle())
+                .imgUrl(updateLink.getImgUrl())
+                .domain(updateLink.getDomain())
+                .build();
+
+        return new BaseResponse<>("자료 수정에 성공했습니다", patchLinkRes);
     }
 }

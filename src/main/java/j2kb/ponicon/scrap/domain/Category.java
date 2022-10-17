@@ -64,4 +64,8 @@ public class Category {
                 .order(order)
                 .build();
     }
+
+    public boolean checkCategoryAndUserCorrect(Long userId){
+        return user.getId().equals(userId);
+    }
 }

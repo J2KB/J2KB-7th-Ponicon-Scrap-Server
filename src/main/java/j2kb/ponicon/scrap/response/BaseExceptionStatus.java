@@ -23,8 +23,12 @@ public enum BaseExceptionStatus {
     CATEGORY_NAME_LENGTH(4444, "카테고리 이름이 2~60 글자 사이"),
     DATA_NAME_INCORRECTION(44444, "링크가 잘못되었습니다."),
     MYPAGE_USER_NOT_FOUND(44444, "해당 사용자를 찾을 수 없습니다."),
+
+    CATEGORY_NOT_EXIST(4444, "해당 카테고리자 존재하지 않습니다"),
     LINK_NOT_EXIST(4444, "해당 자료가 존재하지 않습니다"),
-    LINCK_AND_USER_NOT_CORRECK(4444, "해당 유저가 만든 자료가 아닙니다"),
+    LINK_AND_USER_NOT_CORRECT(4444, "해당 유저가 만든 자료가 아닙니다"),
+    CATEGORY_AND_USER_NOT_CORRECT(4444, "해당 유저가 만든 카테고리가 아닙니다"),
+
 
 
     // 쿠키, 토큰, 인증 관련은 5000번 에러
