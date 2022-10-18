@@ -121,13 +121,14 @@ public class LinkServiceImpl implements LinkService {
 
         postDataSaveReq = new PostDataSaveReq();
         postDataSaveReq.setTitle(getContent(page, "title"));
+        postDataSaveReq.setLink(getContent(page, "url"));
         postDataSaveReq.setImgUrl(getContent(page, "image"));
-        if(getContent(page, "url") == null) {
-            postDataSaveReq.setLink(baseURL);
-        }
-        else {
-            postDataSaveReq.setLink(getContent(page, "url"));
-        }
+//        if(getContent(page, "url") == null) {
+//            postDataSaveReq.setLink(baseURL);
+//        }
+//        else {
+//            postDataSaveReq.setLink(getContent(page, "url"));
+//        }
         log.info(String.valueOf(postDataSaveReq));
 
         return postDataSaveReq;

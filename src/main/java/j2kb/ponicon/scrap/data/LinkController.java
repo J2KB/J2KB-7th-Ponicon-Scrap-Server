@@ -19,7 +19,7 @@ import javax.validation.Valid;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/data")
+@RequestMapping("/auth/data")
 public class LinkController {
 
     private final LinkService linkService;

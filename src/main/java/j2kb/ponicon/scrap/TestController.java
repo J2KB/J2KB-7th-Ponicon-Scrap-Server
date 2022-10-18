@@ -10,6 +10,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @RestController
 public class TestController {
@@ -28,5 +30,10 @@ public class TestController {
     @GetMapping("/cicd")
     public String authTest2(){
         return "ci/cd 테스트1000";
+    }
+
+    @GetMapping("/time")
+    public String timeTest(){
+        return LocalDateTime.now().toString();
     }
 }
