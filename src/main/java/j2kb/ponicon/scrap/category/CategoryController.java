@@ -13,7 +13,7 @@ import javax.validation.Valid;
 @Api(tags = "카테고리와 관련된 API")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/category")
+@RequestMapping("/auth/category")
 public class CategoryController {
 
     // @Autowired 보다는 생성자 주입 방식으로 DI를 진행했습니다.
