@@ -64,8 +64,13 @@ public class Category {
                 .order(order)
                 .build();
     }
+
+    public boolean checkCategoryAndUserCorrect(Long userId){
+        return user.getId().equals(userId);
+        
     /* 카테고리 업데이트하는 메소드 */
     public void updateCategory(String name){
         this.name = name;
+
     }
 }

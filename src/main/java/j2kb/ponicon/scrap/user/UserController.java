@@ -8,6 +8,7 @@ import j2kb.ponicon.scrap.domain.User;
 import j2kb.ponicon.scrap.response.BaseResponse;
 import j2kb.ponicon.scrap.response.validationSequence.ValidationSequence;
 import j2kb.ponicon.scrap.user.dto.*;
+import j2kb.ponicon.scrap.utils.ICookieService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -76,6 +77,40 @@ public class UserController {
         return new BaseResponse<>(new LoginRes(user.getId()));
     }
 
+    // 통합 로그아웃
+    // [GET] user/logout
+
+    @ApiOperation(value = "통합 로그아웃", notes = "user/logout")
+    @GetMapping("/logout")
+    public BaseResponse logout(HttpServletResponse response){
+
+        userService.logout(response);
+
+        return new BaseResponse("로그아웃에 성공했습니다");
+    }
+    // 카카오 로그인 버전 2
+
+    @PostMapping("login/kakao/v2")
+    public BaseResponse<LoginRes> kakaoLogin2(@Validated(ValidationSequence.class) @RequestBody PostKakaoLoign2Req postKakaoLoign2Req, HttpServletResponse response){
+
+        User user = kakaoService2.login(postKakaoLoign2Req.getAccessToken(), response);
+
+        LoginRes loginRes = new LoginRes(user.getId());
+
+        return new BaseResponse<>(loginRes);
+    }
+
+    // 로그인 된 유저인지 확인
+    @GetMapping("/login")
+    public BaseResponse<LoginRes> checkIsLogin(HttpServletRequest request){
+
+        Cookie[] cookies = request.getCookies();
+
+        User user = userService.checkUserHasLogin(cookies);
+
+        return new BaseResponse<>("로그인 된 유저입니다", new LoginRes(user.getId()));
+    }
+
     /**
      * 카카오 로그인 리다이렉션 url
      * [GET] user/login/kakao?code=
@@ -98,28 +133,6 @@ public class UserController {
         User user = kakaoService.login(code, response);
 
         return new BaseResponse<>(new LoginRes(user.getId()));
-    }
-
-    // 통합 로그아웃
-    // [GET] user/logout
-    @ApiOperation(value = "통합 로그아웃", notes = "user/logout")
-    @GetMapping("/logout")
-    public BaseResponse logout(HttpServletResponse response){
-
-        userService.logout(response);
-
-        return new BaseResponse("로그아웃에 성공했습니다");
-    }
-
-    // 카카오 로그인 버전 2
-    @PostMapping("login/kakao/v2")
-    public BaseResponse<LoginRes> kakaoLogin2(@Validated(ValidationSequence.class) @RequestBody PostKakaoLoign2Req postKakaoLoign2Req, HttpServletResponse response){
-
-        User user = kakaoService2.login(postKakaoLoign2Req.getAccessToken(), response);
-
-        LoginRes loginRes = new LoginRes(user.getId());
-
-        return new BaseResponse<>(loginRes);
     }
 
 

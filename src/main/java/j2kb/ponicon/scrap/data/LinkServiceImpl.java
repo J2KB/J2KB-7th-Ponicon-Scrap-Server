@@ -1,11 +1,13 @@
 package j2kb.ponicon.scrap.data;
 
 import j2kb.ponicon.scrap.category.CategoryRepository;
+import j2kb.ponicon.scrap.category.CategoryService;
 import j2kb.ponicon.scrap.data.dto.*;
 import j2kb.ponicon.scrap.data.lib.OpenGraph;
 import j2kb.ponicon.scrap.domain.Category;
 import j2kb.ponicon.scrap.domain.Link;
 import j2kb.ponicon.scrap.domain.User;
+import j2kb.ponicon.scrap.response.BaseException;
 import j2kb.ponicon.scrap.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +21,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static j2kb.ponicon.scrap.response.BaseExceptionStatus.*;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -29,6 +33,8 @@ public class LinkServiceImpl implements LinkService {
     private final UserRepository userRepository;
 
     private final CategoryRepository categoryRepository;
+
+    private final CategoryService categoryService;
 
     @Transactional
     public PostDataSaveRes linkSave(PostUrlReq postUrlReq, Long userId, Long categoryId) throws Exception {
@@ -132,5 +138,48 @@ public class LinkServiceImpl implements LinkService {
         log.info("page={}", String.valueOf(page));
         log.info("propertyName={}", propertyName);
         return page.getContent(propertyName);
+    }
+
+    // 자료 삭제
+    @Transactional
+    public void deleteLink(Long userId, Long linkId){
+        Link link = findLinkOne(linkId);
+
+        // 해당 유저가 만든 자료가 아니라면
+        if(!link.checkLinkAndUserCorrect(userId)){
+            throw new BaseException(LINK_AND_USER_NOT_CORRECT);
+        }
+
+        linkRepository.delete(link);
+    }
+
+    @Transactional
+    public Link updateLink(Long userId, Long linkId, PatchLinkReq patchLinkReq){
+
+        Link link = findLinkOne(linkId);
+        // 해당 유저가 만든 자료가 아니라면
+        if(!link.checkLinkAndUserCorrect(userId)){
+            throw new BaseException(LINK_AND_USER_NOT_CORRECT);
+        }
+
+        // 변경된 카테고리
+        Category changedCategory = categoryService.findCategoryOne(patchLinkReq.getCategoryId());
+        // 해당 유저가 만든 카테고리가 아니라면
+        if(!changedCategory.checkCategoryAndUserCorrect(userId)){
+            throw new BaseException(CATEGORY_AND_USER_NOT_CORRECT);
+        }
+
+        link.setCategory(changedCategory);
+
+        linkRepository.save(link);
+
+        return link;
+    }
+
+    @Transactional(readOnly = true)
+    public Link findLinkOne(Long linkId){
+        Optional<Link> optLink = linkRepository.findById(linkId);
+        // 해당 하는 자료가 없으면 에러 발생시키기.
+        return optLink.orElseThrow(() -> new BaseException(LINK_NOT_EXIST));
     }
 }

@@ -3,7 +3,9 @@ package j2kb.ponicon.scrap.category;
 import j2kb.ponicon.scrap.category.dto.*;
 import j2kb.ponicon.scrap.data.LinkRepository;
 import j2kb.ponicon.scrap.domain.Category;
+import j2kb.ponicon.scrap.domain.Link;
 import j2kb.ponicon.scrap.domain.User;
+import j2kb.ponicon.scrap.response.BaseException;
 import j2kb.ponicon.scrap.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static j2kb.ponicon.scrap.response.BaseExceptionStatus.CATEGORY_NOT_EXIST;
+import static j2kb.ponicon.scrap.response.BaseExceptionStatus.LINK_NOT_EXIST;
 
 
 @Service
@@ -85,6 +90,14 @@ public class CategoryServiceImpl implements CategoryService{
             //따로 카테고리 저장 안하더라도 Cascade 설정 해둬서 자동으로 insert 됨.
         }
     }
+
+
+    @Transactional(readOnly = true)
+    public Category findCategoryOne(Long categoryId){
+        Optional<Category> optLink = categoryRepository.findById(categoryId);
+        // 해당 하는 자료가 없으면 에러 발생시키기.
+        return optLink.orElseThrow(() -> new BaseException(CATEGORY_NOT_EXIST));
+
     // 카테고리 삭제
     @Transactional
     public void categoryDelete(Long categoryId) {

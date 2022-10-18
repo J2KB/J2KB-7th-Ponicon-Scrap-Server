@@ -4,6 +4,7 @@ import j2kb.ponicon.scrap.category.CategoryRepository;
 import j2kb.ponicon.scrap.category.CategoryServiceImpl;
 import j2kb.ponicon.scrap.domain.Category;
 import j2kb.ponicon.scrap.domain.User;
+import j2kb.ponicon.scrap.response.AuthorizationException;
 import j2kb.ponicon.scrap.response.BaseException;
 import j2kb.ponicon.scrap.response.BaseExceptionStatus;
 import j2kb.ponicon.scrap.user.dto.PostJoinReq;
@@ -20,8 +21,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
-import static j2kb.ponicon.scrap.response.BaseExceptionStatus.DUPULICATE_USERNAME;
-import static j2kb.ponicon.scrap.response.BaseExceptionStatus.LOGIN_USER_NOT_EXIST;
+import static j2kb.ponicon.scrap.response.BaseExceptionStatus.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -39,7 +39,7 @@ public class UserServiceImpl implements IUserService {
      * @param postJoinReq 유저에 대한 정보
      */
     @Transactional
-    public void join(PostJoinReq postJoinReq){
+    public User join(PostJoinReq postJoinReq){
 
         String username = postJoinReq.getUsername(); // 아이디
         String pw = postJoinReq.getPassword(); // 비번
@@ -61,6 +61,20 @@ public class UserServiceImpl implements IUserService {
 
         // 유저 저장
         userRepository.save(user);
+
+        return user;
+    }
+
+    // 소셜 로그인 유저의 회원가입
+    public User joinBySocial(String username, String name){
+
+        User user = new User(username, username, name);
+
+        // 기본 카테고리 생성
+        categoryService.saveBasicCategory(user);
+
+        userRepository.save(user);
+        return user;
     }
 
     /**
@@ -110,6 +124,33 @@ public class UserServiceImpl implements IUserService {
         response.addCookie(accessCookie);
         response.addCookie(refreshCookie);
 
+        return user;
+    }
+
+    // 로그인 된 유저인지 확인
+    public User checkUserHasLogin(Cookie[] cookies){
+        Cookie accessCookie = cookieService.findCookie("accessToken", cookies);
+        Cookie refreshCookie = cookieService.findCookie("refreshToken", cookies);
+
+        if(accessCookie == null && refreshCookie == null){
+            throw new AuthorizationException(NOT_LOGIN_USER);
+        }
+
+        String username = null;
+        String token;
+        if(accessCookie != null){
+            token = accessCookie.getValue();
+            username = jwtService.getUsernameByJwt(token);
+        }
+        else if(refreshCookie != null){
+            token = refreshCookie.getValue();
+            username = jwtService.getUsernameByJwt(token);
+        }
+
+        User user = userRepository.findByUsername(username);
+        if(user == null){
+            throw new AuthorizationException(USER_NOT_EXIST);
+        }
         return user;
     }
 
