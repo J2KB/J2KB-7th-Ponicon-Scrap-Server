@@ -93,11 +93,12 @@ public class CategoryServiceImpl implements CategoryService{
 
 
     @Transactional(readOnly = true)
-    public Category findCategoryOne(Long categoryId){
+    public Category findCategoryOne(Long categoryId) {
         Optional<Category> optLink = categoryRepository.findById(categoryId);
         // 해당 하는 자료가 없으면 에러 발생시키기.
         return optLink.orElseThrow(() -> new BaseException(CATEGORY_NOT_EXIST));
-
+    }
+    
     // 카테고리 삭제
     @Transactional
     public void categoryDelete(Long categoryId) {
