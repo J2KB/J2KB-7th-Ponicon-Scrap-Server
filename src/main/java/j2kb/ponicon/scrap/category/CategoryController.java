@@ -56,8 +56,9 @@ public class CategoryController {
      */
     @ApiOperation(value = "카테고리 삭제 API", notes = "CategoryId를 RequestParam으로 받아서 DeleteCategory 후 카테고리를 삭제하는 역할을 합니다. /category/category=")
     @DeleteMapping()
-    public void deleteCategory(@ApiParam(value = "Category의 id 값", example = "2") @RequestParam("category")Long categoryId) {
+    public BaseResponse deleteCategory(@ApiParam(value = "Category의 id 값", example = "2") @RequestParam("category")Long categoryId) {
         categoryService.categoryDelete(categoryId);
+        return new BaseResponse("카테고리 삭제에 성공했습니다");
     }
     /**
      * 카테고리 수정 API

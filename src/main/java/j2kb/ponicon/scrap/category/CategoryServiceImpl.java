@@ -111,7 +111,7 @@ public class CategoryServiceImpl implements CategoryService{
     public UpdateCategoryRes updateCategory(UpdateCategoryReq updateCategoryReq, Long categoryId) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> {
-                return new IllegalArgumentException("수정에 실패하였습니다.");
+                return new BaseException(CATEGORY_NOT_EXIST);
         });
 
         String name = updateCategoryReq.getName();
