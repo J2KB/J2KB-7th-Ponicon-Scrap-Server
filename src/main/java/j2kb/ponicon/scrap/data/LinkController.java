@@ -42,7 +42,7 @@ public class LinkController {
     /**
      * 링크 조회 API
      * UserId와 categoryId를 RequestParam으로 받아서 linkService.links 후 링크를 조회하는 역할을 합니다.
-     * [GET] /category?id=&category=&seq=
+     * [GET] /category?id=&category=
      * @param userId, categoryId
      * @author 박현성
      */

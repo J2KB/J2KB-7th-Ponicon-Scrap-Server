@@ -59,12 +59,13 @@ public class LinkServiceImpl implements LinkService {
         String title = postDataSaveReq.getTitle();
         String imgUrl = postDataSaveReq.getImgUrl();
         String domain = SearchDomain(link);
+
         Link linkSave = new Link(link, title, imgUrl, category, user, domain);
         Link saveLink = linkRepository.save(linkSave);
         PostDataSaveRes postDataSaveRes = PostDataSaveRes.builder().linkId(saveLink.getId()).build();
         return postDataSaveRes;
     }
-
+    // 도메인을 뽑아내는 메소드
     private String SearchDomain(String url) throws MalformedURLException {
         if(url.contains("tistory")) {
             return "tistory.com";
@@ -75,6 +76,7 @@ public class LinkServiceImpl implements LinkService {
             }
             URL netUrl = new URL(url);
             String host = netUrl.getHost();
+
             if(host.startsWith("www")){
                 host = host.substring("www".length()+1);
                 return host;
@@ -112,14 +114,14 @@ public class LinkServiceImpl implements LinkService {
 
         postDataSaveReq = new PostDataSaveReq();
         postDataSaveReq.setTitle(getContent(page, "title"));
-        postDataSaveReq.setLink(getContent(page, "url"));
         postDataSaveReq.setImgUrl(getContent(page, "image"));
-//        if(getContent(page, "url") == null) {
-//            postDataSaveReq.setLink(baseURL);
-//        }
-//        else {
-//            postDataSaveReq.setLink(getContent(page, "url"));
-//        }
+
+        if(getContent(page, "url") == null) {
+            postDataSaveReq.setLink(baseURL);
+        }
+        else {
+            postDataSaveReq.setLink(getContent(page, "url"));
+        }
         log.info(String.valueOf(postDataSaveReq));
 
         return postDataSaveReq;

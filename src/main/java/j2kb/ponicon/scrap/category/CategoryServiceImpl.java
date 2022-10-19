@@ -3,7 +3,6 @@ package j2kb.ponicon.scrap.category;
 import j2kb.ponicon.scrap.category.dto.*;
 import j2kb.ponicon.scrap.data.LinkRepository;
 import j2kb.ponicon.scrap.domain.Category;
-import j2kb.ponicon.scrap.domain.Link;
 import j2kb.ponicon.scrap.domain.User;
 import j2kb.ponicon.scrap.response.BaseException;
 import j2kb.ponicon.scrap.user.UserRepository;
@@ -65,15 +64,15 @@ public class CategoryServiceImpl implements CategoryService{
          * 다시 list.get(i).getCategoryId로 카테고리 id를 가져온다.
          * 문제점 해당하는 카테고리의 아이디만큼 카운트 쿼리문이 실행된다.
          */
-        //int count = list.size();
+        int count = list.size();
 
-        // for each
-        for(CategoryListRes i : list) {
-            i.setNumOfLink(linkRepository.countByCategoryIdAndUserId(i.getCategoryId(), userId));
+        // 모든 자료 갯수 구해서 set 해준다.
+        list.get(0).setNumOfLink(linkRepository.countByUserId(userId));
+
+        // 카테고리에 속한 자료 갯수를 구한다.
+        for(int i = 1; i < count; i++) {
+            list.get(i).setNumOfLink(linkRepository.countByCategoryIdAndUserId(list.get(i).getCategoryId(), userId));
         }
-//        for(int i=0; i< count; i++) {
-//            list.get(i).setNumOfLink(linkRepository.countByCategoryId(list.get(i).getCategoryId()));
-//        }
 
         // list를 builder 패턴으로 객체 생성
         GetCategoryListRes getCategoryListRes = GetCategoryListRes.builder().categories(list).build();
