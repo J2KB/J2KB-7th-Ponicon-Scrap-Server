@@ -9,7 +9,7 @@ import lombok.*;
 public class CategoryListRes {
     private Long categoryId;
     private String name;
-    private int numOfLink; // 일단 보류
+    private int numOfLink;
     private int order;
 
     @Builder

@@ -65,7 +65,7 @@ public class CategoryServiceImpl implements CategoryService{
          * 문제점 해당하는 카테고리의 아이디만큼 카운트 쿼리문이 실행된다.
          */
         int count = list.size();
-
+        System.out.println("count = " + count);
         // 모든 자료 갯수 구해서 set 해준다.
         list.get(0).setNumOfLink(linkRepository.countByUserId(userId));
 
@@ -121,5 +121,20 @@ public class CategoryServiceImpl implements CategoryService{
         UpdateCategoryRes updateCategoryRes = UpdateCategoryRes.builder().categoryId(categoryId).build();
 
         return updateCategoryRes;
+    }
+    // 카테고리 순서 수정
+    @Override
+    @Transactional
+    public void updateIdxCategory(UpdateIdxCategoryReq updateIdxCategoryReq, Long userId) {
+        List<Category> list = categoryRepository.findByUserId(userId, Sort.by(Sort.Direction.ASC, "order"));
+
+        int startIdx = updateIdxCategoryReq.getStartIdx();  // 5
+        int endIdx = updateIdxCategoryReq.getEndIdx();  // 2
+
+        list.get(startIdx).updateOrder(endIdx);
+
+        for(int i = endIdx; i < startIdx; i++) {  // 2  5
+            list.get(i).updateOrder(i + 1);
+        }
     }
 }

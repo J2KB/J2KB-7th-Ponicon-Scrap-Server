@@ -20,4 +20,6 @@ public interface CategoryService {
 
     public UpdateCategoryRes updateCategory(UpdateCategoryReq updateCategoryReq, Long categoryId);
 
+    public void updateIdxCategory(UpdateIdxCategoryReq updateIdxCategoryReq, Long userId);
+
 }
