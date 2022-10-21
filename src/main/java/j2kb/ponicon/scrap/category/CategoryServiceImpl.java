@@ -101,9 +101,7 @@ public class CategoryServiceImpl implements CategoryService{
     // 카테고리 삭제
     @Transactional
     public void categoryDelete(Long categoryId) {
-        Long deleteCategory = categoryRepository.deleteAllById(categoryId);
-//        DeleteCategoryRes deleteCategoryRes = DeleteCategoryRes.builder().categoryId(categoryId).build();
-//        return deleteCategoryRes;
+        categoryRepository.deleteAllById(categoryId);
     }
     // 카테고리 수정
     @Transactional
@@ -128,12 +126,12 @@ public class CategoryServiceImpl implements CategoryService{
     public void updateIdxCategory(UpdateIdxCategoryReq updateIdxCategoryReq, Long userId) {
         List<Category> list = categoryRepository.findByUserId(userId, Sort.by(Sort.Direction.ASC, "order"));
 
-        int startIdx = updateIdxCategoryReq.getStartIdx();  // 5
-        int endIdx = updateIdxCategoryReq.getEndIdx();  // 2
+        int startIdx = updateIdxCategoryReq.getStartIdx();
+        int endIdx = updateIdxCategoryReq.getEndIdx();
 
         list.get(startIdx).updateOrder(endIdx);
 
-        for(int i = endIdx; i < startIdx; i++) {  // 2  5
+        for(int i = endIdx; i < startIdx; i++) {
             list.get(i).updateOrder(i + 1);
         }
     }
