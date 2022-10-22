@@ -32,7 +32,7 @@ spring:
 jasypt:
   encryptor:
     bean: jasyptStringEncryptor
-    password : 5678
+#    password : 5678
 
 logging.level:
   org.hibernate.type.descriptor.sql: trace
