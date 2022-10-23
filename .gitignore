@@ -65,5 +65,5 @@ hs_err_pid*
 
 # JwtData
 src/main/java/j2kb/ponicon/scrap/utils/JwtData.java
-#application-dev.yml
+application-dev.yml
 #application-prod.yml
