@@ -1,3 +1,7 @@
+Spring:
+  profiles:
+    active:
+      - prod
 server:
   port: 8081
   host:
