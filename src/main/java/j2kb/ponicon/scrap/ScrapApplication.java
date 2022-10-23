@@ -10,9 +10,6 @@ import java.util.Date;
 public class ScrapApplication {
 
 	public static void main(String[] args) {
-//		new SpringApplicationBuilder(ServiceInitializer.class)
-//				.initializers(new ServiceInitializer())
-//				.run(args);
 		SpringApplication.run(ScrapApplication.class, args);
 	}
 

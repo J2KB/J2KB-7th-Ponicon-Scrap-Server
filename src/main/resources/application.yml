@@ -1,4 +1,4 @@
-Spring:
-  profiles:
-    active:
-      - prod
+#Spring:
+#  profiles:
+#    active:
+#      - prod
