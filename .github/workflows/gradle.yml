@@ -36,7 +36,7 @@ jobs:
     - name: Docker build
       run: |
        docker login -u ${{ secrets.USERNAME }} -p ${{ secrets.PASSWORD }}
-       docker build -t spring-cicd2 .
+       docker build --build-arg Spring.profiles.active=dev -t spring-cicd2 .
        docker tag spring-cicd2 lusida0131/spring-cicd2:latest
        docker push lusida0131/spring-cicd2:latest
   deploy:
