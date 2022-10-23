@@ -11,7 +11,7 @@ spring:
       matching-strategy: ant_path_matcher
   datasource:
     url: ${url} # ENC(d9a6FW0C4hoxeMUmQuVMbyUnRmJbBLKnWmKERPABNsJPg49Lh6N27hZ4XqlaJuc/eHFTawf4zHrQQFu3kzdwf/WAPLqRn5tQ7cH8pa3id+1WnyAr07XRcw==)
-    username: ${username} # ENC(VXpqUaVULnfLfvKtGlN/0g==)
+    username: ${username}  ENC(VXpqUaVULnfLfvKtGlN/0g==)
     password:  ${password} # ENC(uhwljWyBiiO7fPcl27j9ai3nky/jEqEQd1RvvzQTDj0=)
     driver-class-name: com.mysql.cj.jdbc.Driver # mysql 8버전
   # driver-class-name: com.mysql.jdbc.Driver # mysql 5버전
