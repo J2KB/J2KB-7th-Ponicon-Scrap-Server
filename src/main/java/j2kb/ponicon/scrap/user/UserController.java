@@ -72,9 +72,9 @@ public class UserController {
     @PostMapping("/login")
     public BaseResponse<LoginRes> login(@Validated(ValidationSequence.class) @RequestBody PostLoginReq postLoginReq, HttpServletResponse response){
 
-        User user = userService.login(postLoginReq, response);
+        LoginRes loginRes = userService.login(postLoginReq, response);
 
-        return new BaseResponse<>(new LoginRes(user.getId()));
+        return new BaseResponse<>(loginRes);
     }
 
     // 통합 로그아웃
@@ -88,8 +88,8 @@ public class UserController {
 
         return new BaseResponse("로그아웃에 성공했습니다");
     }
-    // 카카오 로그인 버전 2
 
+    // 카카오 로그인 버전 2
     @PostMapping("login/kakao/v2")
     public BaseResponse<LoginRes> kakaoLogin2(@Validated(ValidationSequence.class) @RequestBody PostKakaoLoign2Req postKakaoLoign2Req, HttpServletResponse response){
 
@@ -106,9 +106,9 @@ public class UserController {
 
         Cookie[] cookies = request.getCookies();
 
-        User user = userService.checkUserHasLogin(cookies);
+        LoginRes loginRes = userService.checkUserHasLogin(cookies);
 
-        return new BaseResponse<>("로그인 된 유저입니다", new LoginRes(user.getId()));
+        return new BaseResponse<>("로그인 된 유저입니다", loginRes);
     }
 
     /**

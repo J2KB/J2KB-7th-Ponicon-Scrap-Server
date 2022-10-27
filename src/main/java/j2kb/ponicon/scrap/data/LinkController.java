@@ -79,20 +79,7 @@ public class LinkController {
     @PatchMapping("/{user_id}")
     public BaseResponse<PatchLinkRes> updateLink(@PathVariable(name = "user_id") Long userId, @RequestParam(name = "link_id") Long linkId, @Validated(ValidationSequence.class) @RequestBody PatchLinkReq patchLinkReq){
 
-//        System.out.println("userId = " + userId);
-//        System.out.println("linkId = " + linkId);
-//        System.out.println("patchLinkReq = " + patchLinkReq.getCategoryId());
-
-        Link updateLink = linkService.updateLink(userId, linkId, patchLinkReq);
-
-        PatchLinkRes patchLinkRes = PatchLinkRes.builder()
-                .linkId(updateLink.getId())
-                .categoryId(updateLink.getCategory().getId())
-                .url(updateLink.getLink())
-                .title(updateLink.getTitle())
-                .imgUrl(updateLink.getImgUrl())
-                .domain(updateLink.getDomain())
-                .build();
+        PatchLinkRes patchLinkRes = linkService.updateLink(userId, linkId, patchLinkReq);
 
         return new BaseResponse<>("자료 수정에 성공했습니다", patchLinkRes);
     }

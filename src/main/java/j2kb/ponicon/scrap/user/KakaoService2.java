@@ -28,7 +28,7 @@ public class KakaoService2 implements IKakaoService2{
     private final IJwtService jwtService;
     private final ICookieService cookieService;
     private final UserRepository userRepository;
-    private final IUserService userService;
+    private final ISocialUserService userService;
 
     @Value("${server.host.api}")
     private String frontHost;

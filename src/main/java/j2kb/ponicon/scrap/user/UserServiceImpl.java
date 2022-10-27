@@ -7,6 +7,7 @@ import j2kb.ponicon.scrap.domain.User;
 import j2kb.ponicon.scrap.response.AuthorizationException;
 import j2kb.ponicon.scrap.response.BaseException;
 import j2kb.ponicon.scrap.response.BaseExceptionStatus;
+import j2kb.ponicon.scrap.user.dto.LoginRes;
 import j2kb.ponicon.scrap.user.dto.PostJoinReq;
 import j2kb.ponicon.scrap.user.dto.PostLoginReq;
 import j2kb.ponicon.scrap.utils.ICookieService;
@@ -25,7 +26,7 @@ import static j2kb.ponicon.scrap.response.BaseExceptionStatus.*;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class UserServiceImpl implements IUserService {
+public class UserServiceImpl implements IUserService, ISocialUserService {
 
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
@@ -38,7 +39,7 @@ public class UserServiceImpl implements IUserService {
      * @param postJoinReq 유저에 대한 정보
      */
     @Transactional
-    public User join(PostJoinReq postJoinReq){
+    public Long join(PostJoinReq postJoinReq){
 
         String username = postJoinReq.getEmail(); // 아이디
         String pw = postJoinReq.getPassword(); // 비번
@@ -61,11 +62,11 @@ public class UserServiceImpl implements IUserService {
         // 유저 저장
         userRepository.save(user);
 
-        return user;
+        return user.getId();
     }
 
     // 소셜 로그인 유저의 회원가입
-    public User joinBySocial(String username, String name){
+    public LoginRes joinBySocial(String username, String name){
 
         User user = new User(username, username, name);
 
@@ -73,7 +74,8 @@ public class UserServiceImpl implements IUserService {
         categoryService.saveBasicCategory(user);
 
         userRepository.save(user);
-        return user;
+
+        return new LoginRes(user.getId());
     }
 
     /**
@@ -97,7 +99,7 @@ public class UserServiceImpl implements IUserService {
      * @param response
      * @return User
      */
-    public User login(PostLoginReq postLoginReq, HttpServletResponse response){
+    public LoginRes login(PostLoginReq postLoginReq, HttpServletResponse response){
 
         String username = postLoginReq.getUsername();
         String pw = postLoginReq.getPassword();
@@ -123,11 +125,13 @@ public class UserServiceImpl implements IUserService {
         response.addCookie(accessCookie);
         response.addCookie(refreshCookie);
 
-        return user;
+        LoginRes loginRes = new LoginRes(user.getId());
+
+        return loginRes;
     }
 
     // 로그인 된 유저인지 확인
-    public User checkUserHasLogin(Cookie[] cookies){
+    public LoginRes checkUserHasLogin(Cookie[] cookies){
         Cookie accessCookie = cookieService.findCookie("accessToken", cookies);
         Cookie refreshCookie = cookieService.findCookie("refreshToken", cookies);
 
@@ -150,7 +154,10 @@ public class UserServiceImpl implements IUserService {
         if(user == null){
             throw new AuthorizationException(USER_NOT_EXIST);
         }
-        return user;
+
+        LoginRes loginRes = new LoginRes(user.getId());
+
+        return loginRes;
     }
 
     /**

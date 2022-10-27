@@ -153,8 +153,9 @@ public class LinkServiceImpl implements LinkService {
         linkRepository.delete(link);
     }
 
+    // 자료 수정 - 자료의 카테고리 변경
     @Transactional
-    public Link updateLink(Long userId, Long linkId, PatchLinkReq patchLinkReq){
+    public PatchLinkRes updateLink(Long userId, Long linkId, PatchLinkReq patchLinkReq){
 
         Link link = findLinkOne(linkId);
         // 해당 유저가 만든 자료가 아니라면
@@ -173,9 +174,19 @@ public class LinkServiceImpl implements LinkService {
 
         linkRepository.save(link);
 
-        return link;
+        PatchLinkRes patchLinkRes = PatchLinkRes.builder()
+                .linkId(link.getId())
+                .categoryId(link.getCategory().getId())
+                .url(link.getLink())
+                .title(link.getTitle())
+                .imgUrl(link.getImgUrl())
+                .domain(link.getDomain())
+                .build();
+
+        return patchLinkRes;
     }
 
+    // 자료 찾기
     @Transactional(readOnly = true)
     public Link findLinkOne(Long linkId){
         Optional<Link> optLink = linkRepository.findById(linkId);
