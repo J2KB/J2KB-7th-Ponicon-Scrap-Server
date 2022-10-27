@@ -19,12 +19,12 @@ public enum BaseExceptionStatus {
     KAKAO_GET_USER_INFO_FAIL(3102, "예상치 못한 이유로 카카오 사용자 정보 가져오기에 실패했습니다"),
     KAKAO_LOGIN_FAIL(3103,"예상치 못한 이유로 카카오 로그인에 실패했습니다"),
 
-    CATEGORY_NAME_NULL(4444, "카테고리 이름을 입력해주세요"),
-    CATEGORY_NAME_LENGTH(4444, "카테고리 이름이 2~60 글자 사이"),
-    DATA_NAME_INCORRECTION(44444, "링크가 잘못되었습니다."),
-    MYPAGE_USER_NOT_FOUND(44444, "해당 사용자를 찾을 수 없습니다."),
+    CATEGORY_NAME_NULL(4000, "카테고리 이름을 입력해주세요"),
+    CATEGORY_NAME_LENGTH(4001, "카테고리 이름이 2~60 글자 사이여야 합니다"),
+    DATA_NAME_INCORRECTION(5000, "링크가 잘못되었습니다."),
+    MYPAGE_USER_NOT_FOUND(3104, "해당 사용자를 찾을 수 없습니다."),
 
-    CATEGORY_NOT_EXIST(4444, "해당 카테고리자 존재하지 않습니다"),
+    CATEGORY_NOT_EXIST(4002, "해당 카테고리자 존재하지 않습니다"),
     LINK_NOT_EXIST(4444, "해당 자료가 존재하지 않습니다"),
     LINK_AND_USER_NOT_CORRECT(4444, "해당 유저가 만든 자료가 아닙니다"),
     CATEGORY_AND_USER_NOT_CORRECT(4444, "해당 유저가 만든 카테고리가 아닙니다"),

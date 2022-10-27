@@ -42,20 +42,20 @@ public class LinkController {
     /**
      * 링크 조회 API
      * UserId와 categoryId를 RequestParam으로 받아서 linkService.links 후 링크를 조회하는 역할을 합니다.
-     * [GET] /category?id=&category=&seq=
+     * [GET] /data?id=&category=
      * @param userId, categoryId
      * @author 박현성
      */
     @ApiOperation(value = "링크 조회 API", notes = "UserId와 categoryId를 RequestParam으로 받아서 linkService.links 후 링크를 조회하는 역할을 합니다. /category?id=&category=&seq=")
     @GetMapping()
-    public BaseResponse<?> dataListByUserAndCategory(@ApiParam(value = "User의 id 값", example = "2") @RequestParam("id") Long userId, @ApiParam(value = "카테고리의 id 값", example = "2") @RequestParam("category") Long categoryId, @ApiParam(value = "seq의 값", example = "asc") @RequestParam("seq") String seq) {
-        GetDataListRes list = linkService.links(userId, categoryId, seq);
+    public BaseResponse<?> dataListByUserAndCategory(@ApiParam(value = "User의 id 값", example = "2") @RequestParam("id") Long userId, @ApiParam(value = "카테고리의 id 값", example = "2") @RequestParam("category") Long categoryId) {
+        GetDataListRes list = linkService.links(userId, categoryId);
         return new BaseResponse<>(list);
     }
     /**
      * 링크 전체 조회 API
      * UserId를 RequestParam으로 받아서 linkService.allLinks 후 링크를 조회하는 역할을 합니다.
-     * [GET] /category/all?id=
+     * [GET] /data/all?id=
      * @param userId
      * @author 박현성
      */

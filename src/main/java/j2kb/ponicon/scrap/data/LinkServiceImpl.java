@@ -59,12 +59,13 @@ public class LinkServiceImpl implements LinkService {
         String title = postDataSaveReq.getTitle();
         String imgUrl = postDataSaveReq.getImgUrl();
         String domain = SearchDomain(link);
+
         Link linkSave = new Link(link, title, imgUrl, category, user, domain);
         Link saveLink = linkRepository.save(linkSave);
         PostDataSaveRes postDataSaveRes = PostDataSaveRes.builder().linkId(saveLink.getId()).build();
         return postDataSaveRes;
     }
-
+    // 도메인을 뽑아내는 메소드
     private String SearchDomain(String url) throws MalformedURLException {
         if(url.contains("tistory")) {
             return "tistory.com";
@@ -75,6 +76,7 @@ public class LinkServiceImpl implements LinkService {
             }
             URL netUrl = new URL(url);
             String host = netUrl.getHost();
+
             if(host.startsWith("www")){
                 host = host.substring("www".length()+1);
                 return host;
@@ -85,24 +87,15 @@ public class LinkServiceImpl implements LinkService {
         }
     }
     @Transactional(readOnly = true)
-    public GetDataListRes links(Long userId, Long categoryId, String seq) {
-        if(seq.equals("desc")) {
-            List<DataListRes> list = linkRepository.findByUserIdAndCategoryId(userId, categoryId, Sort.by(Sort.Direction.DESC, "createdAt")).stream() // createdAt 기준으로 sort(desc) linkRepository에서 넘어온 결과를
-                    .map(Link::toDto) // Stream을 통해 map으로 toDto에 매핑 해준다.
-                    .collect(Collectors.toList()); // collect를 사용해서 List로 변환한다.
-            // list를 builder 패턴으로 객체 생성
-            GetDataListRes getDataListRes = GetDataListRes.builder().links(list).build();
-            return getDataListRes;
-        }
-        else {
-            List<DataListRes> list = linkRepository.findByUserIdAndCategoryId(userId, categoryId, Sort.by(Sort.Direction.ASC, "createdAt")).stream() // createdAt 기준으로 sort(asc) linkRepository에서 넘어온 결과를
-                    .map(Link::toDto) // Stream을 통해 map으로 toDto에 매핑 해준다.
-                    .collect(Collectors.toList()); // collect를 사용해서 List로 변환한다.
-            // list를 builder 패턴으로 객체 생성
-            GetDataListRes getDataListRes = GetDataListRes.builder().links(list).build();
-            return getDataListRes;
-        }
+    public GetDataListRes links(Long userId, Long categoryId) {
+        List<DataListRes> list = linkRepository.findByUserIdAndCategoryId(userId, categoryId).stream() // createdAt 기준으로 sort(desc) linkRepository에서 넘어온 결과를
+                .map(Link::toDto) // Stream을 통해 map으로 toDto에 매핑 해준다.
+                .collect(Collectors.toList()); // collect를 사용해서 List로 변환한다.
+        // list를 builder 패턴으로 객체 생성
+        GetDataListRes getDataListRes = GetDataListRes.builder().links(list).build();
+        return getDataListRes;
     }
+
     @Transactional(readOnly = true)
     public GetDataListRes allLinks(Long userId) {
         List<DataListRes> list = linkRepository.findByUserId(userId, Sort.by(Sort.Direction.DESC, "createdAt")).stream() // createdAt 기준으로 sort(desc) linkRepository에서 넘어온 결과를
@@ -121,14 +114,14 @@ public class LinkServiceImpl implements LinkService {
 
         postDataSaveReq = new PostDataSaveReq();
         postDataSaveReq.setTitle(getContent(page, "title"));
-        postDataSaveReq.setLink(getContent(page, "url"));
         postDataSaveReq.setImgUrl(getContent(page, "image"));
-//        if(getContent(page, "url") == null) {
-//            postDataSaveReq.setLink(baseURL);
-//        }
-//        else {
-//            postDataSaveReq.setLink(getContent(page, "url"));
-//        }
+
+        if(getContent(page, "url") == null) {
+            postDataSaveReq.setLink(baseURL);
+        }
+        else {
+            postDataSaveReq.setLink(getContent(page, "url"));
+        }
         log.info(String.valueOf(postDataSaveReq));
 
         return postDataSaveReq;
