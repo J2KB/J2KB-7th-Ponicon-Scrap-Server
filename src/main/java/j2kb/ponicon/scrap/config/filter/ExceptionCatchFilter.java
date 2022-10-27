@@ -31,7 +31,8 @@ public class ExceptionCatchFilter implements Filter {
             chain.doFilter(request, response);
         } catch (AuthorizationException e){
 //            e.printStackTrace();
-            setBaseResponse((HttpServletResponse) response, e.getStatus());
+            log.info("인증 예외처리: {}", e.getMessage());
+            setBaseResponse((HttpServletResponse) response, DO_NOT_LOGIN_USER);
         }
     }
 
@@ -53,8 +54,7 @@ public class ExceptionCatchFilter implements Filter {
 
         response.setStatus(HttpStatus.UNAUTHORIZED.value()); // 401 응답코드로 설정
 
-        log.info("로그인 예외처리: {}", eStatus.getMessage());
-        BaseResponse baseResponse = new BaseResponse(DO_NOT_LOGIN_USER);
+        BaseResponse baseResponse = new BaseResponse(eStatus);
         String json = new Gson().toJson(baseResponse);
 //        System.out.println("json = " + json);
         response.getWriter().write(json);
