@@ -4,16 +4,20 @@ import com.google.gson.Gson;
 import j2kb.ponicon.scrap.response.AuthorizationException;
 import j2kb.ponicon.scrap.response.BaseExceptionStatus;
 import j2kb.ponicon.scrap.response.BaseResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static j2kb.ponicon.scrap.response.BaseExceptionStatus.DO_NOT_LOGIN_USER;
+
 /**
  * 인증 예외처리 필터
  * AuthorizationException 예외를 잡아 응답값 처리해줌
  */
+@Slf4j
 public class ExceptionCatchFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -37,7 +41,7 @@ public class ExceptionCatchFilter implements Filter {
     }
 
     // 응답 설정
-    private void setBaseResponse(HttpServletResponse response, BaseExceptionStatus e) throws IOException{
+    private void setBaseResponse(HttpServletResponse response, BaseExceptionStatus eStatus) throws IOException{
 //        response.setContentType("charset=UTF-8");
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -49,7 +53,8 @@ public class ExceptionCatchFilter implements Filter {
 
         response.setStatus(HttpStatus.UNAUTHORIZED.value()); // 401 응답코드로 설정
 
-        BaseResponse baseResponse = new BaseResponse(e);
+        log.info("로그인 예외처리: {}", eStatus.getMessage());
+        BaseResponse baseResponse = new BaseResponse(DO_NOT_LOGIN_USER);
         String json = new Gson().toJson(baseResponse);
 //        System.out.println("json = " + json);
         response.getWriter().write(json);
