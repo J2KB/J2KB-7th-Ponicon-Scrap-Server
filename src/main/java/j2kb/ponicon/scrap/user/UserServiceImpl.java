@@ -10,6 +10,7 @@ import j2kb.ponicon.scrap.response.BaseExceptionStatus;
 import j2kb.ponicon.scrap.user.dto.LoginRes;
 import j2kb.ponicon.scrap.user.dto.PostJoinReq;
 import j2kb.ponicon.scrap.user.dto.PostLoginReq;
+import j2kb.ponicon.scrap.user.dto.UserInfo;
 import j2kb.ponicon.scrap.utils.ICookieService;
 import j2kb.ponicon.scrap.utils.IJwtService;
 import j2kb.ponicon.scrap.utils.SHA256;
@@ -66,7 +67,7 @@ public class UserServiceImpl implements IUserService, ISocialUserService {
     }
 
     // 소셜 로그인 유저의 회원가입
-    public LoginRes joinBySocial(String username, String name){
+    public UserInfo joinBySocial(String username, String name){
 
         User user = new User(username, username, name);
 
@@ -75,7 +76,9 @@ public class UserServiceImpl implements IUserService, ISocialUserService {
 
         userRepository.save(user);
 
-        return new LoginRes(user.getId());
+        UserInfo userInfo = new UserInfo(user.getId(), user.getUsername(), user.getName());
+
+        return userInfo;
     }
 
     /**

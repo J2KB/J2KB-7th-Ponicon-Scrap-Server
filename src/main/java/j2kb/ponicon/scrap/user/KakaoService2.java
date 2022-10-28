@@ -4,6 +4,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import j2kb.ponicon.scrap.domain.User;
 import j2kb.ponicon.scrap.response.BaseException;
+import j2kb.ponicon.scrap.user.dto.LoginRes;
+import j2kb.ponicon.scrap.user.dto.UserInfo;
 import j2kb.ponicon.scrap.utils.ICookieService;
 import j2kb.ponicon.scrap.utils.IJwtService;
 import lombok.RequiredArgsConstructor;
@@ -57,16 +59,16 @@ public class KakaoService2 implements IKakaoService2{
 
     @Override
     // 카카오 로그인
-    public User login(String KakaoAccessToken, HttpServletResponse response){
+    public LoginRes login(String KakaoAccessToken, HttpServletResponse response){
 
         this.redirectionUrl  = frontHost + "/user/login/kakao";
 
         // user 조회
-        User user = getUser(KakaoAccessToken);
+        UserInfo userInfo = getUser(KakaoAccessToken);
 
         // 토큰 발급
-        String accessToken = jwtService.createAccessToken(user.getUsername());
-        String refreshToken = jwtService.createRefreshToken(user.getUsername());
+        String accessToken = jwtService.createAccessToken(userInfo.getEmail());
+        String refreshToken = jwtService.createRefreshToken(userInfo.getEmail());
 
         // 쿠키 발급
         Cookie accessCookie = cookieService.createAccessCookie(accessToken, true);
@@ -74,7 +76,7 @@ public class KakaoService2 implements IKakaoService2{
         response.addCookie(accessCookie);
         response.addCookie(refreshCookie);
 
-        return user;
+        return new LoginRes(userInfo.getId());
     }
 
     // 사용자 정보 가져오기
@@ -132,7 +134,7 @@ public class KakaoService2 implements IKakaoService2{
     }
 
     // 카카오로부터 user 조회
-    private User getUser(String accessToken){
+    private UserInfo getUser(String accessToken){
 
         KaKaoUser kakaoUser = getUserInfo(accessToken);
 
@@ -140,9 +142,9 @@ public class KakaoService2 implements IKakaoService2{
 
         // 해당하는 사용자가 없으면 자동으로 회원가입 진행
         if(user == null){
-            user = userService.joinBySocial(kakaoUser.getId(), kakaoUser.getName());
+            return userService.joinBySocial(kakaoUser.getId(), kakaoUser.getName());
         }
 
-        return user;
+        return new UserInfo(user.getId(), user.getUsername(), user.getName());
     }
 }

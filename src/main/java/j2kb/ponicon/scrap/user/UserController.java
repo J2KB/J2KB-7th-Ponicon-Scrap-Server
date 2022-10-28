@@ -93,9 +93,7 @@ public class UserController {
     @PostMapping("login/kakao/v2")
     public BaseResponse<LoginRes> kakaoLogin2(@Validated(ValidationSequence.class) @RequestBody PostKakaoLoign2Req postKakaoLoign2Req, HttpServletResponse response){
 
-        User user = kakaoService2.login(postKakaoLoign2Req.getAccessToken(), response);
-
-        LoginRes loginRes = new LoginRes(user.getId());
+        LoginRes loginRes = kakaoService2.login(postKakaoLoign2Req.getAccessToken(), response);
 
         return new BaseResponse<>(loginRes);
     }
