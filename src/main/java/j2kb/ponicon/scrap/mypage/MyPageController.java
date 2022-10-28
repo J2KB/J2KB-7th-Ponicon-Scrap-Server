@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Api(tags = "마이페이지와 관련된 API")
 @RestController
-@RequestMapping("/auth/user")
+@RequestMapping("/user")
 @RequiredArgsConstructor
 public class MyPageController {
     private final MyPageServiceImpl myPageService;
