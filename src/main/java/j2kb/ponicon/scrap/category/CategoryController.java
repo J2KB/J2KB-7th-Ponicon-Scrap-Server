@@ -68,7 +68,7 @@ public class CategoryController {
      * @author 박현성
      */
     @ApiOperation(value = "카테고리 수정 API", notes = "CategoryId를 RequestParam으로 받아서 UpdateCategory 후 카테고리를 삭제하는 역할을 합니다. /category/category=")
-    @PutMapping()
+    @PutMapping("/auth")
     public BaseResponse<UpdateCategoryRes> updateCategory(@ApiParam(value = "Category의 id 값", example = "2") @RequestBody @Valid UpdateCategoryReq updateCategoryReq, @RequestParam("category")Long categoryId) {
         UpdateCategoryRes updateCategoryRes = categoryService.updateCategory(updateCategoryReq,categoryId);
         return new BaseResponse<>(updateCategoryRes);
