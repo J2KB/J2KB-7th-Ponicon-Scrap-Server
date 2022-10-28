@@ -13,7 +13,7 @@ import javax.validation.Valid;
 @Api(tags = "카테고리와 관련된 API")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/category")
+//@RequestMapping("/category")
 public class CategoryController {
 
     // @Autowired 보다는 생성자 주입 방식으로 DI를 진행했습니다.
@@ -29,7 +29,7 @@ public class CategoryController {
      * @author 박현성
      */
     @ApiOperation(value = "카테고리 등록 API", notes = "UserId를 RequestParam으로 받아서 categoryService.categorySave 후 카테고리를 생성하는 역할을 합니다. /category?id=")
-    @PostMapping("/auth")
+    @PostMapping("/auth/category")
     public BaseResponse<PostCategorySaveRes> categorySave(@ApiParam(value = "User의 id 값", example = "2") @RequestBody @Valid PostCategorySaveReq postCategoryReq, @RequestParam("id") Long userId) {
         PostCategorySaveRes postCategorySaveRes = categoryService.categorySave(postCategoryReq, userId);
         return new BaseResponse<>(postCategorySaveRes);
@@ -42,7 +42,7 @@ public class CategoryController {
      * @author 박현성
      */
     @ApiOperation(value = "카테고리 조회 API", notes = "UserId를 RequestParam으로 받아서 categoryService.categories 후 카테고리를 조회하는 역할을 합니다. /category/all?id=")
-    @GetMapping("/all")
+    @GetMapping("/category/all")
     public BaseResponse<GetCategoryListRes> categoryListByUser(@ApiParam(value = "User의 id 값", example = "2") @RequestParam("id")Long userId) {
         GetCategoryListRes list = categoryService.categories(userId);
         return new BaseResponse<>(list);
@@ -55,7 +55,7 @@ public class CategoryController {
      * @author 박현성
      */
     @ApiOperation(value = "카테고리 삭제 API", notes = "CategoryId를 RequestParam으로 받아서 DeleteCategory 후 카테고리를 삭제하는 역할을 합니다. /category/category=")
-    @DeleteMapping("/auth")
+    @DeleteMapping("/auth/category")
     public BaseResponse deleteCategory(@ApiParam(value = "Category의 id 값", example = "2") @RequestParam("category")Long categoryId) {
         categoryService.categoryDelete(categoryId);
         return new BaseResponse("카테고리 삭제에 성공했습니다");
@@ -68,7 +68,7 @@ public class CategoryController {
      * @author 박현성
      */
     @ApiOperation(value = "카테고리 수정 API", notes = "CategoryId를 RequestParam으로 받아서 UpdateCategory 후 카테고리를 삭제하는 역할을 합니다. /category/category=")
-    @PutMapping("/auth")
+    @PutMapping("/auth/category")
     public BaseResponse<UpdateCategoryRes> updateCategory(@ApiParam(value = "Category의 id 값", example = "2") @RequestBody @Valid UpdateCategoryReq updateCategoryReq, @RequestParam("category")Long categoryId) {
         UpdateCategoryRes updateCategoryRes = categoryService.updateCategory(updateCategoryReq,categoryId);
         return new BaseResponse<>(updateCategoryRes);
@@ -81,7 +81,7 @@ public class CategoryController {
      * @author 박현성
      */
     @ApiOperation(value = "카테고리 수정 API", notes = "CategoryId를 RequestParam으로 받아서 UpdateCategory 후 카테고리를 삭제하는 역할을 합니다. /category/category=")
-    @PutMapping("/auth/all")
+    @PutMapping("/auth/category/all")
     public BaseResponse updateIdxCategory(@ApiParam(value = "Category의 id 값", example = "2") @RequestBody UpdateIdxCategoryReq updateIdxCategoryReq, @RequestParam("id") Long userId) {
         categoryService.updateIdxCategory(updateIdxCategoryReq, userId);
         return new BaseResponse<>("요청에 성공했습니다");

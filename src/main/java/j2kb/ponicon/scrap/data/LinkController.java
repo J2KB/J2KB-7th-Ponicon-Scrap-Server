@@ -19,7 +19,7 @@ import javax.validation.Valid;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/data")
+//@RequestMapping("/data")
 public class LinkController {
 
     private final LinkService linkService;
@@ -47,7 +47,7 @@ public class LinkController {
      * @author 박현성
      */
     @ApiOperation(value = "링크 조회 API", notes = "UserId와 categoryId를 RequestParam으로 받아서 linkService.links 후 링크를 조회하는 역할을 합니다. /category?id=&category=&seq=")
-    @GetMapping("/auth")
+    @GetMapping("/auth/data")
     public BaseResponse<?> dataListByUserAndCategory(@ApiParam(value = "User의 id 값", example = "2") @RequestParam("id") Long userId, @ApiParam(value = "카테고리의 id 값", example = "2") @RequestParam("category") Long categoryId) {
         GetDataListRes list = linkService.links(userId, categoryId);
         return new BaseResponse<>(list);
@@ -60,14 +60,14 @@ public class LinkController {
      * @author 박현성
      */
     @ApiOperation(value = "링크 전체 조회 API", notes = "UserId를 RequestParam으로 받아서 linkService.allLinks 후 링크를 조회하는 역할을 합니다. /category/all?id=")
-    @GetMapping("/auth/all")
+    @GetMapping("/auth/data/all")
     public BaseResponse<?> dataListAllByUser(@Parameter(description = "User의 id 값", example = "2") @RequestParam("id") Long userId) {
         GetDataListRes list = linkService.allLinks(userId);
         return new BaseResponse<>(list);
     }
 
     // 링크 삭제
-    @DeleteMapping("/auth/{user_id}")
+    @DeleteMapping("/auth/data/{user_id}")
     public BaseResponse deleteLink(@PathVariable(name = "user_id") Long userId, @RequestParam(name = "link_id") Long linkId){
 
         linkService.deleteLink(userId, linkId);
@@ -76,7 +76,7 @@ public class LinkController {
     }
 
     // 링크 수정 (카테고리 수정)
-    @PatchMapping("/auth/{user_id}")
+    @PatchMapping("/auth/data/{user_id}")
     public BaseResponse<PatchLinkRes> updateLink(@PathVariable(name = "user_id") Long userId, @RequestParam(name = "link_id") Long linkId, @Validated(ValidationSequence.class) @RequestBody PatchLinkReq patchLinkReq){
 
 //        System.out.println("userId = " + userId);
