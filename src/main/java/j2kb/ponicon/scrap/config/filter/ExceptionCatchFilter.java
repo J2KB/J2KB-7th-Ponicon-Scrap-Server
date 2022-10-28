@@ -27,6 +27,7 @@ public class ExceptionCatchFilter implements Filter {
             chain.doFilter(request, response);
         } catch (AuthorizationException e){
 //            e.printStackTrace();
+            System.out.println("e.getStatus().getMessage() = " + e.getStatus().getMessage());
             setBaseResponse((HttpServletResponse) response, e.getStatus());
         }
     }
