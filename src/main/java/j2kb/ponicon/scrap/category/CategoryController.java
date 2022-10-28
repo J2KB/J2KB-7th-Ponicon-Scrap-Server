@@ -29,7 +29,7 @@ public class CategoryController {
      * @author 박현성
      */
     @ApiOperation(value = "카테고리 등록 API", notes = "UserId를 RequestParam으로 받아서 categoryService.categorySave 후 카테고리를 생성하는 역할을 합니다. /category?id=")
-    @PostMapping()
+    @PostMapping("/auth")
     public BaseResponse<PostCategorySaveRes> categorySave(@ApiParam(value = "User의 id 값", example = "2") @RequestBody @Valid PostCategorySaveReq postCategoryReq, @RequestParam("id") Long userId) {
         PostCategorySaveRes postCategorySaveRes = categoryService.categorySave(postCategoryReq, userId);
         return new BaseResponse<>(postCategorySaveRes);
@@ -55,7 +55,7 @@ public class CategoryController {
      * @author 박현성
      */
     @ApiOperation(value = "카테고리 삭제 API", notes = "CategoryId를 RequestParam으로 받아서 DeleteCategory 후 카테고리를 삭제하는 역할을 합니다. /category/category=")
-    @DeleteMapping()
+    @DeleteMapping("/auth")
     public BaseResponse deleteCategory(@ApiParam(value = "Category의 id 값", example = "2") @RequestParam("category")Long categoryId) {
         categoryService.categoryDelete(categoryId);
         return new BaseResponse("카테고리 삭제에 성공했습니다");
@@ -81,7 +81,7 @@ public class CategoryController {
      * @author 박현성
      */
     @ApiOperation(value = "카테고리 수정 API", notes = "CategoryId를 RequestParam으로 받아서 UpdateCategory 후 카테고리를 삭제하는 역할을 합니다. /category/category=")
-    @PutMapping("/all")
+    @PutMapping("/auth/all")
     public BaseResponse updateIdxCategory(@ApiParam(value = "Category의 id 값", example = "2") @RequestBody UpdateIdxCategoryReq updateIdxCategoryReq, @RequestParam("id") Long userId) {
         categoryService.updateIdxCategory(updateIdxCategoryReq, userId);
         return new BaseResponse<>("요청에 성공했습니다");
