@@ -65,8 +65,8 @@ public class KakaoService2 implements IKakaoService2{
         User user = getUser(KakaoAccessToken);
 
         // 토큰 발급
-        String accessToken = jwtService.createAccessToken(user.getEmail());
-        String refreshToken = jwtService.createRefreshToken(user.getEmail());
+        String accessToken = jwtService.createAccessToken(user.getUsername());
+        String refreshToken = jwtService.createRefreshToken(user.getUsername());
 
         // 쿠키 발급
         Cookie accessCookie = cookieService.createAccessCookie(accessToken, true);

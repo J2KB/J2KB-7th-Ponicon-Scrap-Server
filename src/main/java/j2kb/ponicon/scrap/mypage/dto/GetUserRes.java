@@ -12,6 +12,6 @@ public class GetUserRes {
     // entity를 dto로 변환
     public GetUserRes(User entity) {
         this.name = entity.getName();
-        this.username = entity.getEmail();
+        this.username = entity.getUsername();
     }
 }

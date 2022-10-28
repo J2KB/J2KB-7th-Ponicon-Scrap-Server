@@ -92,8 +92,8 @@ public class KakaoServiceImpl implements IKakaoService{
         User user = getUser(token.getAccessToken());
 
         // 토큰 발급
-        String accessToken = jwtService.createAccessToken(user.getEmail());
-        String refreshToken = jwtService.createRefreshToken(user.getEmail());
+        String accessToken = jwtService.createAccessToken(user.getUsername());
+        String refreshToken = jwtService.createRefreshToken(user.getUsername());
 
         // 쿠키 발급
         Cookie accessCookie = cookieService.createAccessCookie(accessToken, true);
