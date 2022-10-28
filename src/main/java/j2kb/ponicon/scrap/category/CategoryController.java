@@ -49,19 +49,20 @@ public class CategoryController {
     }
     /**
      * 카테고리 삭제 API
-     * UserId를 RequestParam으로 받아서 categoryService.DeleteCategory 후 카테고리를 삭제하는 역할을 합니다.
+     * UserId를 RequestParam으로 받아서 categoryService.categoryDelete 후 카테고리를 삭제하는 역할을 합니다.
      * [GET] /category?category=
      * @param categoryId
      * @author 박현성
      */
     @ApiOperation(value = "카테고리 삭제 API", notes = "CategoryId를 RequestParam으로 받아서 DeleteCategory 후 카테고리를 삭제하는 역할을 합니다. /category/category=")
     @DeleteMapping()
-    public void deleteCategory(@ApiParam(value = "Category의 id 값", example = "2") @RequestParam("category")Long categoryId) {
+    public BaseResponse deleteCategory(@ApiParam(value = "Category의 id 값", example = "2") @RequestParam("category")Long categoryId) {
         categoryService.categoryDelete(categoryId);
+        return new BaseResponse("카테고리 삭제에 성공했습니다");
     }
     /**
      * 카테고리 수정 API
-     * UserId를 RequestParam으로 받아서 categoryService.DeleteCategory 후 카테고리를 수정하는 역할을 합니다.
+     * UserId를 RequestParam으로 받아서 categoryService.updateCategory 후 카테고리를 수정하는 역할을 합니다.
      * [PUT] /category?category=
      * @param categoryId
      * @author 박현성
@@ -71,5 +72,18 @@ public class CategoryController {
     public BaseResponse<UpdateCategoryRes> updateCategory(@ApiParam(value = "Category의 id 값", example = "2") @RequestBody @Valid UpdateCategoryReq updateCategoryReq, @RequestParam("category")Long categoryId) {
         UpdateCategoryRes updateCategoryRes = categoryService.updateCategory(updateCategoryReq,categoryId);
         return new BaseResponse<>(updateCategoryRes);
+    }
+    /**
+     * 카테고리 순서 수정 API
+     * startIdx와 endIdx RequestParam으로 받아서 categoryService.DeleteCategory 후 카테고리를 수정하는 역할을 합니다.
+     * [PUT] /category?category=
+     * @param
+     * @author 박현성
+     */
+    @ApiOperation(value = "카테고리 수정 API", notes = "CategoryId를 RequestParam으로 받아서 UpdateCategory 후 카테고리를 삭제하는 역할을 합니다. /category/category=")
+    @PutMapping("/all")
+    public BaseResponse updateIdxCategory(@ApiParam(value = "Category의 id 값", example = "2") @RequestBody UpdateIdxCategoryReq updateIdxCategoryReq, @RequestParam("id") Long userId) {
+        categoryService.updateIdxCategory(updateIdxCategoryReq, userId);
+        return new BaseResponse<>("요청에 성공했습니다");
     }
 }

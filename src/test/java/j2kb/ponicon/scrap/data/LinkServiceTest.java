@@ -94,10 +94,10 @@ class LinkServiceTest {
         Sort sort = Sort.by("createdAt").ascending();
 
         //stub
-        when(linkRepository.findByUserIdAndCategoryId(fakeUserId, fakeCategoryId, sort)).thenReturn(dataList);
+        when(linkRepository.findByUserIdAndCategoryId(fakeUserId, fakeCategoryId)).thenReturn(dataList);
 
         //when
-        GetDataListRes getDataListRes = linkService.links(fakeUserId, fakeCategoryId, "asc");
+        GetDataListRes getDataListRes = linkService.links(fakeUserId, fakeCategoryId);
 
         //then
         assertThat(getDataListRes.getLinks().get(0).getLink()).isEqualTo("www.naver.com");

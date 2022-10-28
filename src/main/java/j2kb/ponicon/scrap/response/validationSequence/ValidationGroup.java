@@ -6,5 +6,5 @@ public class ValidationGroup {
     public interface NotEmptyGroup{}
     public interface NotNullGroup{}
     public interface PatternGroup{}
-
+    public interface EmailGroup{}
 }

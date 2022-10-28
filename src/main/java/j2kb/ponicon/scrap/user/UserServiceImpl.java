@@ -9,7 +9,6 @@ import j2kb.ponicon.scrap.response.BaseException;
 import j2kb.ponicon.scrap.response.BaseExceptionStatus;
 import j2kb.ponicon.scrap.user.dto.PostJoinReq;
 import j2kb.ponicon.scrap.user.dto.PostLoginReq;
-import j2kb.ponicon.scrap.utils.CookieServiceImpl;
 import j2kb.ponicon.scrap.utils.ICookieService;
 import j2kb.ponicon.scrap.utils.IJwtService;
 import j2kb.ponicon.scrap.utils.SHA256;
@@ -41,7 +40,7 @@ public class UserServiceImpl implements IUserService {
     @Transactional
     public User join(PostJoinReq postJoinReq){
 
-        String username = postJoinReq.getUsername(); // 아이디
+        String username = postJoinReq.getEmail(); // 아이디
         String pw = postJoinReq.getPassword(); // 비번
         String name = postJoinReq.getName(); // 이름
 
