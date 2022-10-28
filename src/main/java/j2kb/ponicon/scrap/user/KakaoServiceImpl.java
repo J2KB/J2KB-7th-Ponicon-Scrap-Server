@@ -4,7 +4,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import j2kb.ponicon.scrap.domain.User;
 import j2kb.ponicon.scrap.response.BaseException;
-import j2kb.ponicon.scrap.utils.CookieServiceImpl;
 import j2kb.ponicon.scrap.utils.ICookieService;
 import j2kb.ponicon.scrap.utils.IJwtService;
 import lombok.RequiredArgsConstructor;
@@ -93,8 +92,8 @@ public class KakaoServiceImpl implements IKakaoService{
         User user = getUser(token.getAccessToken());
 
         // 토큰 발급
-        String accessToken = jwtService.createAccessToken(user.getUsername());
-        String refreshToken = jwtService.createRefreshToken(user.getUsername());
+        String accessToken = jwtService.createAccessToken(user.getEmail());
+        String refreshToken = jwtService.createRefreshToken(user.getEmail());
 
         // 쿠키 발급
         Cookie accessCookie = cookieService.createAccessCookie(accessToken, true);

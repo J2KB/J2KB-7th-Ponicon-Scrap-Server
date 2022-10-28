@@ -34,7 +34,7 @@ public class LinkController {
      * @author 박현성
      */
     @ApiOperation(value = "링크 등록 API", notes = "UserId와 categoryId를 RequestParam으로 받아서 linkService.linkSave 후 링크를 생성하는 역할을 합니다. /data?id=&category=")
-    @PostMapping()
+    @PostMapping("/data")
     public BaseResponse<PostDataSaveRes> dataSave(@RequestBody @Valid PostUrlReq postUrlReq, @ApiParam(value = "User의 id 값", example = "2") @RequestParam("id") Long userId, @ApiParam(value = "카테고리의 id 값", example = "2") @RequestParam("category") Long categoryId) throws Exception {
         PostDataSaveRes postDataSaveRes = linkService.linkSave(postUrlReq, userId, categoryId);
         return new BaseResponse<PostDataSaveRes>(postDataSaveRes);
