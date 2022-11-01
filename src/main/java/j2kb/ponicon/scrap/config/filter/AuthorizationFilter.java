@@ -4,6 +4,7 @@ import io.jsonwebtoken.*;
 import j2kb.ponicon.scrap.response.AuthorizationException;
 import j2kb.ponicon.scrap.utils.ICookieService;
 import j2kb.ponicon.scrap.utils.IJwtService;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.*;
 import javax.servlet.http.Cookie;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import static j2kb.ponicon.scrap.response.BaseExceptionStatus.*;
 
 
+@Slf4j
 public class AuthorizationFilter implements Filter {
 
     private final IJwtService jwtService;
@@ -27,12 +29,12 @@ public class AuthorizationFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         Filter.super.init(filterConfig);
-        System.out.println("Authorization 필터 초기화");
+        log.info("Authorization 필터 초기화");
     }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        System.out.println("Authorization 필터 시작 전");
+        log.info("Authorization 필터 시작 전");
         HttpServletRequest httpReq = (HttpServletRequest) request;
         // 전체 쿠키 목록 가져오기
         Cookie[] cookies = httpReq.getCookies();
@@ -40,8 +42,8 @@ public class AuthorizationFilter implements Filter {
         Cookie accessCookie = cookieService.findCookie("accessToken", cookies);
         Cookie refreshCookie = cookieService.findCookie("refreshToken", cookies);
 
-        System.out.println("accessCookie = " + accessCookie);
-        System.out.println("refreshCookie = " + refreshCookie);
+        log.info("accessCookie ={} ", accessCookie);
+        log.info("refreshCookie ={} ", refreshCookie);
 
         String accessToken, refreshToken;
 
@@ -81,13 +83,13 @@ public class AuthorizationFilter implements Filter {
         }
 
         chain.doFilter(request, response);
-        System.out.println("Authorization 필터 시작 후");
+        log.info("Authorization 필터 시작 후");
     }
 
     @Override
     public void destroy() {
         Filter.super.destroy();
-        System.out.println("Authorization 필터 삭제");
+        log.info("Authorization 필터 삭제");
     }
 
     // refresh토큰으로 access토큰 재발급받고 쿠키에 set하기

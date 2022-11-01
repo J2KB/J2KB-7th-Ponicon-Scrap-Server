@@ -45,9 +45,9 @@ public class LinkServiceImpl implements LinkService {
         PostDataSaveReq postDataSaveReq = getOpenGraph(baseURL);
 
         // 확인용
-        System.out.println("baseURL = " + baseURL);
-        System.out.println("postDataSaveReq.getLink() = " + postDataSaveReq.getLink());
-        System.out.println("postDataSaveReq.getImgUrl() = " + postDataSaveReq.getImgUrl());
+        log.info("baseURL ={} ", baseURL);
+        log.info("postDataSaveReq.getLink() ={} ", postDataSaveReq.getLink());
+        log.info("postDataSaveReq.getImgUrl() ={} ", postDataSaveReq.getImgUrl());
 
         Optional<User> tempUser = userRepository.findById(userId);
         User user = tempUser.get();

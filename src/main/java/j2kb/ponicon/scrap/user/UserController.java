@@ -10,6 +10,7 @@ import j2kb.ponicon.scrap.response.validationSequence.ValidationSequence;
 import j2kb.ponicon.scrap.user.dto.*;
 import j2kb.ponicon.scrap.utils.ICookieService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,7 @@ import static j2kb.ponicon.scrap.response.BaseExceptionStatus.*;
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
+@Slf4j
 public class UserController {
 
     private final IUserService userService;
@@ -123,12 +125,11 @@ public class UserController {
     public BaseResponse<LoginRes> kakaoLogin(@RequestParam(name = "code", required = false) String code, @RequestParam(name = "error", required = false) String error, HttpServletResponse response){
 
         if(error != null){
-            System.out.println("error = " + error);
+            log.error("error ={} " + error);
 
             return new BaseResponse(KAKAO_LOGIN_FAIL);
         }
-
-        System.out.println("code = " + code);
+        log.info("code = {}" , code);
 
         User user = kakaoService.login(code, response);
 

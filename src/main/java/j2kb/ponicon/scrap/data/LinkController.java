@@ -78,11 +78,6 @@ public class LinkController {
     // 링크 수정 (카테고리 수정)
     @PatchMapping("/auth/data/{user_id}")
     public BaseResponse<PatchLinkRes> updateLink(@PathVariable(name = "user_id") Long userId, @RequestParam(name = "link_id") Long linkId, @Validated(ValidationSequence.class) @RequestBody PatchLinkReq patchLinkReq){
-
-//        System.out.println("userId = " + userId);
-//        System.out.println("linkId = " + linkId);
-//        System.out.println("patchLinkReq = " + patchLinkReq.getCategoryId());
-
         Link updateLink = linkService.updateLink(userId, linkId, patchLinkReq);
 
         PatchLinkRes patchLinkRes = PatchLinkRes.builder()

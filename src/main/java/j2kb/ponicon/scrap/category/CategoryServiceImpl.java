@@ -54,7 +54,6 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Transactional(readOnly = true)
     public GetCategoryListRes categories(Long userId) {
-        //System.out.println("no = " + no);
         List<CategoryListRes> list = categoryRepository.findByUserId(userId, Sort.by(Sort.Direction.ASC, "order")).stream() // categoryRepository에서 넘어온 결과를
                 .map(Category::toDto)          // Stream을 통해 map으로 toDto에 매핑 해준다.
                 .collect(Collectors.toList()); // collect를 사용해서 List로 변환한다.
@@ -65,7 +64,7 @@ public class CategoryServiceImpl implements CategoryService{
          * 문제점 해당하는 카테고리의 아이디만큼 카운트 쿼리문이 실행된다.
          */
         int count = list.size();
-        System.out.println("count = " + count);
+        log.info("count ={} ", count);
         // 모든 자료 갯수 구해서 set 해준다.
         list.get(0).setNumOfLink(linkRepository.countByUserId(userId));
 

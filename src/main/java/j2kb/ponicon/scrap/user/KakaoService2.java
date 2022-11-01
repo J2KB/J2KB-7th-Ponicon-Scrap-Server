@@ -7,6 +7,7 @@ import j2kb.ponicon.scrap.response.BaseException;
 import j2kb.ponicon.scrap.utils.ICookieService;
 import j2kb.ponicon.scrap.utils.IJwtService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ import static j2kb.ponicon.scrap.response.BaseExceptionStatus.KAKAO_GET_USER_INF
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class KakaoService2 implements IKakaoService2{
 
     private final IJwtService jwtService;
@@ -92,7 +94,7 @@ public class KakaoService2 implements IKakaoService2{
 
             //결과 코드가 200이라면 성공
             int responseCode = conn.getResponseCode();
-            System.out.println("responseCode : " + responseCode);
+            log.info("responseCode : {}" , responseCode);
 
             // 200 아닐경우 예외처리 필요
             if(responseCode != HttpStatus.OK.value()){
@@ -107,7 +109,7 @@ public class KakaoService2 implements IKakaoService2{
             while ((line = br.readLine()) != null) {
                 result += line;
             }
-            System.out.println("response body : " + result);
+            log.info("response body : {}", result);
 
             //Gson 라이브러리에 포함된 클래스로 JSON파싱 객체 생성
             JsonParser parser = new JsonParser();

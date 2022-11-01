@@ -1,5 +1,6 @@
 package j2kb.ponicon.scrap.utils;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
@@ -11,6 +12,7 @@ import static j2kb.ponicon.scrap.utils.JwtData.REFRESH_COOKIE_EXPIRE_SECOND;
  * 쿠키 관련 서비스 코드
  */
 @Service
+@Slf4j
 public class CookieServiceImpl implements ICookieService{
 
     /**
@@ -32,8 +34,7 @@ public class CookieServiceImpl implements ICookieService{
             cookie.setMaxAge(0);
             // 자동로그인이 아니면 refreshh쿠키 안만듦.
         }
-
-        System.out.println("cookie.getMaxAge() = " + cookie.getMaxAge());
+        log.info("cookie.getMaxAge() ={} ", cookie.getMaxAge());
 
         return cookie;
     }
