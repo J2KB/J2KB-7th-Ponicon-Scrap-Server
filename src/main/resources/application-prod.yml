@@ -30,7 +30,7 @@ spring:
     init:
       platform: mysql
 
-logging.level:
+#logging.level:
 #  org.hibernate.type.descriptor.sql: trace
 
 servers:
