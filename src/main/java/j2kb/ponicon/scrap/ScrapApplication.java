@@ -3,10 +3,12 @@ package j2kb.ponicon.scrap;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.cache.annotation.EnableCaching;
 
 import java.util.Date;
 
 @SpringBootApplication
+@EnableCaching
 public class ScrapApplication {
 
 	public static void main(String[] args) {

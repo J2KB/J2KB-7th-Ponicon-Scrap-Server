@@ -11,6 +11,7 @@ import j2kb.ponicon.scrap.response.BaseException;
 import j2kb.ponicon.scrap.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -87,6 +88,7 @@ public class LinkServiceImpl implements LinkService {
         }
     }
     @Transactional(readOnly = true)
+    @Cacheable(key = "#categoryId", value = "links")
     public GetDataListRes links(Long userId, Long categoryId) {
         List<DataListRes> list = linkRepository.findByUserIdAndCategoryId(userId, categoryId).stream() // createdAt 기준으로 sort(desc) linkRepository에서 넘어온 결과를
                 .map(Link::toDto) // Stream을 통해 map으로 toDto에 매핑 해준다.
@@ -97,6 +99,7 @@ public class LinkServiceImpl implements LinkService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(key = "#userId", value = "allLinks")
     public GetDataListRes allLinks(Long userId) {
         List<DataListRes> list = linkRepository.findByUserId(userId, Sort.by(Sort.Direction.DESC, "createdAt")).stream() // createdAt 기준으로 sort(desc) linkRepository에서 넘어온 결과를
                     .map(Link::toDto) // Stream을 통해 map으로 toDto에 매핑 해준다.
