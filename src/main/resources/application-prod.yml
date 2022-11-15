@@ -11,9 +11,9 @@ spring:
       matching-strategy: ant_path_matcher
 
   datasource:
-    url: ENC(d9a6FW0C4hoxeMUmQuVMbyUnRmJbBLKnWmKERPABNsJPg49Lh6N27hZ4XqlaJuc/eHFTawf4zHrQQFu3kzdwf/WAPLqRn5tQ7cH8pa3id+1WnyAr07XRcw==)
-    username: ENC(VXpqUaVULnfLfvKtGlN/0g==)
-    password: ENC(uhwljWyBiiO7fPcl27j9ai3nky/jEqEQd1RvvzQTDj0=)
+    url: ${url}
+    username: ${username}
+    password: ${password}
     driver-class-name: com.mysql.cj.jdbc.Driver # mysql 8버전
   # driver-class-name: com.mysql.jdbc.Driver # mysql 5버전
 
@@ -29,10 +29,6 @@ spring:
   sql:
     init:
       platform: mysql
-jasypt:
-  encryptor:
-    bean: jasyptStringEncryptor
-    password : 5678
 
 logging.level:
   org.hibernate.type.descriptor.sql: trace
