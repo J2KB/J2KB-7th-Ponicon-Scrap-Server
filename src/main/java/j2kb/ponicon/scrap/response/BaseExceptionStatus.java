@@ -9,7 +9,7 @@ public enum BaseExceptionStatus {
     SERVER_INTENER_ERROR(2002, "서버 내부적인 에러"),
 
     // 유저 관련은 3000번 에러
-    DUPULICATE_USERNAME(3001, "아이디가 중복됩니다"),
+    DUPULICATE_EMAIL(3001, "아이디가 중복됩니다"),
     FAIL_ENCRYPT_PASSWORD(3002, "비밀번호 암호화에 실패했습니다"),
     LOGIN_USER_NOT_EXIST(3003, "해당하는 아이디 또는 비밀번호가 없습니다"),
     NOT_LOGIN_USER(3004,"로그인 하지 않은 유저입니다"),

@@ -8,7 +8,6 @@ import j2kb.ponicon.scrap.domain.User;
 import j2kb.ponicon.scrap.response.BaseResponse;
 import j2kb.ponicon.scrap.response.validationSequence.ValidationSequence;
 import j2kb.ponicon.scrap.user.dto.*;
-import j2kb.ponicon.scrap.utils.ICookieService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -48,19 +47,19 @@ public class UserController {
     /**
      * 아이디 중복 확인
      * [GET] user/duplicate?id=
-     * @param username
+     * @param email
      * @return
      */
     @ApiOperation(value = "아이디 중복 확인", notes = "[GET] user/duplicate?id=")
     @GetMapping("/duplicate")
-    public BaseResponse<GetUsernameSameRes> checkUsernameDuplicate(@ApiParam(value = "User의 username 값", example = "test0303") @RequestParam(name = "id")String username){
+    public BaseResponse<GetEmailSameRes> checkEmailDuplicate(@ApiParam(value = "User의 email 값", example = "test0303") @RequestParam(name = "id")String email){
 
         // id 널값 처리해야함.
 
-        boolean isDuplicate = userService.checkUsernameDuplicate(username);
+        boolean isDuplicate = userService.checkEmailDuplicate(email);
 
-        GetUsernameSameRes res = new GetUsernameSameRes(isDuplicate);
-        return new BaseResponse<GetUsernameSameRes>(res);
+        GetEmailSameRes res = new GetEmailSameRes(isDuplicate);
+        return new BaseResponse<GetEmailSameRes>(res);
     }
 
     /**

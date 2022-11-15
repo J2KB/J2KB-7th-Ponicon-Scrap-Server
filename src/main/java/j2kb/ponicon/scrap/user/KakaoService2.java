@@ -67,8 +67,8 @@ public class KakaoService2 implements IKakaoService2{
         User user = getUser(KakaoAccessToken);
 
         // 토큰 발급
-        String accessToken = jwtService.createAccessToken(user.getUsername());
-        String refreshToken = jwtService.createRefreshToken(user.getUsername());
+        String accessToken = jwtService.createAccessToken(user.getEmail());
+        String refreshToken = jwtService.createRefreshToken(user.getEmail());
 
         // 쿠키 발급
         Cookie accessCookie = cookieService.createAccessCookie(accessToken, true);
@@ -138,7 +138,7 @@ public class KakaoService2 implements IKakaoService2{
 
         KaKaoUser kakaoUser = getUserInfo(accessToken);
 
-        User user = userRepository.findByUsername(kakaoUser.getId());
+        User user = userRepository.findByEmail(kakaoUser.getId());
 
         // 해당하는 사용자가 없으면 자동으로 회원가입 진행
         if(user == null){

@@ -11,7 +11,7 @@ public interface IUserService {
 
     public User join(PostJoinReq postJoinReq);
     public User joinBySocial(String username, String name);
-    public boolean checkUsernameDuplicate(String username);
+    public boolean checkEmailDuplicate(String email);
     public User login(PostLoginReq postLoginReq, HttpServletResponse response);
     public void logout(HttpServletResponse response);
     public User checkUserHasLogin(Cookie[] cookies);
