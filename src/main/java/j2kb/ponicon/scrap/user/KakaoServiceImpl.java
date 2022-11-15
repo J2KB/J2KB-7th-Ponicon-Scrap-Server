@@ -4,10 +4,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import j2kb.ponicon.scrap.domain.User;
 import j2kb.ponicon.scrap.response.BaseException;
-import j2kb.ponicon.scrap.utils.CookieServiceImpl;
 import j2kb.ponicon.scrap.utils.ICookieService;
 import j2kb.ponicon.scrap.utils.IJwtService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +24,7 @@ import static j2kb.ponicon.scrap.utils.JwtData.KAKAO_REST_API_KEY;
 
 @Service
 @Transactional
+@Slf4j
 @RequiredArgsConstructor
 public class KakaoServiceImpl implements IKakaoService{
 
@@ -80,21 +81,21 @@ public class KakaoServiceImpl implements IKakaoService{
 
         this.redirectionUrl  = frontHost + "/user/login/kakao";
 
-        System.out.println("frontHost = " + frontHost);
-        System.out.println("redirectionUrl = " + redirectionUrl);
+        log.info("frontHost ={} ", frontHost);
+        log.info("redirectionUrl ={} ", redirectionUrl);
 
         // 인가코드로 카카오의 토큰(access, refresh) 발급받기
         Token token = getTokens(code);
-        System.out.println("token.getAccessToken() = " + token.getAccessToken());
 
-        System.out.println("redirectionUrl = " + redirectionUrl);
+        log.info("token.getAccessToken() ={} ", token.getAccessToken());
+        log.info("redirectionUrl ={} ", redirectionUrl);
 
         // user 조회
         User user = getUser(token.getAccessToken());
 
         // 토큰 발급
-        String accessToken = jwtService.createAccessToken(user.getUsername());
-        String refreshToken = jwtService.createRefreshToken(user.getUsername());
+        String accessToken = jwtService.createAccessToken(user.getEmail());
+        String refreshToken = jwtService.createRefreshToken(user.getEmail());
 
         // 쿠키 발급
         Cookie accessCookie = cookieService.createAccessCookie(accessToken, true);
@@ -125,8 +126,8 @@ public class KakaoServiceImpl implements IKakaoService{
 
             //결과 코드가 200이라면 성공
             int responseCode = conn.getResponseCode();
-            System.out.println("responseCode : " + responseCode);
-            System.out.println(conn.getResponseMessage());
+            log.info("responseCode : {}" , responseCode);
+            log.info(conn.getResponseMessage());
 
             // 200 아닐경우 예외처리 필요
 
@@ -138,8 +139,7 @@ public class KakaoServiceImpl implements IKakaoService{
             while ((line = br.readLine()) != null) {
                 result += line;
             }
-
-            System.out.println("result = " + result);
+            log.info("result ={} " + result);
 
             //Gson 라이브러리에 포함된 클래스로 JSON파싱 객체 생성
             JsonParser parser = new JsonParser();
@@ -188,7 +188,7 @@ public class KakaoServiceImpl implements IKakaoService{
             while ((line = br.readLine()) != null) {
                 result += line;
             }
-            System.out.println("response body : " + result);
+            log.info("response body : {}", result);
 
             //Gson 라이브러리에 포함된 클래스로 JSON파싱 객체 생성
             JsonParser parser = new JsonParser();
@@ -215,7 +215,7 @@ public class KakaoServiceImpl implements IKakaoService{
 
         KaKaoUser kakaoUser = getUserInfo(accessToken);
 
-        User user = userRepository.findByUsername(kakaoUser.getId());
+        User user = userRepository.findByEmail(kakaoUser.getId());
 
         // 해당하는 사용자가 없으면 자동으로 회원가입 진행
         if(user == null){

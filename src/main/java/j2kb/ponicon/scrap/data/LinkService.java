@@ -6,7 +6,7 @@ import j2kb.ponicon.scrap.domain.Link;
 public interface LinkService {
     public PostDataSaveRes linkSave(PostUrlReq postUrlReq, Long userId, Long categoryId) throws Exception;
 
-    public GetDataListRes links(Long userId, Long categoryId, String seq);
+    public GetDataListRes links(Long userId, Long categoryId);
 
     public GetDataListRes allLinks(Long userId);
 

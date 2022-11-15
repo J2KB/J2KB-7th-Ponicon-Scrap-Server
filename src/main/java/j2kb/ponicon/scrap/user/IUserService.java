@@ -11,8 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 public interface IUserService {
 
     public Long join(PostJoinReq postJoinReq);
-    public boolean checkUsernameDuplicate(String username);
     public LoginRes login(PostLoginReq postLoginReq, HttpServletResponse response);
+    public User joinBySocial(String username, String name);
+    public boolean checkEmailDuplicate(String email);
     public void logout(HttpServletResponse response);
     public LoginRes checkUserHasLogin(Cookie[] cookies);
 

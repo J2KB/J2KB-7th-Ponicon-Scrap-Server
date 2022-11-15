@@ -18,7 +18,7 @@ import static j2kb.ponicon.scrap.response.validationSequence.ValidationGroup.*;
 public class PostLoginReq {
 
     @NotEmpty(message = "아이디는 필수값입니다", groups = NotEmptyGroup.class)
-    private String username; // 아이디
+    private String email; // 아이디
 
     @NotEmpty(message = "비밀번호는 필수값입니다", groups = NotEmptyGroup.class)
     private String password; // 비번

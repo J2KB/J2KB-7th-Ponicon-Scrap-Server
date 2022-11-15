@@ -42,20 +42,20 @@ public class UserServiceImpl implements IUserService, ISocialUserService {
     @Transactional
     public Long join(PostJoinReq postJoinReq){
 
-        String username = postJoinReq.getEmail(); // 아이디
+        String email = postJoinReq.getEmail(); // 아이디
         String pw = postJoinReq.getPassword(); // 비번
         String name = postJoinReq.getName(); // 이름
 
         // 아이디 중복 체크
-        if(checkUsernameDuplicate(username)){
-            throw new BaseException(DUPULICATE_USERNAME);
+        if(checkEmailDuplicate(email)){
+            throw new BaseException(DUPULICATE_EMAIL);
         }
 
         // 비번 암호화
         pw = SHA256.encrypt(pw);
 
         // 유저 생성
-        User user = new User(username, pw, name);
+        User user = new User(email, pw, name);
 
         // 기본 카테고리 생성
         categoryService.saveBasicCategory(user);
@@ -83,11 +83,11 @@ public class UserServiceImpl implements IUserService, ISocialUserService {
 
     /**
      * 아이디 중복 확인
-     * @param username 아이디
+     * @param email 아이디
      * @return 중복이면 true를 리턴.
      */
-    public boolean checkUsernameDuplicate(String username){
-        User user = userRepository.findByUsername(username);
+    public boolean checkEmailDuplicate(String email){
+        User user = userRepository.findByEmail(email);
 
         if(user == null){
             return false; // 중복 X
@@ -104,13 +104,13 @@ public class UserServiceImpl implements IUserService, ISocialUserService {
      */
     public LoginRes login(PostLoginReq postLoginReq, HttpServletResponse response){
 
-        String username = postLoginReq.getUsername();
+        String email = postLoginReq.getEmail();
         String pw = postLoginReq.getPassword();
         boolean isAutoLogin = postLoginReq.getAutoLogin();
 
         // 유저 확인
         pw = SHA256.encrypt(pw); // 비번 암호화
-        User user = userRepository.findByUsernameAndPassword(username, pw);
+        User user = userRepository.findByEmailAndPassword(email, pw);
 
         // 해당하는 유저가 없음.
         if(user == null){
@@ -118,8 +118,8 @@ public class UserServiceImpl implements IUserService, ISocialUserService {
         }
 
         // 토큰 발급
-        String accessToken = jwtService.createAccessToken(username);
-        String refreshToken = jwtService.createRefreshToken(username);
+        String accessToken = jwtService.createAccessToken(email);
+        String refreshToken = jwtService.createRefreshToken(email);
 
         // 쿠키 발급
         Cookie accessCookie = cookieService.createAccessCookie(accessToken, isAutoLogin);
@@ -142,18 +142,18 @@ public class UserServiceImpl implements IUserService, ISocialUserService {
             throw new AuthorizationException(NOT_LOGIN_USER);
         }
 
-        String username = null;
+        String email = null;
         String token;
         if(accessCookie != null){
             token = accessCookie.getValue();
-            username = jwtService.getUsernameByJwt(token);
+            email = jwtService.getEmailByJwt(token);
         }
         else if(refreshCookie != null){
             token = refreshCookie.getValue();
-            username = jwtService.getUsernameByJwt(token);
+            email = jwtService.getEmailByJwt(token);
         }
 
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByEmail(email);
         if(user == null){
             throw new AuthorizationException(USER_NOT_EXIST);
         }

@@ -22,7 +22,7 @@ public class User {
 
     // 아이디
     @Column(length = 70, nullable = false, unique = true)
-    private String username;
+    private String email;
 
     // 비밀번호
     @Column(length = 300, nullable = false)
@@ -45,7 +45,7 @@ public class User {
 
     // 생성 메소드
     public User(String username, String pw, String name){
-        this.username = username;
+        this.email = username;
         this.password = pw;
         this.name = name;
     }

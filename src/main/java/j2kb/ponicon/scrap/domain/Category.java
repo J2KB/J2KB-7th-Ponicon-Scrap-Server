@@ -72,6 +72,10 @@ public class Category {
     /* 카테고리 업데이트하는 메소드 */
     public void updateCategory(String name){
         this.name = name;
+    }
 
+    /* 카테고리 순서 업데이트하는 메소드 */
+    public void updateOrder(int order){
+        this.order = order;
     }
 }

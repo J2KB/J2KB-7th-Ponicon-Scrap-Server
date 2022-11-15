@@ -1,5 +1,6 @@
 package j2kb.ponicon.scrap.response;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -12,6 +13,7 @@ import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 import java.util.List;
 
+@Slf4j
 @RestControllerAdvice
 public class ExceptionResponseAdvice {
     /**
@@ -77,7 +79,7 @@ public class ExceptionResponseAdvice {
 
         List<ObjectError> errors = bindingResult.getAllErrors();
         for(ObjectError error: errors){
-            System.out.println("error.getDefaultMessage() = " + error.getDefaultMessage());
+            log.info("error.getDefaultMessage() ={} ", error.getDefaultMessage());
         }
         
         String errorReason = errors.get(0).getDefaultMessage();

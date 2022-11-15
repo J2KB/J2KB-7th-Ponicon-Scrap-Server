@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetUsernameSameRes {
+public class GetEmailSameRes {
 
     @JsonProperty("isDuplicate")
     private boolean duplicate; // true = 중복, false = 중복x

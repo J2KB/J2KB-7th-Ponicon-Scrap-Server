@@ -3,7 +3,6 @@ package j2kb.ponicon.scrap.category;
 import j2kb.ponicon.scrap.category.dto.*;
 import j2kb.ponicon.scrap.data.LinkRepository;
 import j2kb.ponicon.scrap.domain.Category;
-import j2kb.ponicon.scrap.domain.Link;
 import j2kb.ponicon.scrap.domain.User;
 import j2kb.ponicon.scrap.response.BaseException;
 import j2kb.ponicon.scrap.user.UserRepository;
@@ -55,7 +54,6 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Transactional(readOnly = true)
     public GetCategoryListRes categories(Long userId) {
-        //System.out.println("no = " + no);
         List<CategoryListRes> list = categoryRepository.findByUserId(userId, Sort.by(Sort.Direction.ASC, "order")).stream() // categoryRepository에서 넘어온 결과를
                 .map(Category::toDto)          // Stream을 통해 map으로 toDto에 매핑 해준다.
                 .collect(Collectors.toList()); // collect를 사용해서 List로 변환한다.
@@ -65,15 +63,15 @@ public class CategoryServiceImpl implements CategoryService{
          * 다시 list.get(i).getCategoryId로 카테고리 id를 가져온다.
          * 문제점 해당하는 카테고리의 아이디만큼 카운트 쿼리문이 실행된다.
          */
-        //int count = list.size();
+        int count = list.size();
+        log.info("count ={} ", count);
+        // 모든 자료 갯수 구해서 set 해준다.
+        list.get(0).setNumOfLink(linkRepository.countByUserId(userId));
 
-        // for each
-        for(CategoryListRes i : list) {
-            i.setNumOfLink(linkRepository.countByCategoryIdAndUserId(i.getCategoryId(), userId));
+        // 카테고리에 속한 자료 갯수를 구한다.
+        for(int i = 1; i < count; i++) {
+            list.get(i).setNumOfLink(linkRepository.countByCategoryIdAndUserId(list.get(i).getCategoryId(), userId));
         }
-//        for(int i=0; i< count; i++) {
-//            list.get(i).setNumOfLink(linkRepository.countByCategoryId(list.get(i).getCategoryId()));
-//        }
 
         // list를 builder 패턴으로 객체 생성
         GetCategoryListRes getCategoryListRes = GetCategoryListRes.builder().categories(list).build();
@@ -102,9 +100,7 @@ public class CategoryServiceImpl implements CategoryService{
     // 카테고리 삭제
     @Transactional
     public void categoryDelete(Long categoryId) {
-        Long deleteCategory = categoryRepository.deleteAllById(categoryId);
-//        DeleteCategoryRes deleteCategoryRes = DeleteCategoryRes.builder().categoryId(categoryId).build();
-//        return deleteCategoryRes;
+        categoryRepository.deleteAllById(categoryId);
     }
     // 카테고리 수정
     @Transactional
@@ -112,7 +108,7 @@ public class CategoryServiceImpl implements CategoryService{
     public UpdateCategoryRes updateCategory(UpdateCategoryReq updateCategoryReq, Long categoryId) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> {
-                return new IllegalArgumentException("수정에 실패하였습니다.");
+                return new BaseException(CATEGORY_NOT_EXIST);
         });
 
         String name = updateCategoryReq.getName();
@@ -122,5 +118,20 @@ public class CategoryServiceImpl implements CategoryService{
         UpdateCategoryRes updateCategoryRes = UpdateCategoryRes.builder().categoryId(categoryId).build();
 
         return updateCategoryRes;
+    }
+    // 카테고리 순서 수정
+    @Override
+    @Transactional
+    public void updateIdxCategory(UpdateIdxCategoryReq updateIdxCategoryReq, Long userId) {
+        List<Category> list = categoryRepository.findByUserId(userId, Sort.by(Sort.Direction.ASC, "order"));
+
+        int startIdx = updateIdxCategoryReq.getStartIdx();
+        int endIdx = updateIdxCategoryReq.getEndIdx();
+
+        list.get(startIdx).updateOrder(endIdx);
+
+        for(int i = endIdx; i < startIdx; i++) {
+            list.get(i).updateOrder(i + 1);
+        }
     }
 }

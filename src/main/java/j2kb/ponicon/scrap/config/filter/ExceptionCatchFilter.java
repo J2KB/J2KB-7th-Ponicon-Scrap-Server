@@ -22,7 +22,7 @@ public class ExceptionCatchFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         Filter.super.init(filterConfig);
-        System.out.println("예외캐치필터 초기화");
+        log.info("예외캐치필터 초기화");
     }
 
     @Override
@@ -56,7 +56,6 @@ public class ExceptionCatchFilter implements Filter {
 
         BaseResponse baseResponse = new BaseResponse(eStatus);
         String json = new Gson().toJson(baseResponse);
-//        System.out.println("json = " + json);
         response.getWriter().write(json);
     }
 }
