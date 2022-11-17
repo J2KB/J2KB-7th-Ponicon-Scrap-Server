@@ -11,6 +11,8 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static j2kb.ponicon.scrap.response.BaseExceptionStatus.DO_NOT_LOGIN_USER;
+
 /**
  * 인증 예외처리 필터
  * AuthorizationException 예외를 잡아 응답값 처리해줌
@@ -29,8 +31,8 @@ public class ExceptionCatchFilter implements Filter {
             chain.doFilter(request, response);
         } catch (AuthorizationException e){
 //            e.printStackTrace();
-            log.info("e.getStatus().getMessage() ={} ", e.getStatus().getMessage());
-            setBaseResponse((HttpServletResponse) response, e.getStatus());
+            log.info("인증 예외처리: {}", e.getMessage());
+            setBaseResponse((HttpServletResponse) response, DO_NOT_LOGIN_USER);
         }
     }
 
@@ -40,7 +42,7 @@ public class ExceptionCatchFilter implements Filter {
     }
 
     // 응답 설정
-    private void setBaseResponse(HttpServletResponse response, BaseExceptionStatus e) throws IOException{
+    private void setBaseResponse(HttpServletResponse response, BaseExceptionStatus eStatus) throws IOException{
 //        response.setContentType("charset=UTF-8");
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -52,7 +54,7 @@ public class ExceptionCatchFilter implements Filter {
 
         response.setStatus(HttpStatus.UNAUTHORIZED.value()); // 401 응답코드로 설정
 
-        BaseResponse baseResponse = new BaseResponse(e);
+        BaseResponse baseResponse = new BaseResponse(eStatus);
         String json = new Gson().toJson(baseResponse);
         response.getWriter().write(json);
     }

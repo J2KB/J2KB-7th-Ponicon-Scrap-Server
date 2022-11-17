@@ -4,7 +4,8 @@ import j2kb.ponicon.scrap.domain.User;
 
 import javax.servlet.http.HttpServletResponse;
 
-public interface IKakaoService2 {
+public interface IKakaoServiceDutyOnServer {
 
-    public User login(String KakaoAccessToken, HttpServletResponse response);
+    public User login(String code, HttpServletResponse response);
+
 }

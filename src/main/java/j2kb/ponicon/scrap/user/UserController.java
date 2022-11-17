@@ -26,8 +26,8 @@ import static j2kb.ponicon.scrap.response.BaseExceptionStatus.*;
 public class UserController {
 
     private final IUserService userService;
-    private final IKakaoService kakaoService;
-    private final IKakaoService2 kakaoService2;
+    private final IKakaoServiceDutyOnServer kakaoService;
+    private final IKakaoService kakaoService2;
 
     /**
      * 회원가입
@@ -39,16 +39,19 @@ public class UserController {
     @PostMapping("/join")
     public BaseResponse join(@Validated(ValidationSequence.class) @RequestBody PostJoinReq postJoinReq){
 
+        log.info("회원가입 시도: 아이디={}", postJoinReq.getEmail());
+
         userService.join(postJoinReq);
 
+        log.info("회원가입 성공: 아이디={}", postJoinReq.getEmail());
         return new BaseResponse("회원가입에 성공했습니다");
     }
 
     /**
      * 아이디 중복 확인
-     * [GET] user/duplicate?id=
+     * [GET] /user/duplicate?id=
      * @param email
-     * @return
+     * @return GetEmailSameRes
      */
     @ApiOperation(value = "아이디 중복 확인", notes = "[GET] user/duplicate?id=")
     @GetMapping("/duplicate")
@@ -56,60 +59,96 @@ public class UserController {
 
         // id 널값 처리해야함.
 
-        boolean isDuplicate = userService.checkEmailDuplicate(email);
+        boolean isDuplicate = userService.checkIdDuplicate(email);
 
+        log.info("아이디 중복 확인: 아이디={}, 중복여부={}", email, isDuplicate);
         GetEmailSameRes res = new GetEmailSameRes(isDuplicate);
         return new BaseResponse<GetEmailSameRes>(res);
     }
 
     /**
      * 일반 로그인
-     * [POST] user/login
+     * [POST] /user/login
      * @param postLoginReq
      * @param response
-     * @return
+     * @return LoginRes
      */
     @ApiOperation(value = "일반 로그인", notes = "user/login")
     @PostMapping("/login")
     public BaseResponse<LoginRes> login(@Validated(ValidationSequence.class) @RequestBody PostLoginReq postLoginReq, HttpServletResponse response){
 
-        User user = userService.login(postLoginReq, response);
+        log.info("로그인 시도: {}", postLoginReq.getEmail());
+        LoginRes loginRes = userService.login(postLoginReq, response);
 
-        return new BaseResponse<>(new LoginRes(user.getId()));
+        log.info("로그인 성공: 아이디={}, idx={}", postLoginReq.getEmail(), loginRes.getId());
+        return new BaseResponse<>(loginRes);
     }
 
-    // 통합 로그아웃
-    // [GET] user/logout
+    /**
+     * 카카오 로그인 버전2
+     * [POST] /user/login/kakao/v2
+     * 클라이언트측으로부터 access토큰 받아옴.
+     * @param postKakaoLoign2Req
+     * @param response
+     * @return LoginRes
+     */
+    @PostMapping("login/kakao/v2")
+    public BaseResponse<LoginRes> kakaoLogin2(@Validated(ValidationSequence.class) @RequestBody PostKakaoLoignReq postKakaoLoign2Req, HttpServletResponse response){
 
+        log.info("카카오 로그인 시도");
+        LoginRes loginRes = kakaoService2.login(postKakaoLoign2Req.getAccessToken(), response);
+
+        log.info("카카오 로그인 성공: idx={}", loginRes.getId());
+        return new BaseResponse<>(loginRes);
+    }
+
+    /**
+     * 통합 로그아웃
+     * [GET] /user/logout
+     * @param response
+     * @return
+     */
     @ApiOperation(value = "통합 로그아웃", notes = "user/logout")
     @GetMapping("/logout")
     public BaseResponse logout(HttpServletResponse response){
 
         userService.logout(response);
 
+        log.info("로그아웃 성공");
         return new BaseResponse("로그아웃에 성공했습니다");
     }
-    // 카카오 로그인 버전 2
 
-    @PostMapping("login/kakao/v2")
-    public BaseResponse<LoginRes> kakaoLogin2(@Validated(ValidationSequence.class) @RequestBody PostKakaoLoign2Req postKakaoLoign2Req, HttpServletResponse response){
 
-        User user = kakaoService2.login(postKakaoLoign2Req.getAccessToken(), response);
-
-        LoginRes loginRes = new LoginRes(user.getId());
-
-        return new BaseResponse<>(loginRes);
-    }
-
-    // 로그인 된 유저인지 확인
+    /**
+     * 로그인 된 유저인지 확인
+     * [GET] /user/login
+     * @param request
+     * @return LoginRes
+     */
     @GetMapping("/login")
     public BaseResponse<LoginRes> checkIsLogin(HttpServletRequest request){
 
         Cookie[] cookies = request.getCookies();
 
-        User user = userService.checkUserHasLogin(cookies);
+        LoginRes loginRes = userService.checkUserHasLogin(cookies);
 
-        return new BaseResponse<>("로그인 된 유저입니다", new LoginRes(user.getId()));
+        return new BaseResponse<>("로그인 된 유저입니다", loginRes);
+    }
+
+    /**
+     * 회원탈퇴
+     * [DELETE] /user/{user_id}
+     * @param userId
+     * @return
+     */
+    @DeleteMapping("/{user_id}")
+    public BaseResponse unreisterUser(@PathVariable("user_id") Long userId){
+
+        log.info("회원탈퇴 시도: idx={}", userId);
+        userService.unregister(userId);
+
+        log.info("회원탈퇴 성공: idx={}", userId);
+        return new BaseResponse("회원탈퇴가 완료되었습니다");
     }
 
     /**
@@ -117,7 +156,7 @@ public class UserController {
      * [GET] user/login/kakao?code=
      * @param code
      * @param response
-     * @return
+     * @return LoginRes
      */
     @ApiOperation(value = "카카오 로그인 리다이렉션 url", notes = "user/login/kakao?code=")
     @GetMapping("/login/kakao")
@@ -136,7 +175,7 @@ public class UserController {
     }
 
 
-//    /* 테스트용 api */
+    /* 테스트용 api */
 //    @GetMapping("/test/error")
 //    public BaseResponse error(){
 //        userService.error();

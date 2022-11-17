@@ -10,6 +10,19 @@ public interface LinkService {
 
     public GetDataListRes allLinks(Long userId);
 
+    /**
+     * 자료 삭제
+     * @param userId
+     * @param linkId
+     */
     public void deleteLink(Long userId, Long linkId);
-    public Link updateLink(Long userId, Long linkId, PatchLinkReq patchLinkReq);
+
+    /**
+     * 자료 수정
+     * @param userId
+     * @param linkId
+     * @param patchLinkReq
+     * @return
+     */
+    public PatchLinkRes updateLink(Long userId, Long linkId, PatchLinkReq patchLinkReq);
 }

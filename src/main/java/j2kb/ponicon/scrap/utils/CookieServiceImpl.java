@@ -34,7 +34,7 @@ public class CookieServiceImpl implements ICookieService{
             cookie.setMaxAge(0);
             // 자동로그인이 아니면 refreshh쿠키 안만듦.
         }
-        log.info("cookie.getMaxAge() ={} ", cookie.getMaxAge());
+//        log.info("cookie.getMaxAge() ={} ", cookie.getMaxAge());
 
         return cookie;
     }

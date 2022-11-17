@@ -12,7 +12,7 @@ import static j2kb.ponicon.scrap.response.validationSequence.ValidationGroup.*;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostKakaoLoign2Req {
+public class PostKakaoLoignReq {
 
     @NotEmpty(message = "access토큰은 필수값 입니다", groups = NotNullGroup.class)
     private String accessToken;
