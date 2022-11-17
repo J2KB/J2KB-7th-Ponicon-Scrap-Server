@@ -8,5 +8,11 @@ import javax.servlet.http.HttpServletResponse;
 
 public interface IKakaoService {
 
+    /**
+     * 카카오 로그인
+     * @param KakaoAccessToken
+     * @param response
+     * @return LoginRes
+     */
     public LoginRes login(String KakaoAccessToken, HttpServletResponse response);
 }

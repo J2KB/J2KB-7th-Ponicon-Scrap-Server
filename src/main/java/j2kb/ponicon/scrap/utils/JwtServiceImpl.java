@@ -2,6 +2,7 @@ package j2kb.ponicon.scrap.utils;
 
 import io.jsonwebtoken.*;
 import j2kb.ponicon.scrap.response.AuthorizationException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -14,6 +15,7 @@ import static j2kb.ponicon.scrap.utils.JwtData.*;
  * JWT 관련 서비스 코드
  */
 @Service
+@Slf4j
 public class JwtServiceImpl implements IJwtService{
 
     // 엑세스토큰 생성
@@ -55,8 +57,10 @@ public class JwtServiceImpl implements IJwtService{
 
             return claims;
         } catch (ExpiredJwtException e){ //시간 만료
+            log.info("jwt 토큰 에러: {}, token={}", JWT_TOKEN_EXPIRE.getMessage(), jwtToken);
             throw new AuthorizationException(JWT_TOKEN_EXPIRE);
         } catch (Exception ignored) {
+            log.info("jwt 토큰 에러: {}, token={}", JWT_TOKEN_INVALID.getMessage(), jwtToken);
             throw new AuthorizationException(JWT_TOKEN_INVALID);
         }
     }
@@ -72,8 +76,10 @@ public class JwtServiceImpl implements IJwtService{
             return claims.getBody().getSubject();
 
         } catch (ExpiredJwtException e){ //시간 만료
+            log.info("jwt 토큰 에러: {}, token={}", JWT_TOKEN_EXPIRE.getMessage(), jwtToken);
             throw new AuthorizationException(JWT_TOKEN_EXPIRE);
         } catch (Exception ignored) {
+            log.info("jwt 토큰 에러: {}, token={}", JWT_TOKEN_INVALID.getMessage(), jwtToken);
             throw new AuthorizationException(JWT_TOKEN_INVALID);
         }
     }

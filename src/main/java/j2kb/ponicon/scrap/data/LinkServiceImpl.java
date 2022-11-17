@@ -153,16 +153,19 @@ public class LinkServiceImpl implements LinkService {
         Link link = findLinkOne(linkId);
         // 해당 유저가 만든 자료가 아니라면
         if(!link.checkLinkAndUserCorrect(userId)){
+            log.info("자료 수정중 에러: {}, user={}, link={}", LINK_AND_USER_NOT_CORRECT.getMessage(), userId, linkId);
             throw new BaseException(LINK_AND_USER_NOT_CORRECT);
         }
 
-        // 변경된 카테고리
+        // 변경될 카테고리
         Category changedCategory = categoryService.findCategoryOne(patchLinkReq.getCategoryId());
         // 해당 유저가 만든 카테고리가 아니라면
         if(!changedCategory.checkCategoryAndUserCorrect(userId)){
+            log.info("자료 수정중 에러: {}, user={}, link={}", CATEGORY_AND_USER_NOT_CORRECT.getMessage(), userId, linkId);
             throw new BaseException(CATEGORY_AND_USER_NOT_CORRECT);
         }
 
+        // 자료의 카테고리 변경
         link.setCategory(changedCategory);
 
         linkRepository.save(link);
@@ -184,6 +187,9 @@ public class LinkServiceImpl implements LinkService {
     public Link findLinkOne(Long linkId){
         Optional<Link> optLink = linkRepository.findById(linkId);
         // 해당 하는 자료가 없으면 에러 발생시키기.
+        if(optLink.isEmpty()){
+            log.info("에러: {}", LINK_NOT_EXIST.getMessage());
+        }
         return optLink.orElseThrow(() -> new BaseException(LINK_NOT_EXIST));
     }
 }

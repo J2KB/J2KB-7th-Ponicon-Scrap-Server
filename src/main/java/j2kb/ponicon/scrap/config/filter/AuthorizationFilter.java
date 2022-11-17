@@ -42,19 +42,21 @@ public class AuthorizationFilter implements Filter {
         Cookie accessCookie = cookieService.findCookie("accessToken", cookies);
         Cookie refreshCookie = cookieService.findCookie("refreshToken", cookies);
 
-        log.info("accessCookie ={} ", accessCookie);
-        log.info("refreshCookie ={} ", refreshCookie);
+//        log.info("accessCookie ={} ", accessCookie);
+//        log.info("refreshCookie ={} ", refreshCookie);
 
         String accessToken, refreshToken;
 
         // access쿠키는 있으나, refresh쿠키는 없는경우
         if(accessCookie != null && refreshCookie == null){
+            log.info("access쿠키: O, refresh쿠키: X");
             accessToken = accessCookie.getValue();
 
             jwtService.validationAndGetJwt(accessToken);
         }
         // access쿠키, refresh쿠키 둘다 있는경우
         else if(accessCookie != null && refreshCookie != null){
+            log.info("access쿠키: O, refresh쿠키: O");
             accessToken = accessCookie.getValue();
 
             try {
@@ -73,12 +75,15 @@ public class AuthorizationFilter implements Filter {
         }
         // access쿠키는 없으나 refresh쿠키는 있는경우
         else if(accessCookie == null && refreshCookie != null){
+            log.info("access쿠키: X, refresh쿠키: O");
             refreshToken = refreshCookie.getValue();
 
             reissueAccessTokenAndSetCookie(refreshToken, true, (HttpServletResponse) response);
         }
         // 아무것도 없는 경우
         else {
+            log.info("access쿠키: X, refresh쿠키: X");
+            log.info("로그인 되지 않은 유저의 접근: {}", UNAUTHORIZED_USER_ACCESS.getMessage());
             throw new AuthorizationException(UNAUTHORIZED_USER_ACCESS);
         }
 

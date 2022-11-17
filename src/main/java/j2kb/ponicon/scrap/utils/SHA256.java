@@ -1,6 +1,7 @@
 package j2kb.ponicon.scrap.utils;
 
 import j2kb.ponicon.scrap.response.BaseException;
+import lombok.extern.slf4j.Slf4j;
 
 import java.security.MessageDigest;
 
@@ -9,6 +10,7 @@ import static j2kb.ponicon.scrap.response.BaseExceptionStatus.FAIL_ENCRYPT_PASSW
 /**
  * 비밀번호 암호화 코드
  */
+@Slf4j
 public class SHA256 {
     public SHA256() {
     }
@@ -38,6 +40,7 @@ public class SHA256 {
             return hexString.toString();
         } catch (Exception var7) {
             var7.printStackTrace();
+            log.error("비밀번호 암호화중 에러: {}", FAIL_ENCRYPT_PASSWORD.getMessage());
             throw new BaseException(FAIL_ENCRYPT_PASSWORD);
         }
     }

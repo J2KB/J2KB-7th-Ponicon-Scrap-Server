@@ -66,21 +66,39 @@ public class LinkController {
         return new BaseResponse<>(list);
     }
 
-    // 링크 삭제
+    /**
+     * 자료 삭제
+     * [DELETE] /auth/data/{user_id}?link_id
+     * @param userId
+     * @param linkId
+     * @return
+     */
     @DeleteMapping("/auth/data/{user_id}")
     public BaseResponse deleteLink(@PathVariable(name = "user_id") Long userId, @RequestParam(name = "link_id") Long linkId){
 
+        log.info("자료 삭제 시도: user={}, link={}", userId, linkId);
         linkService.deleteLink(userId, linkId);
 
+        log.info("자료 삭제 성공: user={}, link={}", userId, linkId);
         return new BaseResponse("자료 삭제에 성공했습니다");
     }
 
-    // 링크 수정 (카테고리 수정)
+    /**
+     * 링크 수정 (카테고리 수정)
+     * [PATCH] /auth/data/{user_id}?link_id=
+     * @param userId
+     * @param linkId
+     * @param patchLinkReq
+     * @return
+     */
     @PatchMapping("/auth/data/{user_id}")
     public BaseResponse<PatchLinkRes> updateLink(@PathVariable(name = "user_id") Long userId, @RequestParam(name = "link_id") Long linkId, @Validated(ValidationSequence.class) @RequestBody PatchLinkReq patchLinkReq){
 
+        log.info("자료 수정 시도: user={}, link={}", userId, linkId);
+
         PatchLinkRes patchLinkRes = linkService.updateLink(userId, linkId, patchLinkReq);
 
+        log.info("자료 수정 성공: idx={}, link={}", userId, linkId);
         return new BaseResponse<>("자료 수정에 성공했습니다", patchLinkRes);
     }
 }

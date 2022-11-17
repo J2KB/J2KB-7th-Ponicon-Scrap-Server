@@ -88,6 +88,7 @@ public class KakaoServiceImpl implements IKakaoService {
         Long userId = userService.checkUserHasJoin(kakaoUser.getKakaoId());
         // 해당하는 사용자가 없으면 자동으로 회원가입 진행
         if(userId == -1L){
+            log.info("회원가입이 되지 않은 유저의 카카오 로그인 발생. 회원가입 진행: idx={}", kakaoUser.getKakaoId());
             return userService.joinBySocial(kakaoUser.getKakaoId(), kakaoUser.getName());
         }
 
@@ -109,7 +110,7 @@ public class KakaoServiceImpl implements IKakaoService {
 
             //결과 코드가 200이라면 성공
             int responseCode = conn.getResponseCode();
-            log.info("responseCode : {}" , responseCode);
+            log.trace("responseCode : {}" , responseCode);
 
             // 200 아닐경우 예외처리 필요
             if(responseCode != HttpStatus.OK.value()){
@@ -124,7 +125,7 @@ public class KakaoServiceImpl implements IKakaoService {
             while ((line = br.readLine()) != null) {
                 result += line;
             }
-            log.info("response body : {}", result);
+            log.trace("response body : {}", result);
 
             //Gson 라이브러리에 포함된 클래스로 JSON파싱 객체 생성
             JsonParser parser = new JsonParser();
@@ -141,9 +142,11 @@ public class KakaoServiceImpl implements IKakaoService {
 
             return kaKaoUser;
         } catch (BaseException e){
+            log.error("카카오 로그인 중 예상치못한 에러: {}", e.getMessage());
             throw e;
         } catch (IOException e) {
             e.printStackTrace();
+            log.error("카카오 로그인 중 예상치못한 에러: {}", KAKAO_GET_USER_INFO_FAIL.getMessage());
             throw new BaseException(KAKAO_GET_USER_INFO_FAIL);
         }
     }

@@ -3,7 +3,6 @@ package j2kb.ponicon.scrap.user;
 import j2kb.ponicon.scrap.category.CategoryRepository;
 import j2kb.ponicon.scrap.category.CategoryServiceImpl;
 import j2kb.ponicon.scrap.domain.Category;
-import j2kb.ponicon.scrap.domain.Link;
 import j2kb.ponicon.scrap.domain.User;
 import j2kb.ponicon.scrap.response.AuthorizationException;
 import j2kb.ponicon.scrap.response.BaseException;
@@ -16,6 +15,8 @@ import j2kb.ponicon.scrap.utils.ICookieService;
 import j2kb.ponicon.scrap.utils.IJwtService;
 import j2kb.ponicon.scrap.utils.SHA256;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.util.Supplier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +29,7 @@ import static j2kb.ponicon.scrap.response.BaseExceptionStatus.*;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Slf4j
 public class UserServiceImpl implements IUserService, ISocialUserService {
 
     private final UserRepository userRepository;
@@ -48,7 +50,8 @@ public class UserServiceImpl implements IUserService, ISocialUserService {
         String name = postJoinReq.getName(); // 이름
 
         // 아이디 중복 체크
-        if(checkEmailDuplicate(email)){
+        if(checkIdDuplicate(email)){
+            log.info("회원가입중 에러: {}, id={}", DUPULICATE_EMAIL.getMessage(), email);
             throw new BaseException(DUPULICATE_EMAIL);
         }
 
@@ -99,11 +102,11 @@ public class UserServiceImpl implements IUserService, ISocialUserService {
 
     /**
      * 아이디 중복 확인
-     * @param email 아이디
+     * @param id 아이디
      * @return 중복이면 true를 리턴.
      */
-    public boolean checkEmailDuplicate(String email){
-        User user = userRepository.findByEmail(email);
+    public boolean checkIdDuplicate(String id){
+        User user = userRepository.findByEmail(id);
 
         if(user == null){
             return false; // 중복 X
@@ -130,6 +133,7 @@ public class UserServiceImpl implements IUserService, ISocialUserService {
 
         // 해당하는 유저가 없음.
         if(user == null){
+            log.info("일반 로그인중 에러: {}, id={}", LOGIN_USER_NOT_EXIST.getMessage(), email);
             throw new BaseException(LOGIN_USER_NOT_EXIST);
         }
 
@@ -168,6 +172,8 @@ public class UserServiceImpl implements IUserService, ISocialUserService {
             token = refreshCookie.getValue();
             email = jwtService.getEmailByJwt(token);
         }
+
+        //eamil 널값인지 확인 안해줘도 되나?
 
         User user = userRepository.findByEmail(email);
         if(user == null){
@@ -213,6 +219,10 @@ public class UserServiceImpl implements IUserService, ISocialUserService {
     public User findUserOne(Long userId){
         Optional<User> optUser = userRepository.findById(userId);
         // 해당 하는 자료가 없으면 에러 발생시키기.
+        if(optUser.isEmpty()){
+            log.info("에러: {}, idx={}",USER_NOT_EXIST.getMessage(), userId);
+        }
+
         return optUser.orElseThrow(() -> new BaseException(USER_NOT_EXIST));
     }
 
