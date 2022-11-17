@@ -34,6 +34,7 @@ public class CategoryController {
         PostCategorySaveRes postCategorySaveRes = categoryService.categorySave(postCategoryReq, userId);
         return new BaseResponse<>(postCategorySaveRes);
     }
+
     /**
      * 카테고리 조회 API
      * UserId를 RequestParam으로 받아서 categoryService.categories 후 카테고리를 조회하는 역할을 합니다.
@@ -42,11 +43,12 @@ public class CategoryController {
      * @author 박현성
      */
     @ApiOperation(value = "카테고리 조회 API", notes = "UserId를 RequestParam으로 받아서 categoryService.categories 후 카테고리를 조회하는 역할을 합니다. /category/all?id=")
-    @GetMapping("/category/all")
+    @GetMapping("/auth/category/all")
     public BaseResponse<GetCategoryListRes> categoryListByUser(@ApiParam(value = "User의 id 값", example = "2") @RequestParam("id")Long userId) {
         GetCategoryListRes list = categoryService.categories(userId);
         return new BaseResponse<>(list);
     }
+
     /**
      * 카테고리 삭제 API
      * UserId를 RequestParam으로 받아서 categoryService.categoryDelete 후 카테고리를 삭제하는 역할을 합니다.
@@ -60,6 +62,7 @@ public class CategoryController {
         categoryService.categoryDelete(categoryId);
         return new BaseResponse("카테고리 삭제에 성공했습니다");
     }
+
     /**
      * 카테고리 수정 API
      * UserId를 RequestParam으로 받아서 categoryService.updateCategory 후 카테고리를 수정하는 역할을 합니다.
@@ -73,6 +76,7 @@ public class CategoryController {
         UpdateCategoryRes updateCategoryRes = categoryService.updateCategory(updateCategoryReq,categoryId);
         return new BaseResponse<>(updateCategoryRes);
     }
+
     /**
      * 카테고리 순서 수정 API
      * startIdx와 endIdx RequestParam으로 받아서 categoryService.DeleteCategory 후 카테고리를 수정하는 역할을 합니다.
