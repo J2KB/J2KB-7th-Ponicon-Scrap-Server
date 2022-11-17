@@ -3,6 +3,7 @@ package j2kb.ponicon.scrap.user;
 import j2kb.ponicon.scrap.category.CategoryRepository;
 import j2kb.ponicon.scrap.category.CategoryServiceImpl;
 import j2kb.ponicon.scrap.domain.Category;
+import j2kb.ponicon.scrap.domain.Link;
 import j2kb.ponicon.scrap.domain.User;
 import j2kb.ponicon.scrap.response.AuthorizationException;
 import j2kb.ponicon.scrap.response.BaseException;
@@ -67,6 +68,7 @@ public class UserServiceImpl implements IUserService, ISocialUserService {
     }
 
     // 소셜 로그인 유저의 회원가입
+    @Transactional
     public UserInfo joinBySocial(String username, String name){
 
         User user = new User(username, username, name);
@@ -76,9 +78,23 @@ public class UserServiceImpl implements IUserService, ISocialUserService {
 
         userRepository.save(user);
 
-        UserInfo userInfo = new UserInfo(user.getId(), user.getUsername(), user.getName());
+        UserInfo userInfo = new UserInfo(user.getId(), user.getEmail(), user.getName());
 
         return userInfo;
+    }
+
+    // 회원가입된 유저인지 확인
+    @Override
+    public Long checkUserHasJoin(String username){
+
+        User user = userRepository.findByEmail(username);
+
+        if(user == null){
+            return -1L; // 회원가입 안됨
+        }
+        else {
+            return user.getId(); // 회원가입 됨.
+        }
     }
 
     /**
@@ -163,6 +179,17 @@ public class UserServiceImpl implements IUserService, ISocialUserService {
         return loginRes;
     }
 
+    // 회원탈퇴
+    @Override
+    @Transactional
+    public boolean unregister(Long userId) {
+
+        User user = findUserOne(userId);
+        userRepository.delete(user);
+
+        return false;
+    }
+
     /**
      * 로그아웃
      * @param response
@@ -180,6 +207,13 @@ public class UserServiceImpl implements IUserService, ISocialUserService {
         refreshCookie.setMaxAge(0);
         refreshCookie.setPath("/");
         response.addCookie(refreshCookie);
+    }
+
+    // 유저 찾기
+    public User findUserOne(Long userId){
+        Optional<User> optUser = userRepository.findById(userId);
+        // 해당 하는 자료가 없으면 에러 발생시키기.
+        return optUser.orElseThrow(() -> new BaseException(USER_NOT_EXIST));
     }
 
 

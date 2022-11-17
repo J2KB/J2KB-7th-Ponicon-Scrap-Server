@@ -26,8 +26,8 @@ import static j2kb.ponicon.scrap.response.BaseExceptionStatus.*;
 public class UserController {
 
     private final IUserService userService;
-    private final IKakaoService kakaoService;
-    private final IKakaoService2 kakaoService2;
+    private final IKakaoServiceDutyOnServer kakaoService;
+    private final IKakaoService kakaoService2;
 
     /**
      * 회원가입
@@ -108,6 +108,14 @@ public class UserController {
         LoginRes loginRes = userService.checkUserHasLogin(cookies);
 
         return new BaseResponse<>("로그인 된 유저입니다", loginRes);
+    }
+
+    @DeleteMapping("/{user_id}")
+    public BaseResponse unreisterUser(@PathVariable("user_id") Long userId){
+
+        userService.unregister(userId);
+
+        return new BaseResponse("회원탈퇴가 완료되었습니다");
     }
 
     /**
