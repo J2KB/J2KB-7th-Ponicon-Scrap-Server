@@ -37,12 +37,14 @@ public class LinkServiceImpl implements LinkService {
     private final CategoryService categoryService;
 
     @Transactional
-    public PostDataSaveRes linkSave(PostUrlReq postUrlReq, Long userId, Long categoryId) throws Exception {
+    public PostDataSaveRes linkSave(PostDataSaveReq postDataSaveReq, Long userId, Long categoryId) throws Exception {
         // URL을 postUrlReq 가져온다.
-        String baseURL = postUrlReq.getBaseURL();
+        //String baseURL = postUrlReq.getBaseURL();
+
+        String baseURL = postDataSaveReq.getLink();
 
         // getOpenGraph에 URL 넘겨 PostDataSaveReq을 담는다.
-        PostDataSaveReq postDataSaveReq = getOpenGraph(baseURL);
+        //PostDataSaveReq postDataSaveReq = getOpenGraph(baseURL);
 
         // 확인용
         log.info("baseURL ={} ", baseURL);

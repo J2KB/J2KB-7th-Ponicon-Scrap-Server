@@ -2,6 +2,7 @@ package j2kb.ponicon.scrap.data;
 
 import j2kb.ponicon.scrap.category.CategoryRepository;
 import j2kb.ponicon.scrap.data.dto.GetDataListRes;
+import j2kb.ponicon.scrap.data.dto.PostDataSaveReq;
 import j2kb.ponicon.scrap.data.dto.PostDataSaveRes;
 import j2kb.ponicon.scrap.data.dto.PostUrlReq;
 import j2kb.ponicon.scrap.domain.Category;
@@ -45,7 +46,10 @@ class LinkServiceTest {
     void linkSave() throws Exception {
 
         //given
-        PostUrlReq postUrlReq = new PostUrlReq("https://okky.kr/");
+        //PostUrlReq postUrlReq = new PostUrlReq("https://okky.kr/");
+
+        PostDataSaveReq postDataSaveReq = new PostDataSaveReq();
+        postDataSaveReq.setLink("https://okky.kr/");
 
         Optional<User> tempUser = Optional.of(new User("phs", "1234", "phs"));
         User user = tempUser.get();
@@ -58,7 +62,7 @@ class LinkServiceTest {
         Long fakeCategoryId = 1L;
         ReflectionTestUtils.setField(category, "id", fakeCategoryId);
 
-        Link link = new Link(postUrlReq.getBaseURL(), "네이버", "www.naver.com", category, user, "naver.com");
+        Link link = new Link(postDataSaveReq.getLink(), "네이버", "www.naver.com", category, user, "naver.com");
         Long fakeLinkId = 1L;         // Id 생성 전략을 Identity를 사용하므로, 실제 DBd에 저장되야만 Id가 생성된다. 따라서 테스트에서 Id를 검증할 수 없다.
         ReflectionTestUtils.setField(link, "id", fakeLinkId);
 
@@ -68,7 +72,7 @@ class LinkServiceTest {
         when(linkRepository.save(any())).thenReturn(link);
 
         //when
-        PostDataSaveRes postDataSaveRes = linkService.linkSave(postUrlReq, fakeUserId, fakeCategoryId);
+        PostDataSaveRes postDataSaveRes = linkService.linkSave(postDataSaveReq, fakeUserId, fakeCategoryId);
 
         //then
         assertThat(postDataSaveRes.getLinkId()).isEqualTo(1L);

@@ -30,13 +30,13 @@ public class LinkController {
      * @valid 어노테이션으로 PostUrlReq의 validation check를 진행합니다.
      * @ exception : UnknownHostException, MalformedURLException, DataIntegrityViolationException
      * [POST] /data?id=&category=
-     * @param postUrlReq, userId, categoryId
+     * @param postDataSaveReq, userId, categoryId
      * @author 박현성
      */
     @ApiOperation(value = "링크 등록 API", notes = "UserId와 categoryId를 RequestParam으로 받아서 linkService.linkSave 후 링크를 생성하는 역할을 합니다. /data?id=&category=")
     @PostMapping("/data")
-    public BaseResponse<PostDataSaveRes> dataSave(@RequestBody @Valid PostUrlReq postUrlReq, @ApiParam(value = "User의 id 값", example = "2") @RequestParam("id") Long userId, @ApiParam(value = "카테고리의 id 값", example = "2") @RequestParam("category") Long categoryId) throws Exception {
-        PostDataSaveRes postDataSaveRes = linkService.linkSave(postUrlReq, userId, categoryId);
+    public BaseResponse<PostDataSaveRes> dataSave(@RequestBody @Valid PostDataSaveReq postDataSaveReq, @ApiParam(value = "User의 id 값", example = "2") @RequestParam("id") Long userId, @ApiParam(value = "카테고리의 id 값", example = "2") @RequestParam("category") Long categoryId) throws Exception {
+        PostDataSaveRes postDataSaveRes = linkService.linkSave(postDataSaveReq, userId, categoryId);
         return new BaseResponse<PostDataSaveRes>(postDataSaveRes);
     }
     /**

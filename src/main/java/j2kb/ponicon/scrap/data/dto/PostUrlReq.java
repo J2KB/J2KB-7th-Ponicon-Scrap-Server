@@ -11,6 +11,7 @@ import javax.validation.constraints.NotBlank;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+// 프론트 변경으로 현재 미사용 PostDataSaveReq로 변경
 public class PostUrlReq {
     @NotBlank
     private String baseURL;
