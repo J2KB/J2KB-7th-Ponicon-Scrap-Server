@@ -43,7 +43,7 @@ public class CategoryController {
      * @author 박현성
      */
     @ApiOperation(value = "카테고리 조회 API", notes = "UserId를 RequestParam으로 받아서 categoryService.categories 후 카테고리를 조회하는 역할을 합니다. /category/all?id=")
-    @GetMapping("/auth/category/all")
+    @GetMapping("/category/all")
     public BaseResponse<GetCategoryListRes> categoryListByUser(@ApiParam(value = "User의 id 값", example = "2") @RequestParam("id")Long userId) {
         GetCategoryListRes list = categoryService.categories(userId);
         return new BaseResponse<>(list);
