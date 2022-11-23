@@ -17,8 +17,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static j2kb.ponicon.scrap.response.BaseExceptionStatus.CATEGORY_NOT_EXIST;
-import static j2kb.ponicon.scrap.response.BaseExceptionStatus.LINK_NOT_EXIST;
+import static j2kb.ponicon.scrap.response.BaseExceptionStatus.*;
 
 
 @Service
@@ -32,6 +31,7 @@ public class CategoryServiceImpl implements CategoryService{
 
     private final LinkRepository linkRepository;
 
+    // 카테고리 저장
     @Transactional
     public PostCategorySaveRes categorySave(PostCategorySaveReq postCategoryReq, Long userId) {
         // userRepository에서 userId로 조회 후 user에 UserName을 가져온다.
@@ -51,7 +51,7 @@ public class CategoryServiceImpl implements CategoryService{
 
         return postCategorySaveRes;
     }
-
+    // 모든 카테고리 조회
     @Transactional(readOnly = true)
     public GetCategoryListRes categories(Long userId) {
         List<CategoryListRes> list = categoryRepository.findByUserId(userId, Sort.by(Sort.Direction.ASC, "order")).stream() // categoryRepository에서 넘어온 결과를
@@ -88,13 +88,16 @@ public class CategoryServiceImpl implements CategoryService{
             //따로 카테고리 저장 안하더라도 Cascade 설정 해둬서 자동으로 insert 됨.
         }
     }
-
-
+    // 카테고리 하나 조회
     @Transactional(readOnly = true)
     public Category findCategoryOne(Long categoryId) {
         Optional<Category> optLink = categoryRepository.findById(categoryId);
         // 해당 하는 자료가 없으면 에러 발생시키기.
-        return optLink.orElseThrow(() -> new BaseException(CATEGORY_NOT_EXIST));
+        return optLink.orElseThrow(() -> {
+            log.info("카테고리 한건 조회 중 에러: {}, categoryId={}", DUPULICATE_EMAIL.getMessage(), categoryId);
+            return new BaseException(CATEGORY_NOT_EXIST);
+        }
+        );
     }
     
     // 카테고리 삭제
@@ -108,8 +111,10 @@ public class CategoryServiceImpl implements CategoryService{
     public UpdateCategoryRes updateCategory(UpdateCategoryReq updateCategoryReq, Long categoryId) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> {
+                    log.info("카테고리 수정 중 에러: {}, categoryId={}", DUPULICATE_EMAIL.getMessage(), categoryId);
                 return new BaseException(CATEGORY_NOT_EXIST);
-        });
+                }
+        );
 
         String name = updateCategoryReq.getName();
 
