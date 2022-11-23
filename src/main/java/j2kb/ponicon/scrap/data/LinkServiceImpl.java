@@ -90,7 +90,7 @@ public class LinkServiceImpl implements LinkService {
     }
     @Transactional(readOnly = true)
     public GetDataListRes links(Long userId, Long categoryId) {
-        List<DataListRes> list = linkRepository.findByUserIdAndCategoryId(userId, categoryId).stream() // createdAt 기준으로 sort(desc) linkRepository에서 넘어온 결과를
+        List<DataListRes> list = linkRepository.findByUserIdAndCategoryId(userId, categoryId).stream() //  linkRepository에서 넘어온 결과를
                 .map(Link::toDto) // Stream을 통해 map으로 toDto에 매핑 해준다.
                 .collect(Collectors.toList()); // collect를 사용해서 List로 변환한다.
         // list를 builder 패턴으로 객체 생성
@@ -100,7 +100,7 @@ public class LinkServiceImpl implements LinkService {
 
     @Transactional(readOnly = true)
     public GetDataListRes allLinks(Long userId) {
-        List<DataListRes> list = linkRepository.findByUserId(userId, Sort.by(Sort.Direction.DESC, "createdAt")).stream() // createdAt 기준으로 sort(desc) linkRepository에서 넘어온 결과를
+        List<DataListRes> list = linkRepository.findByUserId(userId).stream() // linkRepository에서 넘어온 결과를
                     .map(Link::toDto) // Stream을 통해 map으로 toDto에 매핑 해준다.
                     .collect(Collectors.toList()); // collect를 사용해서 List로 변환한다.
         // list를 builder 패턴으로 객체 생성
