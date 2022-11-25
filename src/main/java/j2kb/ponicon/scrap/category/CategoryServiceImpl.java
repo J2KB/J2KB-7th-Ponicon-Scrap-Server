@@ -130,8 +130,15 @@ public class CategoryServiceImpl implements CategoryService{
 
         list.get(startIdx).updateOrder(endIdx);
 
-        for(int i = endIdx; i < startIdx; i++) {
-            list.get(i).updateOrder(i + 1);
+        if(startIdx > endIdx) {
+            for (int i = endIdx; i < startIdx; i++) {
+                list.get(i).updateOrder(i + 1);
+            }
+        }
+        if (startIdx < endIdx) {
+            for(int i = startIdx + 1; i <= endIdx; i++) {
+                list.get(i).updateOrder(i - 1);
+            }
         }
     }
 }
