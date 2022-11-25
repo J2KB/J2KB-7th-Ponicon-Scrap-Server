@@ -49,6 +49,7 @@ public class CategoryController {
     @ApiOperation(value = "카테고리 조회 API", notes = "UserId를 RequestParam으로 받아서 categoryService.categories 후 카테고리를 조회하는 역할을 합니다. /category/all?id=")
     @GetMapping("/auth/category/all")
     public BaseResponse<GetCategoryListRes> categoryListByUser(@ApiParam(value = "User의 id 값", example = "2") @RequestParam("id")Long userId) {
+        log.info("카테고리 조회 시도: 카테고리 유저 idx={}", userId);
         GetCategoryListRes list = categoryService.categories(userId);
         log.info("카테고리 조회 성공: 카테고리 유저 idx={}", userId);
         return new BaseResponse<>(list);
@@ -64,6 +65,7 @@ public class CategoryController {
     @ApiOperation(value = "카테고리 삭제 API", notes = "CategoryId를 RequestParam으로 받아서 DeleteCategory 후 카테고리를 삭제하는 역할을 합니다. /category/category=")
     @DeleteMapping("/auth/category")
     public BaseResponse deleteCategory(@ApiParam(value = "Category의 id 값", example = "2") @RequestParam("category")Long categoryId) {
+        log.info("카테고리 삭제 시도: 카테고리 idx={}", categoryId);
         categoryService.categoryDelete(categoryId);
         log.info("카테고리 삭제 성공: 카테고리 idx={}", categoryId);
         return new BaseResponse("카테고리 삭제에 성공했습니다");

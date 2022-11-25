@@ -81,10 +81,8 @@ public class LinkController {
      */
     @DeleteMapping("/auth/data/{user_id}")
     public BaseResponse deleteLink(@PathVariable(name = "user_id") Long userId, @RequestParam(name = "link_id") Long linkId){
-
         log.info("자료 삭제 시도: user={}, link={}", userId, linkId);
         linkService.deleteLink(userId, linkId);
-
         log.info("자료 삭제 성공: user={}, link={}", userId, linkId);
         return new BaseResponse("자료 삭제에 성공했습니다");
     }
@@ -99,7 +97,6 @@ public class LinkController {
      */
     @PatchMapping("/auth/data/{user_id}")
     public BaseResponse<PatchLinkRes> updateLink(@PathVariable(name = "user_id") Long userId, @RequestParam(name = "link_id") Long linkId, @Validated(ValidationSequence.class) @RequestBody PatchLinkReq patchLinkReq){
-
         log.info("자료 수정 시도: user={}, link={}", userId, linkId);
 
         PatchLinkRes patchLinkRes = linkService.updateLink(userId, linkId, patchLinkReq);

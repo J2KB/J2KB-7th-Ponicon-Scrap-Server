@@ -17,5 +17,5 @@ public interface LinkRepository extends JpaRepository<Link, Long> {
     public int countByUserId(Long userId);
 
     // userId로 해당하는 링크 리스트 조회
-    public List<Link> findByUserId(Long userId, Sort createdAt);
+    public List<Link> findByUserId(Long userId);
 }
