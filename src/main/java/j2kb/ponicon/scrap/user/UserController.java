@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServletResponse;
 import static j2kb.ponicon.scrap.response.BaseExceptionStatus.*;
 @Api(tags = "회원과 관련된 API")
 @RestController
-@RequestMapping("/user")
 @RequiredArgsConstructor
 @Slf4j
 public class UserController {
@@ -36,7 +35,7 @@ public class UserController {
      * @return
      */
     @ApiOperation(value = "회원가입", notes = "/user/join")
-    @PostMapping("/join")
+    @PostMapping("/user/join")
     public BaseResponse join(@Validated(ValidationSequence.class) @RequestBody PostJoinReq postJoinReq){
 
         log.info("회원가입 시도: 아이디={}", postJoinReq.getEmail());
@@ -54,7 +53,7 @@ public class UserController {
      * @return GetEmailSameRes
      */
     @ApiOperation(value = "아이디 중복 확인", notes = "[GET] user/duplicate?id=")
-    @GetMapping("/duplicate")
+    @GetMapping("/user/duplicate")
     public BaseResponse<GetEmailSameRes> checkEmailDuplicate(@ApiParam(value = "User의 email 값", example = "test0303") @RequestParam(name = "id")String email){
 
         // id 널값 처리해야함.
@@ -74,7 +73,7 @@ public class UserController {
      * @return LoginRes
      */
     @ApiOperation(value = "일반 로그인", notes = "user/login")
-    @PostMapping("/login")
+    @PostMapping("/user/login")
     public BaseResponse<LoginRes> login(@Validated(ValidationSequence.class) @RequestBody PostLoginReq postLoginReq, HttpServletResponse response){
 
         log.info("로그인 시도: {}", postLoginReq.getEmail());
@@ -92,7 +91,7 @@ public class UserController {
      * @param response
      * @return LoginRes
      */
-    @PostMapping("login/kakao/v2")
+    @PostMapping("/user/login/kakao/v2")
     public BaseResponse<LoginRes> kakaoLogin2(@Validated(ValidationSequence.class) @RequestBody PostKakaoLoignReq postKakaoLoign2Req, HttpServletResponse response){
 
         log.info("카카오 로그인 시도");
@@ -109,7 +108,7 @@ public class UserController {
      * @return
      */
     @ApiOperation(value = "통합 로그아웃", notes = "user/logout")
-    @GetMapping("/logout")
+    @GetMapping("/user/logout")
     public BaseResponse logout(HttpServletResponse response){
 
         userService.logout(response);
@@ -125,7 +124,7 @@ public class UserController {
      * @param request
      * @return LoginRes
      */
-    @GetMapping("/login")
+    @GetMapping("/user/login")
     public BaseResponse<LoginRes> checkIsLogin(HttpServletRequest request){
 
         Cookie[] cookies = request.getCookies();
@@ -141,7 +140,7 @@ public class UserController {
      * @param userId
      * @return
      */
-    @DeleteMapping("/{user_id}")
+    @DeleteMapping("/auth/user/{user_id}")
     public BaseResponse unreisterUser(@PathVariable("user_id") Long userId){
 
         log.info("회원탈퇴 시도: idx={}", userId);
@@ -159,7 +158,7 @@ public class UserController {
      * @return LoginRes
      */
     @ApiOperation(value = "카카오 로그인 리다이렉션 url", notes = "user/login/kakao?code=")
-    @GetMapping("/login/kakao")
+    @GetMapping("/user/login/kakao")
     public BaseResponse<LoginRes> kakaoLogin(@RequestParam(name = "code", required = false) String code, @RequestParam(name = "error", required = false) String error, HttpServletResponse response){
 
         if(error != null){
