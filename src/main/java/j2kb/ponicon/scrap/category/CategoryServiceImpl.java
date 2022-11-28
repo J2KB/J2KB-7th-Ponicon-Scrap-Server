@@ -149,9 +149,15 @@ public class CategoryServiceImpl implements CategoryService{
         // 리스트에서 옮길 카테고리를 가져와 order 번호를 위치 시키고 싶은 위치로 변경한다.
         list.get(startIdx).updateOrder(endIdx);
 
-        // i가 위치 시키고 싶은 order로 옮길 카테고리 만큼 반복한다.
-        for(int i = endIdx; i < startIdx; i++) {
-            list.get(i).updateOrder(i + 1);
+        if(startIdx > endIdx) {
+            for (int i = endIdx; i < startIdx; i++) {
+                list.get(i).updateOrder(i + 1);
+            }
+        }
+        if (startIdx < endIdx) {
+            for(int i = startIdx + 1; i <= endIdx; i++) {
+                list.get(i).updateOrder(i - 1);
+            }
         }
     }
 }
