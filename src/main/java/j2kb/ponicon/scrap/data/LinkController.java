@@ -36,7 +36,9 @@ public class LinkController {
     @ApiOperation(value = "링크 등록 API", notes = "UserId와 categoryId를 RequestParam으로 받아서 linkService.linkSave 후 링크를 생성하는 역할을 합니다. /data?id=&category=")
     @PostMapping("/data")
     public BaseResponse<PostDataSaveRes> dataSave(@RequestBody @Valid PostDataSaveReq postDataSaveReq, @ApiParam(value = "User의 id 값", example = "2") @RequestParam("id") Long userId, @ApiParam(value = "카테고리의 id 값", example = "2") @RequestParam("category") Long categoryId) throws Exception {
+        log.info("링크 등록 시도: 링크 url={}, 링크 이미지 url={}, 링크 제목={}, 유저 idx={}, 카테고리 idx={}", postDataSaveReq.getLink(), postDataSaveReq.getImgUrl(), postDataSaveReq.getTitle(), userId, categoryId);
         PostDataSaveRes postDataSaveRes = linkService.linkSave(postDataSaveReq, userId, categoryId);
+        log.info("링크 등록 완료: 링크 url={}, 링크 이미지 url={}, 링크 제목={}, 유저 idx={}, 카테고리 idx={}", postDataSaveReq.getLink(), postDataSaveReq.getImgUrl(), postDataSaveReq.getTitle(), userId, categoryId);
         return new BaseResponse<PostDataSaveRes>(postDataSaveRes);
     }
     /**
@@ -49,7 +51,9 @@ public class LinkController {
     @ApiOperation(value = "링크 조회 API", notes = "UserId와 categoryId를 RequestParam으로 받아서 linkService.links 후 링크를 조회하는 역할을 합니다. /category?id=&category=&seq=")
     @GetMapping("/auth/data")
     public BaseResponse<?> dataListByUserAndCategory(@ApiParam(value = "User의 id 값", example = "2") @RequestParam("id") Long userId, @ApiParam(value = "카테고리의 id 값", example = "2") @RequestParam("category") Long categoryId) {
+        log.info("링크 조회 시도: 유저 idx={}, 카테고리 idx={}", userId, categoryId);
         GetDataListRes list = linkService.links(userId, categoryId);
+        log.info("링크 조회 완료: 유저 idx={}, 카테고리 idx={}", userId, categoryId);
         return new BaseResponse<>(list);
     }
     /**
@@ -62,7 +66,9 @@ public class LinkController {
     @ApiOperation(value = "링크 전체 조회 API", notes = "UserId를 RequestParam으로 받아서 linkService.allLinks 후 링크를 조회하는 역할을 합니다. /category/all?id=")
     @GetMapping("/auth/data/all")
     public BaseResponse<?> dataListAllByUser(@Parameter(description = "User의 id 값", example = "2") @RequestParam("id") Long userId) {
+        log.info("링크 전체 조회 시도: 유저 idx={}", userId);
         GetDataListRes list = linkService.allLinks(userId);
+        log.info("링크 전체 조회 완룐: 유저 idx={}", userId);
         return new BaseResponse<>(list);
     }
 
@@ -75,10 +81,8 @@ public class LinkController {
      */
     @DeleteMapping("/auth/data/{user_id}")
     public BaseResponse deleteLink(@PathVariable(name = "user_id") Long userId, @RequestParam(name = "link_id") Long linkId){
-
         log.info("자료 삭제 시도: user={}, link={}", userId, linkId);
         linkService.deleteLink(userId, linkId);
-
         log.info("자료 삭제 성공: user={}, link={}", userId, linkId);
         return new BaseResponse("자료 삭제에 성공했습니다");
     }
@@ -93,7 +97,6 @@ public class LinkController {
      */
     @PatchMapping("/auth/data/{user_id}")
     public BaseResponse<PatchLinkRes> updateLink(@PathVariable(name = "user_id") Long userId, @RequestParam(name = "link_id") Long linkId, @Validated(ValidationSequence.class) @RequestBody PatchLinkReq patchLinkReq){
-
         log.info("자료 수정 시도: user={}, link={}", userId, linkId);
 
         PatchLinkRes patchLinkRes = linkService.updateLink(userId, linkId, patchLinkReq);
