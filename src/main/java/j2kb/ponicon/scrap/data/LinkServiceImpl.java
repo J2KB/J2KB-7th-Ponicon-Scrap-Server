@@ -41,13 +41,12 @@ public class LinkServiceImpl implements LinkService {
         // URL을 postUrlReq 가져온다.
         //String baseURL = postUrlReq.getBaseURL();
 
-        String baseURL = postDataSaveReq.getLink();
+        //String baseURL = postDataSaveReq.getLink();
 
         // getOpenGraph에 URL 넘겨 PostDataSaveReq을 담는다.
-        //PostDataSaveReq postDataSaveReq = getOpenGraph(baseURL);
 
         // 확인용
-        log.info("baseURL ={} ", baseURL);
+        //log.info("baseURL ={} ", baseURL);
         log.info("postDataSaveReq.getLink() ={} ", postDataSaveReq.getLink());
         log.info("postDataSaveReq.getImgUrl() ={} ", postDataSaveReq.getImgUrl());
 
@@ -56,11 +55,15 @@ public class LinkServiceImpl implements LinkService {
 
         Optional<Category> tempCategory = categoryRepository.findById(categoryId);
         Category category = tempCategory.get();
-
         String link = postDataSaveReq.getLink();
         String title = postDataSaveReq.getTitle();
         String imgUrl = postDataSaveReq.getImgUrl();
         String domain = SearchDomain(link);
+
+        if(title.isEmpty() || imgUrl.isEmpty()) {
+            imgUrl = getOpenGraph(link).getImgUrl();
+            title = getOpenGraph(link).getTitle();
+        }
 
         Link linkSave = new Link(link, title, imgUrl, category, user, domain);
         Link saveLink = linkRepository.save(linkSave);
