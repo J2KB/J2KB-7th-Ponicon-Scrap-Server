@@ -47,8 +47,6 @@ public class LinkServiceImpl implements LinkService {
 
         // 확인용
         //log.info("baseURL ={} ", baseURL);
-        log.info("postDataSaveReq.getLink() ={} ", postDataSaveReq.getLink());
-        log.info("postDataSaveReq.getImgUrl() ={} ", postDataSaveReq.getImgUrl());
 
         Optional<User> tempUser = userRepository.findById(userId);
         User user = tempUser.get();
@@ -60,10 +58,9 @@ public class LinkServiceImpl implements LinkService {
         String imgUrl = postDataSaveReq.getImgUrl();
         String domain = SearchDomain(link);
 
-        if(title.isEmpty() || imgUrl.isEmpty()) {
-            imgUrl = getOpenGraph(link).getImgUrl();
-            title = getOpenGraph(link).getTitle();
-        }
+        log.info("postDataSaveReq.getLink() ={} ", postDataSaveReq.getLink());
+        log.info("postDataSaveReq.getTitle() ={} ", postDataSaveReq.getTitle());
+        log.info("postDataSaveReq.getImgUrl() ={} ", postDataSaveReq.getImgUrl());
 
         Link linkSave = new Link(link, title, imgUrl, category, user, domain);
         Link saveLink = linkRepository.save(linkSave);
