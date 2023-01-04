@@ -27,6 +27,7 @@ public class UserController {
     private final IUserService userService;
     private final IKakaoServiceDutyOnServer kakaoService;
     private final IKakaoService kakaoService2;
+    private final IAppleService appleService;
 
     /**
      * 회원가입
@@ -100,7 +101,18 @@ public class UserController {
         log.info("카카오 로그인 성공: idx={}", loginRes.getId());
         return new BaseResponse<>(loginRes);
     }
+    @PostMapping("/user/login/apple")
+    public BaseResponse<LoginRes> AppleLogin(@Validated(ValidationSequence.class) @RequestBody PostAppleLoginReq postAppleLoginReq, HttpServletResponse response){
 
+        log.info("애플 로그인 시도");
+        if (!postAppleLoginReq.getEmail().isEmpty() || !postAppleLoginReq.getName().isEmpty()) {
+            log.info("애플 로그인 가입 시도");
+            appleService.join(postAppleLoginReq.getUserIdentifier(), postAppleLoginReq.getName());
+        }
+        LoginRes loginRes = appleService.login(postAppleLoginReq.getUserIdentifier(), response);
+        log.info("애플 로그인 성공: idx={}", loginRes.getId());
+        return new BaseResponse<>(loginRes);
+    }
     /**
      * 통합 로그아웃
      * [GET] /user/logout
