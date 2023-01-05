@@ -78,7 +78,6 @@ public class UserServiceImpl implements IUserService, ISocialUserService {
 
         // 기본 카테고리 생성
         categoryService.saveBasicCategory(user);
-
         userRepository.save(user);
 
         UserInfo userInfo = new UserInfo(user.getId(), user.getEmail(), user.getName());
