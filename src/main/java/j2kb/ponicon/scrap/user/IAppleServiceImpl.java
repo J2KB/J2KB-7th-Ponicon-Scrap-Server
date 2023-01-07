@@ -43,7 +43,7 @@ public class IAppleServiceImpl implements IAppleService{
         Long userId = userService.checkUserHasJoin(userIdentifier);
         // 해당하는 사용자가 없으면 자동으로 회원가입 진행
         if(userId == -1L){
-            log.info("회원가입이 되지 않은 유저의 카카오 로그인 발생. 회원가입 진행: idx={}", userIdentifier);
+            log.info("회원가입이 되지 않은 유저의 애플 로그인 발생. 회원가입 진행: idx={}", userIdentifier);
             userService.joinBySocial(userIdentifier, name);
         }
     }

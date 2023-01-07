@@ -101,13 +101,21 @@ public class UserController {
         log.info("카카오 로그인 성공: idx={}", loginRes.getId());
         return new BaseResponse<>(loginRes);
     }
+    /**
+     * 애플 로그인
+     * [POST] /user/login/apple
+     * @param postAppleLoginReq
+     * @param response
+     * @return LoginRes
+     */
     @PostMapping("/user/login/apple")
-    public BaseResponse<LoginRes> AppleLogin(@Validated(ValidationSequence.class) @RequestBody PostAppleLoginReq postAppleLoginReq, HttpServletResponse response){
+    public BaseResponse<LoginRes> AppleLogin(@RequestBody PostAppleLoginReq postAppleLoginReq, HttpServletResponse response){
 
         log.info("애플 로그인 시도");
         if (!postAppleLoginReq.getEmail().isEmpty() || !postAppleLoginReq.getName().isEmpty()) {
             log.info("애플 로그인 가입 시도");
             appleService.join(postAppleLoginReq.getUserIdentifier(), postAppleLoginReq.getName());
+            log.info("애플 로그인 가입 성공");
         }
         LoginRes loginRes = appleService.login(postAppleLoginReq.getUserIdentifier(), response);
         log.info("애플 로그인 성공: idx={}", loginRes.getId());

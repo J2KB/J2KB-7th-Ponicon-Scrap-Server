@@ -8,6 +8,7 @@ public interface IAppleService {
     /**
      * 애플 로그인
      * @param email
+     * @param response
      * @return LoginRes
      */
     public LoginRes login(String email, HttpServletResponse response);
