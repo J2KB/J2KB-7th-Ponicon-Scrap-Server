@@ -91,4 +91,8 @@ public class Link {
             return false;
         }
     }
+    /* 카테고리 업데이트하는 메소드 */
+    public void putLink(String title){
+        this.title = title;
+    }
 }

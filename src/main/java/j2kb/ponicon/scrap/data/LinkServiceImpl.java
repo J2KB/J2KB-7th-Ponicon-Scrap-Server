@@ -2,6 +2,8 @@ package j2kb.ponicon.scrap.data;
 
 import j2kb.ponicon.scrap.category.CategoryRepository;
 import j2kb.ponicon.scrap.category.CategoryService;
+import j2kb.ponicon.scrap.category.dto.UpdateCategoryReq;
+import j2kb.ponicon.scrap.category.dto.UpdateCategoryRes;
 import j2kb.ponicon.scrap.data.dto.*;
 import j2kb.ponicon.scrap.data.lib.OpenGraph;
 import j2kb.ponicon.scrap.domain.Category;
@@ -182,6 +184,21 @@ public class LinkServiceImpl implements LinkService {
                 .build();
 
         return patchLinkRes;
+    }
+
+    @Transactional
+    @Override
+    public PutLinkRes putLinkRes(Long userId, Long linkId, PutLinkReq putLinkReq) {
+        Link link = findLinkOne(linkId);
+        // 해당 유저가 만든 자료가 아니라면
+        if(!link.checkLinkAndUserCorrect(userId)){
+            throw new BaseException(LINK_AND_USER_NOT_CORRECT);
+        }
+        String title = putLinkReq.getTitle();
+        link.putLink(title);
+        PutLinkRes putLinkRes = PutLinkRes.builder().linkId(linkId).build();
+
+        return putLinkRes;
     }
 
     // 자료 찾기

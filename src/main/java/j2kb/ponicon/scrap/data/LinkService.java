@@ -1,5 +1,7 @@
 package j2kb.ponicon.scrap.data;
 
+import j2kb.ponicon.scrap.category.dto.UpdateCategoryReq;
+import j2kb.ponicon.scrap.category.dto.UpdateCategoryRes;
 import j2kb.ponicon.scrap.data.dto.*;
 import j2kb.ponicon.scrap.domain.Link;
 
@@ -25,4 +27,6 @@ public interface LinkService {
      * @return
      */
     public PatchLinkRes updateLink(Long userId, Long linkId, PatchLinkReq patchLinkReq);
+
+    public PutLinkRes putLinkRes(Long userId, Long linkId, PutLinkReq putLinkReq);
 }
