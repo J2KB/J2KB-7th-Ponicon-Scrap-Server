@@ -104,4 +104,21 @@ public class LinkController {
         log.info("자료 수정 성공: idx={}, link={}", userId, linkId);
         return new BaseResponse<>("자료 수정에 성공했습니다", patchLinkRes);
     }
+    /**
+     * 링크 제목 수정 (카테고리 수정)
+     * [PUT] /auth/data/{user_id}?link_id=
+     * @param userId
+     * @param linkId
+     * @param putLinkReq
+     * @return
+     */
+    @PutMapping("/auth/data/{user_id}")
+    public BaseResponse<PutLinkRes> updateLink(@PathVariable(name = "user_id") Long userId, @RequestParam(name = "link_id") Long linkId, @Validated(ValidationSequence.class) @RequestBody PutLinkReq putLinkReq){
+        log.info("자료 수정 시도: user={}, link={}", userId, linkId);
+
+        PutLinkRes putLinkRes = linkService.putLinkRes(userId, linkId, putLinkReq);
+
+        log.info("자료 수정 성공: idx={}, link={}", userId, linkId);
+        return new BaseResponse<>("자료 제목 수정에 성공했습니다", putLinkRes);
+    }
 }
