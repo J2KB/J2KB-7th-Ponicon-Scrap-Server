@@ -91,6 +91,18 @@ public class Link {
             return false;
         }
     }
+
+    // 즐겨찾기
+    public boolean bookmark(){
+        if(this.star){ // 즐겨찾기가 되어있었던 경우
+            this.star = false; // 즐겨찾기 해제
+            return false;
+        }
+        else{ // 즐겨찾기가 안되어있었던 경우
+            this.star = true; //즐겨찾기 추가
+            return true;
+        }
+    }
     /* 카테고리 업데이트하는 메소드 */
     public void putLink(String title){
         this.title = title;

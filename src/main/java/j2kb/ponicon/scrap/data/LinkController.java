@@ -121,4 +121,21 @@ public class LinkController {
         log.info("자료 수정 성공: idx={}, link={}", userId, linkId);
         return new BaseResponse<>("자료 제목 수정에 성공했습니다", putLinkRes);
     }
+
+    /**
+     * 자료 즐겨찾기 추가or해제
+     * [Patch] /auth/data/bookmark/{user_id}?link_id=
+     * @param userId
+     * @param linkId
+     * @return
+     */
+    @PatchMapping("/auth/data/bookmark/{user_id}")
+    public BaseResponse<PatchBookmarkLinkRes> bookmarkToLink(@PathVariable(name = "user_id") Long userId, @RequestParam(name = "link_id") Long linkId){
+        log.info("자료 즐겨찾기 시도: user={}, link={}", userId, linkId);
+
+        PatchBookmarkLinkRes patchBookmarkLinkRes = linkService.bookmark(userId, linkId);
+
+        log.info("자료 즐겨찾기 성공: idx={}, link={}", userId, linkId);
+        return new BaseResponse<>("자료 즐겨찾기 추가 또는 해제했습니다", patchBookmarkLinkRes);
+    }
 }
