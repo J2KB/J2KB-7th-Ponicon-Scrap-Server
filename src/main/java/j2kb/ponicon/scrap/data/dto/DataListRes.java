@@ -11,13 +11,15 @@ public class DataListRes {
     private String title;
     private String domain;
     private String imgUrl;
+    private boolean isBookmark;
 
     @Builder
-    public DataListRes(Long linkId, String link, String title, String domain, String imgUrl) {
+    public DataListRes(Long linkId, String link, String title, String domain, String imgUrl, boolean isBookmark) {
         this.linkId = linkId;
         this.link = link;
         this.title = title;
         this.domain = domain;
         this.imgUrl = imgUrl;
+        this.isBookmark = isBookmark;
     }
 }

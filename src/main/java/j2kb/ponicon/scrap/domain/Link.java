@@ -77,6 +77,7 @@ public class Link {
                 .title(title)
                 .domain(domain)
                 .imgUrl(imgUrl)
+                .isBookmark(star)
                 .build();
     }
 
