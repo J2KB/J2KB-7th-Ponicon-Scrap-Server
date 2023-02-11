@@ -22,7 +22,7 @@ public class Link {
     private String link;
 
     // 자료의 제목
-    @Column(length = 100)
+    @Column(length = 300)
     private String title;
 
     // 자료의 이미지 url

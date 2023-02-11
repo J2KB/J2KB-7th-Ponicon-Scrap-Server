@@ -78,7 +78,6 @@ public class UserServiceImpl implements IUserService, ISocialUserService {
 
         // 기본 카테고리 생성
         categoryService.saveBasicCategory(user);
-
         userRepository.save(user);
 
         UserInfo userInfo = new UserInfo(user.getId(), user.getEmail(), user.getName());
@@ -188,12 +187,10 @@ public class UserServiceImpl implements IUserService, ISocialUserService {
     // 회원탈퇴
     @Override
     @Transactional
-    public boolean unregister(Long userId) {
+    public void unregister(Long userId) {
 
         User user = findUserOne(userId);
         userRepository.delete(user);
-
-        return false;
     }
 
     /**

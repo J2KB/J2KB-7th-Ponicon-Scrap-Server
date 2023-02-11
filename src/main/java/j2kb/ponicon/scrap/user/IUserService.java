@@ -51,5 +51,5 @@ public interface IUserService {
      * @param userId
      * @return
      */
-    public boolean unregister(Long userId);
+    public void unregister(Long userId);
 }
