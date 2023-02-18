@@ -188,6 +188,24 @@ public class LinkServiceImpl implements LinkService {
         return patchLinkRes;
     }
 
+    // 자료 즐겨찾기
+    @Transactional
+    public PatchBookmarkLinkRes bookmark(Long userId, Long linkId){
+        Link link = findLinkOne(linkId);
+        // 해당 유저가 만든 자료가 아니라면
+        if(!link.checkLinkAndUserCorrect(userId)){
+            log.info("자료 수정중 에러: {}, user={}, link={}", LINK_AND_USER_NOT_CORRECT.getMessage(), userId, linkId);
+            throw new BaseException(LINK_AND_USER_NOT_CORRECT);
+        }
+
+        // 즐겨찾기 추가 or 해제
+        boolean isBookmark = link.bookmark();
+
+        linkRepository.save(link);
+
+        return new PatchBookmarkLinkRes(isBookmark);
+    }
+
     @Transactional
     @Override
     public PutLinkRes putLinkRes(Long userId, Long linkId, PutLinkReq putLinkReq) {

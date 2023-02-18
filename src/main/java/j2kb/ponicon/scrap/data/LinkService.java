@@ -29,4 +29,7 @@ public interface LinkService {
     public PatchLinkRes updateLink(Long userId, Long linkId, PatchLinkReq patchLinkReq);
 
     public PutLinkRes putLinkRes(Long userId, Long linkId, PutLinkReq putLinkReq);
+
+    // 자료 즐겨찾기 추가/삭제
+    public PatchBookmarkLinkRes bookmark(Long userId, Long linkId);
 }

@@ -77,6 +77,7 @@ public class Link {
                 .title(title)
                 .domain(domain)
                 .imgUrl(imgUrl)
+                .isBookmark(star)
                 .build();
     }
 
@@ -89,6 +90,18 @@ public class Link {
         }
         else {
             return false;
+        }
+    }
+
+    // 즐겨찾기
+    public boolean bookmark(){
+        if(this.star){ // 즐겨찾기가 되어있었던 경우
+            this.star = false; // 즐겨찾기 해제
+            return false;
+        }
+        else{ // 즐겨찾기가 안되어있었던 경우
+            this.star = true; //즐겨찾기 추가
+            return true;
         }
     }
     /* 카테고리 업데이트하는 메소드 */
