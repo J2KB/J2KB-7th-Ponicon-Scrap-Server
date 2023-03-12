@@ -58,11 +58,16 @@ public class LinkServiceImpl implements LinkService {
         String link = postDataSaveReq.getLink();
         String title = postDataSaveReq.getTitle();
         String imgUrl = postDataSaveReq.getImgUrl();
+
         String domain = SearchDomain(link);
 
-        log.info("postDataSaveReq.getLink() ={} ", postDataSaveReq.getLink());
-        log.info("postDataSaveReq.getTitle() ={} ", postDataSaveReq.getTitle());
-        log.info("postDataSaveReq.getImgUrl() ={} ", postDataSaveReq.getImgUrl());
+        if(title.isBlank() || imgUrl.isBlank()) {
+            imgUrl = getOpenGraph(link).getImgUrl();
+            title = getOpenGraph(link).getTitle();
+        }
+//        log.info("postDataSaveReq.getLink() ={} ", postDataSaveReq.getLink());
+//        log.info("postDataSaveReq.getTitle() ={} ", postDataSaveReq.getTitle());
+//        log.info("postDataSaveReq.getImgUrl() ={} ", postDataSaveReq.getImgUrl());
 
         Link linkSave = new Link(link, title, imgUrl, category, user, domain);
         Link saveLink = linkRepository.save(linkSave);
