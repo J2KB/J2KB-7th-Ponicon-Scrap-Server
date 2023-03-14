@@ -61,9 +61,15 @@ public class LinkServiceImpl implements LinkService {
 
         String domain = SearchDomain(link);
 
-        if(title.isBlank() || imgUrl.isBlank()) {
+        if(title.isBlank() && imgUrl.isBlank()) {
             imgUrl = getOpenGraph(link).getImgUrl();
             title = getOpenGraph(link).getTitle();
+        }
+        else if(title.isBlank()) {
+            title = getOpenGraph(link).getTitle();
+        }
+        else {
+            imgUrl = getOpenGraph(link).getImgUrl();
         }
 //        log.info("postDataSaveReq.getLink() ={} ", postDataSaveReq.getLink());
 //        log.info("postDataSaveReq.getTitle() ={} ", postDataSaveReq.getTitle());
